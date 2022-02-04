@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>360069815795-1m39hqaq804m7r0jmni09gq8o9mqjj6l.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.360069815795-1m39hqaq804m7r0jmni09gq8o9mqjj6l</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDmvrs6gXxGkTA0JSSX0uXQ9imqKP-wEAs</string>
+	<key>GCM_SENDER_ID</key>
+	<string>360069815795</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.hakomori.aciste</string>
+	<key>PROJECT_ID</key>
+	<string>aciste-dev</string>
+	<key>STORAGE_BUCKET</key>
+	<string>aciste-dev.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:360069815795:ios:fccf24abeab9ab4541c686</string>
+</dict>
+</plist>

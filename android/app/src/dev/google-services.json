@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "360069815795",
+    "project_id": "aciste-dev",
+    "storage_bucket": "aciste-dev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:360069815795:android:2cd69404ad51f63041c686",
+        "android_client_info": {
+          "package_name": "com.hakomori.aciste.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "360069815795-pr10qjcn6pv039ng13kr86iln6lmhj83.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzE94qDC94yI3RG3BNvrle2s1nazrq620"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "360069815795-pr10qjcn6pv039ng13kr86iln6lmhj83.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

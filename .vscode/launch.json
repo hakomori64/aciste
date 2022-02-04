@@ -1,0 +1,37 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+      {
+          "name": "debug run",
+          "request": "launch",
+          "type": "dart",
+          "program": "lib/main.dart",
+          "args": [
+              "--dart-define=FLAVOR=${input:flavor}",
+              "--dart-define=USE_EMULATOR=${input:use_emulator}"
+          ],
+      },
+  ],
+  "inputs": [
+      {
+          "id": "flavor",
+          "description": "フレーバーを選択してください",
+          "type": "pickString",
+          "default": "dev",
+          "options": [
+              "dev",
+              "prod"
+          ]
+      },
+      {
+          "id": "use_emulator",
+          "description": "ローカルのFirebaseエミュレータに接続しますか？ falseを選ぶと実際のFirebaseに接続します",
+          "type": "pickString",
+          "default": "false",
+          "options": [
+              "true",
+              "false"
+          ]
+      }
+  ]
+}

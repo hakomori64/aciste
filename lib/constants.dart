@@ -1,0 +1,1 @@
+const defaultUserPhotoUrl = 'https://storage.googleapis.com/aciste-100b9.appspot.com/default_user.png';

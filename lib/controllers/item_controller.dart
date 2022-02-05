@@ -48,12 +48,15 @@ class ItemListController extends StateNotifier<AsyncValue<List<Item>>> {
         resourceType: resourceType,
         content: content
       );
+
+      if (_userId == null || resource.id == null) {
+        throw const CustomException(message: 'resourceId or userId is null');
+      }
       final item = Item.empty().copyWith(
           name: name,
           description: description,
-          createdBy: createdBy,
-          resourceType: resourceType,
-          resourceUrl: resource.url,
+          resource: resource,
+          userId: _userId!,
         );
       final itemId = await _read(itemRepositoryProvider).createItem(
         userId: _userId!,

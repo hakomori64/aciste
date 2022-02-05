@@ -16,13 +16,15 @@ class ItemList extends HookConsumerWidget {
     return itemListState.when(
       data: (items) => items.isEmpty ? const Center(
         child: Text('Tap + to add an item', style: TextStyle(fontSize: 20.0))
-      ) : ListView.builder(
+      ) : Padding(
+        padding: const EdgeInsets.only(top: kToolbarHeight),
+        child: ListView.builder(
         itemCount: items.length,
         itemBuilder: (context, index) {
           final item = items[index];
           return ItemTile(item: item);
         },
-      ),
+      )),
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (error, _) => ItemListError(
         message: error is CustomException ? error.message! : 'Something went wrong'

@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
-part of 'add_item_dialog_controller.dart';
+part of 'item_create_screen_controller.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,44 +15,44 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-class _$AddItemDialogStateTearOff {
-  const _$AddItemDialogStateTearOff();
+class _$ItemCreateScreenStateTearOff {
+  const _$ItemCreateScreenStateTearOff();
 
-  _AddItemDialogState call({File? imageFile}) {
-    return _AddItemDialogState(
+  _ItemCreateScreenState call({File? imageFile}) {
+    return _ItemCreateScreenState(
       imageFile: imageFile,
     );
   }
 }
 
 /// @nodoc
-const $AddItemDialogState = _$AddItemDialogStateTearOff();
+const $ItemCreateScreenState = _$ItemCreateScreenStateTearOff();
 
 /// @nodoc
-mixin _$AddItemDialogState {
+mixin _$ItemCreateScreenState {
   File? get imageFile => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $AddItemDialogStateCopyWith<AddItemDialogState> get copyWith =>
+  $ItemCreateScreenStateCopyWith<ItemCreateScreenState> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $AddItemDialogStateCopyWith<$Res> {
-  factory $AddItemDialogStateCopyWith(
-          AddItemDialogState value, $Res Function(AddItemDialogState) then) =
-      _$AddItemDialogStateCopyWithImpl<$Res>;
+abstract class $ItemCreateScreenStateCopyWith<$Res> {
+  factory $ItemCreateScreenStateCopyWith(ItemCreateScreenState value,
+          $Res Function(ItemCreateScreenState) then) =
+      _$ItemCreateScreenStateCopyWithImpl<$Res>;
   $Res call({File? imageFile});
 }
 
 /// @nodoc
-class _$AddItemDialogStateCopyWithImpl<$Res>
-    implements $AddItemDialogStateCopyWith<$Res> {
-  _$AddItemDialogStateCopyWithImpl(this._value, this._then);
+class _$ItemCreateScreenStateCopyWithImpl<$Res>
+    implements $ItemCreateScreenStateCopyWith<$Res> {
+  _$ItemCreateScreenStateCopyWithImpl(this._value, this._then);
 
-  final AddItemDialogState _value;
+  final ItemCreateScreenState _value;
   // ignore: unused_field
-  final $Res Function(AddItemDialogState) _then;
+  final $Res Function(ItemCreateScreenState) _then;
 
   @override
   $Res call({
@@ -68,31 +68,31 @@ class _$AddItemDialogStateCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$AddItemDialogStateCopyWith<$Res>
-    implements $AddItemDialogStateCopyWith<$Res> {
-  factory _$AddItemDialogStateCopyWith(
-          _AddItemDialogState value, $Res Function(_AddItemDialogState) then) =
-      __$AddItemDialogStateCopyWithImpl<$Res>;
+abstract class _$ItemCreateScreenStateCopyWith<$Res>
+    implements $ItemCreateScreenStateCopyWith<$Res> {
+  factory _$ItemCreateScreenStateCopyWith(_ItemCreateScreenState value,
+          $Res Function(_ItemCreateScreenState) then) =
+      __$ItemCreateScreenStateCopyWithImpl<$Res>;
   @override
   $Res call({File? imageFile});
 }
 
 /// @nodoc
-class __$AddItemDialogStateCopyWithImpl<$Res>
-    extends _$AddItemDialogStateCopyWithImpl<$Res>
-    implements _$AddItemDialogStateCopyWith<$Res> {
-  __$AddItemDialogStateCopyWithImpl(
-      _AddItemDialogState _value, $Res Function(_AddItemDialogState) _then)
-      : super(_value, (v) => _then(v as _AddItemDialogState));
+class __$ItemCreateScreenStateCopyWithImpl<$Res>
+    extends _$ItemCreateScreenStateCopyWithImpl<$Res>
+    implements _$ItemCreateScreenStateCopyWith<$Res> {
+  __$ItemCreateScreenStateCopyWithImpl(_ItemCreateScreenState _value,
+      $Res Function(_ItemCreateScreenState) _then)
+      : super(_value, (v) => _then(v as _ItemCreateScreenState));
 
   @override
-  _AddItemDialogState get _value => super._value as _AddItemDialogState;
+  _ItemCreateScreenState get _value => super._value as _ItemCreateScreenState;
 
   @override
   $Res call({
     Object? imageFile = freezed,
   }) {
-    return _then(_AddItemDialogState(
+    return _then(_ItemCreateScreenState(
       imageFile: imageFile == freezed
           ? _value.imageFile
           : imageFile // ignore: cast_nullable_to_non_nullable
@@ -103,22 +103,22 @@ class __$AddItemDialogStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_AddItemDialogState implements _AddItemDialogState {
-  const _$_AddItemDialogState({this.imageFile});
+class _$_ItemCreateScreenState implements _ItemCreateScreenState {
+  const _$_ItemCreateScreenState({this.imageFile});
 
   @override
   final File? imageFile;
 
   @override
   String toString() {
-    return 'AddItemDialogState(imageFile: $imageFile)';
+    return 'ItemCreateScreenState(imageFile: $imageFile)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _AddItemDialogState &&
+            other is _ItemCreateScreenState &&
             const DeepCollectionEquality().equals(other.imageFile, imageFile));
   }
 
@@ -128,17 +128,19 @@ class _$_AddItemDialogState implements _AddItemDialogState {
 
   @JsonKey(ignore: true)
   @override
-  _$AddItemDialogStateCopyWith<_AddItemDialogState> get copyWith =>
-      __$AddItemDialogStateCopyWithImpl<_AddItemDialogState>(this, _$identity);
+  _$ItemCreateScreenStateCopyWith<_ItemCreateScreenState> get copyWith =>
+      __$ItemCreateScreenStateCopyWithImpl<_ItemCreateScreenState>(
+          this, _$identity);
 }
 
-abstract class _AddItemDialogState implements AddItemDialogState {
-  const factory _AddItemDialogState({File? imageFile}) = _$_AddItemDialogState;
+abstract class _ItemCreateScreenState implements ItemCreateScreenState {
+  const factory _ItemCreateScreenState({File? imageFile}) =
+      _$_ItemCreateScreenState;
 
   @override
   File? get imageFile;
   @override
   @JsonKey(ignore: true)
-  _$AddItemDialogStateCopyWith<_AddItemDialogState> get copyWith =>
+  _$ItemCreateScreenStateCopyWith<_ItemCreateScreenState> get copyWith =>
       throw _privateConstructorUsedError;
 }

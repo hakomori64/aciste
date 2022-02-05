@@ -26,16 +26,18 @@ class _$ItemTearOff {
       {String? id,
       required String name,
       required String description,
-      required String createdBy,
-      required String resourceUrl,
-      required ResourceType resourceType}) {
+      Resource? resource,
+      required String userId,
+      @TimestampDateTimeConverter() DateTime? createdAt,
+      @TimestampDateTimeConverter() DateTime? updatedAt}) {
     return _Item(
       id: id,
       name: name,
       description: description,
-      createdBy: createdBy,
-      resourceUrl: resourceUrl,
-      resourceType: resourceType,
+      resource: resource,
+      userId: userId,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
     );
   }
 
@@ -52,9 +54,12 @@ mixin _$Item {
   String? get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
-  String get createdBy => throw _privateConstructorUsedError;
-  String get resourceUrl => throw _privateConstructorUsedError;
-  ResourceType get resourceType => throw _privateConstructorUsedError;
+  Resource? get resource => throw _privateConstructorUsedError;
+  String get userId => throw _privateConstructorUsedError;
+  @TimestampDateTimeConverter()
+  DateTime? get createdAt => throw _privateConstructorUsedError;
+  @TimestampDateTimeConverter()
+  DateTime? get updatedAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -69,9 +74,12 @@ abstract class $ItemCopyWith<$Res> {
       {String? id,
       String name,
       String description,
-      String createdBy,
-      String resourceUrl,
-      ResourceType resourceType});
+      Resource? resource,
+      String userId,
+      @TimestampDateTimeConverter() DateTime? createdAt,
+      @TimestampDateTimeConverter() DateTime? updatedAt});
+
+  $ResourceCopyWith<$Res>? get resource;
 }
 
 /// @nodoc
@@ -87,9 +95,10 @@ class _$ItemCopyWithImpl<$Res> implements $ItemCopyWith<$Res> {
     Object? id = freezed,
     Object? name = freezed,
     Object? description = freezed,
-    Object? createdBy = freezed,
-    Object? resourceUrl = freezed,
-    Object? resourceType = freezed,
+    Object? resource = freezed,
+    Object? userId = freezed,
+    Object? createdAt = freezed,
+    Object? updatedAt = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -104,19 +113,34 @@ class _$ItemCopyWithImpl<$Res> implements $ItemCopyWith<$Res> {
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
-      createdBy: createdBy == freezed
-          ? _value.createdBy
-          : createdBy // ignore: cast_nullable_to_non_nullable
+      resource: resource == freezed
+          ? _value.resource
+          : resource // ignore: cast_nullable_to_non_nullable
+              as Resource?,
+      userId: userId == freezed
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
               as String,
-      resourceUrl: resourceUrl == freezed
-          ? _value.resourceUrl
-          : resourceUrl // ignore: cast_nullable_to_non_nullable
-              as String,
-      resourceType: resourceType == freezed
-          ? _value.resourceType
-          : resourceType // ignore: cast_nullable_to_non_nullable
-              as ResourceType,
+      createdAt: createdAt == freezed
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      updatedAt: updatedAt == freezed
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
+  }
+
+  @override
+  $ResourceCopyWith<$Res>? get resource {
+    if (_value.resource == null) {
+      return null;
+    }
+
+    return $ResourceCopyWith<$Res>(_value.resource!, (value) {
+      return _then(_value.copyWith(resource: value));
+    });
   }
 }
 
@@ -129,9 +153,13 @@ abstract class _$ItemCopyWith<$Res> implements $ItemCopyWith<$Res> {
       {String? id,
       String name,
       String description,
-      String createdBy,
-      String resourceUrl,
-      ResourceType resourceType});
+      Resource? resource,
+      String userId,
+      @TimestampDateTimeConverter() DateTime? createdAt,
+      @TimestampDateTimeConverter() DateTime? updatedAt});
+
+  @override
+  $ResourceCopyWith<$Res>? get resource;
 }
 
 /// @nodoc
@@ -148,9 +176,10 @@ class __$ItemCopyWithImpl<$Res> extends _$ItemCopyWithImpl<$Res>
     Object? id = freezed,
     Object? name = freezed,
     Object? description = freezed,
-    Object? createdBy = freezed,
-    Object? resourceUrl = freezed,
-    Object? resourceType = freezed,
+    Object? resource = freezed,
+    Object? userId = freezed,
+    Object? createdAt = freezed,
+    Object? updatedAt = freezed,
   }) {
     return _then(_Item(
       id: id == freezed
@@ -165,18 +194,22 @@ class __$ItemCopyWithImpl<$Res> extends _$ItemCopyWithImpl<$Res>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
-      createdBy: createdBy == freezed
-          ? _value.createdBy
-          : createdBy // ignore: cast_nullable_to_non_nullable
+      resource: resource == freezed
+          ? _value.resource
+          : resource // ignore: cast_nullable_to_non_nullable
+              as Resource?,
+      userId: userId == freezed
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
               as String,
-      resourceUrl: resourceUrl == freezed
-          ? _value.resourceUrl
-          : resourceUrl // ignore: cast_nullable_to_non_nullable
-              as String,
-      resourceType: resourceType == freezed
-          ? _value.resourceType
-          : resourceType // ignore: cast_nullable_to_non_nullable
-              as ResourceType,
+      createdAt: createdAt == freezed
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      updatedAt: updatedAt == freezed
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
@@ -188,9 +221,10 @@ class _$_Item extends _Item {
       {this.id,
       required this.name,
       required this.description,
-      required this.createdBy,
-      required this.resourceUrl,
-      required this.resourceType})
+      this.resource,
+      required this.userId,
+      @TimestampDateTimeConverter() this.createdAt,
+      @TimestampDateTimeConverter() this.updatedAt})
       : super._();
 
   factory _$_Item.fromJson(Map<String, dynamic> json) => _$$_ItemFromJson(json);
@@ -202,15 +236,19 @@ class _$_Item extends _Item {
   @override
   final String description;
   @override
-  final String createdBy;
+  final Resource? resource;
   @override
-  final String resourceUrl;
+  final String userId;
   @override
-  final ResourceType resourceType;
+  @TimestampDateTimeConverter()
+  final DateTime? createdAt;
+  @override
+  @TimestampDateTimeConverter()
+  final DateTime? updatedAt;
 
   @override
   String toString() {
-    return 'Item(id: $id, name: $name, description: $description, createdBy: $createdBy, resourceUrl: $resourceUrl, resourceType: $resourceType)';
+    return 'Item(id: $id, name: $name, description: $description, resource: $resource, userId: $userId, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -222,11 +260,10 @@ class _$_Item extends _Item {
             const DeepCollectionEquality().equals(other.name, name) &&
             const DeepCollectionEquality()
                 .equals(other.description, description) &&
-            const DeepCollectionEquality().equals(other.createdBy, createdBy) &&
-            const DeepCollectionEquality()
-                .equals(other.resourceUrl, resourceUrl) &&
-            const DeepCollectionEquality()
-                .equals(other.resourceType, resourceType));
+            const DeepCollectionEquality().equals(other.resource, resource) &&
+            const DeepCollectionEquality().equals(other.userId, userId) &&
+            const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
+            const DeepCollectionEquality().equals(other.updatedAt, updatedAt));
   }
 
   @override
@@ -235,9 +272,10 @@ class _$_Item extends _Item {
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(name),
       const DeepCollectionEquality().hash(description),
-      const DeepCollectionEquality().hash(createdBy),
-      const DeepCollectionEquality().hash(resourceUrl),
-      const DeepCollectionEquality().hash(resourceType));
+      const DeepCollectionEquality().hash(resource),
+      const DeepCollectionEquality().hash(userId),
+      const DeepCollectionEquality().hash(createdAt),
+      const DeepCollectionEquality().hash(updatedAt));
 
   @JsonKey(ignore: true)
   @override
@@ -255,9 +293,10 @@ abstract class _Item extends Item {
       {String? id,
       required String name,
       required String description,
-      required String createdBy,
-      required String resourceUrl,
-      required ResourceType resourceType}) = _$_Item;
+      Resource? resource,
+      required String userId,
+      @TimestampDateTimeConverter() DateTime? createdAt,
+      @TimestampDateTimeConverter() DateTime? updatedAt}) = _$_Item;
   const _Item._() : super._();
 
   factory _Item.fromJson(Map<String, dynamic> json) = _$_Item.fromJson;
@@ -269,11 +308,15 @@ abstract class _Item extends Item {
   @override
   String get description;
   @override
-  String get createdBy;
+  Resource? get resource;
   @override
-  String get resourceUrl;
+  String get userId;
   @override
-  ResourceType get resourceType;
+  @TimestampDateTimeConverter()
+  DateTime? get createdAt;
+  @override
+  @TimestampDateTimeConverter()
+  DateTime? get updatedAt;
   @override
   @JsonKey(ignore: true)
   _$ItemCopyWith<_Item> get copyWith => throw _privateConstructorUsedError;

@@ -12,9 +12,12 @@ class ResourceView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    switch (item.resourceType) {
+    if (item.resource == null) {
+      return const Text("リソースが見つかりませんでした");
+    }
+    switch (item.resource!.type) {
       case ResourceType.photo:
-        return Image.network(item.resourceUrl);
+        return Image.network(item.resource!.url);
       case ResourceType.none:
         return const Center(child: Text("Unknown type"));
     }

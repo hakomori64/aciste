@@ -1,6 +1,7 @@
 import 'package:aciste/custom_exception.dart';
 import 'package:aciste/models/item.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:aciste/repositories/resource_repository.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:aciste/providers.dart';
@@ -20,6 +21,12 @@ class ItemRepository implements BaseItemRepository {
 
   const ItemRepository(this._read);
 
+  Future<Item> _getItem(DocumentSnapshot<Map<String, dynamic>> doc) async {
+    final item = Item.fromDocumentSnapshot(doc);
+    final resource = await _read(resourceRepositoryProvider).retrieveResource(resourceId: doc.data()!['resourceId']);
+    return item.copyWith(resource: resource);
+  }
+
   @override
   Future<List<Item>> retrieveItems({required String userId}) async {
     try {
@@ -27,7 +34,7 @@ class ItemRepository implements BaseItemRepository {
         .userItemsRef(userId)
         .get();
       
-      return snapshot.docs.map((doc) => Item.fromDocumentSnapshot(doc)).toList();
+      return Future.wait(snapshot.docs.map(_getItem).toList());
     } on FirebaseException catch (e) {
       throw CustomException(message: e.message);
     }

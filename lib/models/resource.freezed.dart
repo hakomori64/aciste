@@ -24,14 +24,16 @@ class _$ResourceTearOff {
 
   _Resource call(
       {String? id,
-      required String createdBy,
+      User? createdBy,
       required String url,
-      required ResourceType type}) {
+      required ResourceType type,
+      @TimestampDateTimeConverter() DateTime? createdAt}) {
     return _Resource(
       id: id,
       createdBy: createdBy,
       url: url,
       type: type,
+      createdAt: createdAt,
     );
   }
 
@@ -46,9 +48,11 @@ const $Resource = _$ResourceTearOff();
 /// @nodoc
 mixin _$Resource {
   String? get id => throw _privateConstructorUsedError;
-  String get createdBy => throw _privateConstructorUsedError;
+  User? get createdBy => throw _privateConstructorUsedError;
   String get url => throw _privateConstructorUsedError;
   ResourceType get type => throw _privateConstructorUsedError;
+  @TimestampDateTimeConverter()
+  DateTime? get createdAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -60,7 +64,14 @@ mixin _$Resource {
 abstract class $ResourceCopyWith<$Res> {
   factory $ResourceCopyWith(Resource value, $Res Function(Resource) then) =
       _$ResourceCopyWithImpl<$Res>;
-  $Res call({String? id, String createdBy, String url, ResourceType type});
+  $Res call(
+      {String? id,
+      User? createdBy,
+      String url,
+      ResourceType type,
+      @TimestampDateTimeConverter() DateTime? createdAt});
+
+  $UserCopyWith<$Res>? get createdBy;
 }
 
 /// @nodoc
@@ -77,6 +88,7 @@ class _$ResourceCopyWithImpl<$Res> implements $ResourceCopyWith<$Res> {
     Object? createdBy = freezed,
     Object? url = freezed,
     Object? type = freezed,
+    Object? createdAt = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -86,7 +98,7 @@ class _$ResourceCopyWithImpl<$Res> implements $ResourceCopyWith<$Res> {
       createdBy: createdBy == freezed
           ? _value.createdBy
           : createdBy // ignore: cast_nullable_to_non_nullable
-              as String,
+              as User?,
       url: url == freezed
           ? _value.url
           : url // ignore: cast_nullable_to_non_nullable
@@ -95,7 +107,22 @@ class _$ResourceCopyWithImpl<$Res> implements $ResourceCopyWith<$Res> {
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as ResourceType,
+      createdAt: createdAt == freezed
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
+  }
+
+  @override
+  $UserCopyWith<$Res>? get createdBy {
+    if (_value.createdBy == null) {
+      return null;
+    }
+
+    return $UserCopyWith<$Res>(_value.createdBy!, (value) {
+      return _then(_value.copyWith(createdBy: value));
+    });
   }
 }
 
@@ -104,7 +131,15 @@ abstract class _$ResourceCopyWith<$Res> implements $ResourceCopyWith<$Res> {
   factory _$ResourceCopyWith(_Resource value, $Res Function(_Resource) then) =
       __$ResourceCopyWithImpl<$Res>;
   @override
-  $Res call({String? id, String createdBy, String url, ResourceType type});
+  $Res call(
+      {String? id,
+      User? createdBy,
+      String url,
+      ResourceType type,
+      @TimestampDateTimeConverter() DateTime? createdAt});
+
+  @override
+  $UserCopyWith<$Res>? get createdBy;
 }
 
 /// @nodoc
@@ -122,6 +157,7 @@ class __$ResourceCopyWithImpl<$Res> extends _$ResourceCopyWithImpl<$Res>
     Object? createdBy = freezed,
     Object? url = freezed,
     Object? type = freezed,
+    Object? createdAt = freezed,
   }) {
     return _then(_Resource(
       id: id == freezed
@@ -131,7 +167,7 @@ class __$ResourceCopyWithImpl<$Res> extends _$ResourceCopyWithImpl<$Res>
       createdBy: createdBy == freezed
           ? _value.createdBy
           : createdBy // ignore: cast_nullable_to_non_nullable
-              as String,
+              as User?,
       url: url == freezed
           ? _value.url
           : url // ignore: cast_nullable_to_non_nullable
@@ -140,6 +176,10 @@ class __$ResourceCopyWithImpl<$Res> extends _$ResourceCopyWithImpl<$Res>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as ResourceType,
+      createdAt: createdAt == freezed
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
@@ -148,7 +188,11 @@ class __$ResourceCopyWithImpl<$Res> extends _$ResourceCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_Resource extends _Resource {
   const _$_Resource(
-      {this.id, required this.createdBy, required this.url, required this.type})
+      {this.id,
+      this.createdBy,
+      required this.url,
+      required this.type,
+      @TimestampDateTimeConverter() this.createdAt})
       : super._();
 
   factory _$_Resource.fromJson(Map<String, dynamic> json) =>
@@ -157,15 +201,18 @@ class _$_Resource extends _Resource {
   @override
   final String? id;
   @override
-  final String createdBy;
+  final User? createdBy;
   @override
   final String url;
   @override
   final ResourceType type;
+  @override
+  @TimestampDateTimeConverter()
+  final DateTime? createdAt;
 
   @override
   String toString() {
-    return 'Resource(id: $id, createdBy: $createdBy, url: $url, type: $type)';
+    return 'Resource(id: $id, createdBy: $createdBy, url: $url, type: $type, createdAt: $createdAt)';
   }
 
   @override
@@ -176,7 +223,8 @@ class _$_Resource extends _Resource {
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.createdBy, createdBy) &&
             const DeepCollectionEquality().equals(other.url, url) &&
-            const DeepCollectionEquality().equals(other.type, type));
+            const DeepCollectionEquality().equals(other.type, type) &&
+            const DeepCollectionEquality().equals(other.createdAt, createdAt));
   }
 
   @override
@@ -185,7 +233,8 @@ class _$_Resource extends _Resource {
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(createdBy),
       const DeepCollectionEquality().hash(url),
-      const DeepCollectionEquality().hash(type));
+      const DeepCollectionEquality().hash(type),
+      const DeepCollectionEquality().hash(createdAt));
 
   @JsonKey(ignore: true)
   @override
@@ -201,9 +250,10 @@ class _$_Resource extends _Resource {
 abstract class _Resource extends Resource {
   const factory _Resource(
       {String? id,
-      required String createdBy,
+      User? createdBy,
       required String url,
-      required ResourceType type}) = _$_Resource;
+      required ResourceType type,
+      @TimestampDateTimeConverter() DateTime? createdAt}) = _$_Resource;
   const _Resource._() : super._();
 
   factory _Resource.fromJson(Map<String, dynamic> json) = _$_Resource.fromJson;
@@ -211,11 +261,14 @@ abstract class _Resource extends Resource {
   @override
   String? get id;
   @override
-  String get createdBy;
+  User? get createdBy;
   @override
   String get url;
   @override
   ResourceType get type;
+  @override
+  @TimestampDateTimeConverter()
+  DateTime? get createdAt;
   @override
   @JsonKey(ignore: true)
   _$ResourceCopyWith<_Resource> get copyWith =>

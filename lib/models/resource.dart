@@ -1,5 +1,6 @@
+import 'package:aciste/converters/timestamp_converter.dart';
 import 'package:aciste/enums/resource_type.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:aciste/models/user.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 
@@ -12,15 +13,16 @@ abstract class Resource implements _$Resource {
 
   const factory Resource({
     String? id,
-    required String createdBy,
+    User? createdBy,
     required String url,
     required ResourceType type,
+    @TimestampDateTimeConverter() DateTime? createdAt,
   }) = _Resource;
 
-  factory Resource.empty() => const Resource(
-    createdBy: "",
+  factory Resource.empty() => Resource(
     url: "",
-    type: ResourceType.none
+    type: ResourceType.none,
+    createdAt: DateTime.now()
   );
 
   factory Resource.fromJson(Map<String, dynamic> json) => _$ResourceFromJson(json);
@@ -30,5 +32,13 @@ abstract class Resource implements _$Resource {
     return Resource.fromJson(data).copyWith(id: doc.id);
   }
 
-  Map<String, dynamic> toDocument() => toJson()..remove('id');
+  Map<String, dynamic> toDocument() {
+    final data = toJson()
+      ..remove('id')
+      ..remove('createdBy');
+    
+    data['createdById'] = createdBy?.id ?? '';
+
+    return data;
+  }
 }

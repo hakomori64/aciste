@@ -1,0 +1,171 @@
+// coverage:ignore-file
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+
+part of 'item_edit_screen_controller.dart';
+
+// **************************************************************************
+// FreezedGenerator
+// **************************************************************************
+
+T _$identity<T>(T value) => value;
+
+final _privateConstructorUsedError = UnsupportedError(
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+
+/// @nodoc
+class _$ItemEditScreenStateTearOff {
+  const _$ItemEditScreenStateTearOff();
+
+  _ItemEditScreenState call(
+      {bool isNameEditing = false, bool isDescriptionEditing = false}) {
+    return _ItemEditScreenState(
+      isNameEditing: isNameEditing,
+      isDescriptionEditing: isDescriptionEditing,
+    );
+  }
+}
+
+/// @nodoc
+const $ItemEditScreenState = _$ItemEditScreenStateTearOff();
+
+/// @nodoc
+mixin _$ItemEditScreenState {
+  bool get isNameEditing => throw _privateConstructorUsedError;
+  bool get isDescriptionEditing => throw _privateConstructorUsedError;
+
+  @JsonKey(ignore: true)
+  $ItemEditScreenStateCopyWith<ItemEditScreenState> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $ItemEditScreenStateCopyWith<$Res> {
+  factory $ItemEditScreenStateCopyWith(
+          ItemEditScreenState value, $Res Function(ItemEditScreenState) then) =
+      _$ItemEditScreenStateCopyWithImpl<$Res>;
+  $Res call({bool isNameEditing, bool isDescriptionEditing});
+}
+
+/// @nodoc
+class _$ItemEditScreenStateCopyWithImpl<$Res>
+    implements $ItemEditScreenStateCopyWith<$Res> {
+  _$ItemEditScreenStateCopyWithImpl(this._value, this._then);
+
+  final ItemEditScreenState _value;
+  // ignore: unused_field
+  final $Res Function(ItemEditScreenState) _then;
+
+  @override
+  $Res call({
+    Object? isNameEditing = freezed,
+    Object? isDescriptionEditing = freezed,
+  }) {
+    return _then(_value.copyWith(
+      isNameEditing: isNameEditing == freezed
+          ? _value.isNameEditing
+          : isNameEditing // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isDescriptionEditing: isDescriptionEditing == freezed
+          ? _value.isDescriptionEditing
+          : isDescriptionEditing // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$ItemEditScreenStateCopyWith<$Res>
+    implements $ItemEditScreenStateCopyWith<$Res> {
+  factory _$ItemEditScreenStateCopyWith(_ItemEditScreenState value,
+          $Res Function(_ItemEditScreenState) then) =
+      __$ItemEditScreenStateCopyWithImpl<$Res>;
+  @override
+  $Res call({bool isNameEditing, bool isDescriptionEditing});
+}
+
+/// @nodoc
+class __$ItemEditScreenStateCopyWithImpl<$Res>
+    extends _$ItemEditScreenStateCopyWithImpl<$Res>
+    implements _$ItemEditScreenStateCopyWith<$Res> {
+  __$ItemEditScreenStateCopyWithImpl(
+      _ItemEditScreenState _value, $Res Function(_ItemEditScreenState) _then)
+      : super(_value, (v) => _then(v as _ItemEditScreenState));
+
+  @override
+  _ItemEditScreenState get _value => super._value as _ItemEditScreenState;
+
+  @override
+  $Res call({
+    Object? isNameEditing = freezed,
+    Object? isDescriptionEditing = freezed,
+  }) {
+    return _then(_ItemEditScreenState(
+      isNameEditing: isNameEditing == freezed
+          ? _value.isNameEditing
+          : isNameEditing // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isDescriptionEditing: isDescriptionEditing == freezed
+          ? _value.isDescriptionEditing
+          : isDescriptionEditing // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$_ItemEditScreenState implements _ItemEditScreenState {
+  const _$_ItemEditScreenState(
+      {this.isNameEditing = false, this.isDescriptionEditing = false});
+
+  @JsonKey()
+  @override
+  final bool isNameEditing;
+  @JsonKey()
+  @override
+  final bool isDescriptionEditing;
+
+  @override
+  String toString() {
+    return 'ItemEditScreenState(isNameEditing: $isNameEditing, isDescriptionEditing: $isDescriptionEditing)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _ItemEditScreenState &&
+            const DeepCollectionEquality()
+                .equals(other.isNameEditing, isNameEditing) &&
+            const DeepCollectionEquality()
+                .equals(other.isDescriptionEditing, isDescriptionEditing));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(isNameEditing),
+      const DeepCollectionEquality().hash(isDescriptionEditing));
+
+  @JsonKey(ignore: true)
+  @override
+  _$ItemEditScreenStateCopyWith<_ItemEditScreenState> get copyWith =>
+      __$ItemEditScreenStateCopyWithImpl<_ItemEditScreenState>(
+          this, _$identity);
+}
+
+abstract class _ItemEditScreenState implements ItemEditScreenState {
+  const factory _ItemEditScreenState(
+      {bool isNameEditing, bool isDescriptionEditing}) = _$_ItemEditScreenState;
+
+  @override
+  bool get isNameEditing;
+  @override
+  bool get isDescriptionEditing;
+  @override
+  @JsonKey(ignore: true)
+  _$ItemEditScreenStateCopyWith<_ItemEditScreenState> get copyWith =>
+      throw _privateConstructorUsedError;
+}

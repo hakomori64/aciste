@@ -1,11 +1,16 @@
 import 'package:aciste/models/item.dart';
 import 'package:flutter/material.dart';
 
-Future<void> showOptionsBottomSheet({required BuildContext context, required Item item, required Function() onDelete, required Function() onShare}) async {
+Future<void> showOptionsBottomSheet({required BuildContext context, required Item item, required Function() onEdit, required Function() onDelete, required Function() onShare}) async {
   await showModalBottomSheet(context: context, builder: (builder) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
+        ListTile(
+          leading: const Icon(Icons.edit),
+          title: const Text('編集'),
+          onTap: onEdit,
+        ),
         ListTile(
           leading: const Icon(Icons.delete),
           title: const Text('削除'),

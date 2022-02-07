@@ -2,6 +2,7 @@ import 'package:aciste/enums/resource_type.dart';
 import 'package:aciste/screens/item_create_screen.dart';
 import 'package:aciste/screens/home_screen.dart';
 import 'package:aciste/screens/item_detail_screen.dart';
+import 'package:aciste/screens/item_import_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -22,6 +23,10 @@ final routerProvider = Provider<GoRouter>((ref) => GoRouter(
     GoRoute(
       path: Routes.itemDetail.route,
       builder: (context, state) => ItemDetailScreen(item: state.extra! as Item),
+    ),
+    GoRoute(
+      path: Routes.itemImport.route,
+      builder:(context, state) => ItemImportScreen(item: state.extra! as Item),
     )
   ]
 ));
@@ -30,8 +35,9 @@ enum Routes {
   home,
   itemCreate,
   itemDetail,
+  itemImport,
 }
 
 extension RoutesExtension on Routes {
-  String get route => '/${toString()}';
+  String get route => '/${toString().split(".")[1]}';
 }

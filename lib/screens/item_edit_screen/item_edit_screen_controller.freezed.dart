@@ -19,8 +19,11 @@ class _$ItemEditScreenStateTearOff {
   const _$ItemEditScreenStateTearOff();
 
   _ItemEditScreenState call(
-      {bool isNameEditing = false, bool isDescriptionEditing = false}) {
+      {Item? item,
+      bool isNameEditing = false,
+      bool isDescriptionEditing = false}) {
     return _ItemEditScreenState(
+      item: item,
       isNameEditing: isNameEditing,
       isDescriptionEditing: isDescriptionEditing,
     );
@@ -32,6 +35,7 @@ const $ItemEditScreenState = _$ItemEditScreenStateTearOff();
 
 /// @nodoc
 mixin _$ItemEditScreenState {
+  Item? get item => throw _privateConstructorUsedError;
   bool get isNameEditing => throw _privateConstructorUsedError;
   bool get isDescriptionEditing => throw _privateConstructorUsedError;
 
@@ -45,7 +49,9 @@ abstract class $ItemEditScreenStateCopyWith<$Res> {
   factory $ItemEditScreenStateCopyWith(
           ItemEditScreenState value, $Res Function(ItemEditScreenState) then) =
       _$ItemEditScreenStateCopyWithImpl<$Res>;
-  $Res call({bool isNameEditing, bool isDescriptionEditing});
+  $Res call({Item? item, bool isNameEditing, bool isDescriptionEditing});
+
+  $ItemCopyWith<$Res>? get item;
 }
 
 /// @nodoc
@@ -59,10 +65,15 @@ class _$ItemEditScreenStateCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? item = freezed,
     Object? isNameEditing = freezed,
     Object? isDescriptionEditing = freezed,
   }) {
     return _then(_value.copyWith(
+      item: item == freezed
+          ? _value.item
+          : item // ignore: cast_nullable_to_non_nullable
+              as Item?,
       isNameEditing: isNameEditing == freezed
           ? _value.isNameEditing
           : isNameEditing // ignore: cast_nullable_to_non_nullable
@@ -73,6 +84,17 @@ class _$ItemEditScreenStateCopyWithImpl<$Res>
               as bool,
     ));
   }
+
+  @override
+  $ItemCopyWith<$Res>? get item {
+    if (_value.item == null) {
+      return null;
+    }
+
+    return $ItemCopyWith<$Res>(_value.item!, (value) {
+      return _then(_value.copyWith(item: value));
+    });
+  }
 }
 
 /// @nodoc
@@ -82,7 +104,10 @@ abstract class _$ItemEditScreenStateCopyWith<$Res>
           $Res Function(_ItemEditScreenState) then) =
       __$ItemEditScreenStateCopyWithImpl<$Res>;
   @override
-  $Res call({bool isNameEditing, bool isDescriptionEditing});
+  $Res call({Item? item, bool isNameEditing, bool isDescriptionEditing});
+
+  @override
+  $ItemCopyWith<$Res>? get item;
 }
 
 /// @nodoc
@@ -98,10 +123,15 @@ class __$ItemEditScreenStateCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? item = freezed,
     Object? isNameEditing = freezed,
     Object? isDescriptionEditing = freezed,
   }) {
     return _then(_ItemEditScreenState(
+      item: item == freezed
+          ? _value.item
+          : item // ignore: cast_nullable_to_non_nullable
+              as Item?,
       isNameEditing: isNameEditing == freezed
           ? _value.isNameEditing
           : isNameEditing // ignore: cast_nullable_to_non_nullable
@@ -118,8 +148,12 @@ class __$ItemEditScreenStateCopyWithImpl<$Res>
 
 class _$_ItemEditScreenState implements _ItemEditScreenState {
   const _$_ItemEditScreenState(
-      {this.isNameEditing = false, this.isDescriptionEditing = false});
+      {this.item,
+      this.isNameEditing = false,
+      this.isDescriptionEditing = false});
 
+  @override
+  final Item? item;
   @JsonKey()
   @override
   final bool isNameEditing;
@@ -129,7 +163,7 @@ class _$_ItemEditScreenState implements _ItemEditScreenState {
 
   @override
   String toString() {
-    return 'ItemEditScreenState(isNameEditing: $isNameEditing, isDescriptionEditing: $isDescriptionEditing)';
+    return 'ItemEditScreenState(item: $item, isNameEditing: $isNameEditing, isDescriptionEditing: $isDescriptionEditing)';
   }
 
   @override
@@ -137,6 +171,7 @@ class _$_ItemEditScreenState implements _ItemEditScreenState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _ItemEditScreenState &&
+            const DeepCollectionEquality().equals(other.item, item) &&
             const DeepCollectionEquality()
                 .equals(other.isNameEditing, isNameEditing) &&
             const DeepCollectionEquality()
@@ -146,6 +181,7 @@ class _$_ItemEditScreenState implements _ItemEditScreenState {
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      const DeepCollectionEquality().hash(item),
       const DeepCollectionEquality().hash(isNameEditing),
       const DeepCollectionEquality().hash(isDescriptionEditing));
 
@@ -158,8 +194,12 @@ class _$_ItemEditScreenState implements _ItemEditScreenState {
 
 abstract class _ItemEditScreenState implements ItemEditScreenState {
   const factory _ItemEditScreenState(
-      {bool isNameEditing, bool isDescriptionEditing}) = _$_ItemEditScreenState;
+      {Item? item,
+      bool isNameEditing,
+      bool isDescriptionEditing}) = _$_ItemEditScreenState;
 
+  @override
+  Item? get item;
   @override
   bool get isNameEditing;
   @override

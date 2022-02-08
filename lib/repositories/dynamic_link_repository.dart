@@ -19,7 +19,7 @@ class DynamicLinksRepository implements BaseDynamicLinkRepository {
 
     final parameters = DynamicLinkParameters(
       uriPrefix: getDynamicLinkUriPrefix(),
-      link: Uri.parse(getDynamicLinkUriPrefix() + '/?resourceId=$resourceId'),
+      link: Uri.parse(getDynamicLinkUriPrefix() + '/import?resourceId=$resourceId'),
       androidParameters: AndroidParameters(
         packageName: getPackageName(),
         minimumVersion: 1,

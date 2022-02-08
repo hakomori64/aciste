@@ -18,8 +18,9 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$ItemCreateScreenStateTearOff {
   const _$ItemCreateScreenStateTearOff();
 
-  _ItemCreateScreenState call({File? imageFile}) {
+  _ItemCreateScreenState call({ResourceType? resourceType, File? imageFile}) {
     return _ItemCreateScreenState(
+      resourceType: resourceType,
       imageFile: imageFile,
     );
   }
@@ -30,6 +31,7 @@ const $ItemCreateScreenState = _$ItemCreateScreenStateTearOff();
 
 /// @nodoc
 mixin _$ItemCreateScreenState {
+  ResourceType? get resourceType => throw _privateConstructorUsedError;
   File? get imageFile => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -42,7 +44,7 @@ abstract class $ItemCreateScreenStateCopyWith<$Res> {
   factory $ItemCreateScreenStateCopyWith(ItemCreateScreenState value,
           $Res Function(ItemCreateScreenState) then) =
       _$ItemCreateScreenStateCopyWithImpl<$Res>;
-  $Res call({File? imageFile});
+  $Res call({ResourceType? resourceType, File? imageFile});
 }
 
 /// @nodoc
@@ -56,9 +58,14 @@ class _$ItemCreateScreenStateCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? resourceType = freezed,
     Object? imageFile = freezed,
   }) {
     return _then(_value.copyWith(
+      resourceType: resourceType == freezed
+          ? _value.resourceType
+          : resourceType // ignore: cast_nullable_to_non_nullable
+              as ResourceType?,
       imageFile: imageFile == freezed
           ? _value.imageFile
           : imageFile // ignore: cast_nullable_to_non_nullable
@@ -74,7 +81,7 @@ abstract class _$ItemCreateScreenStateCopyWith<$Res>
           $Res Function(_ItemCreateScreenState) then) =
       __$ItemCreateScreenStateCopyWithImpl<$Res>;
   @override
-  $Res call({File? imageFile});
+  $Res call({ResourceType? resourceType, File? imageFile});
 }
 
 /// @nodoc
@@ -90,9 +97,14 @@ class __$ItemCreateScreenStateCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? resourceType = freezed,
     Object? imageFile = freezed,
   }) {
     return _then(_ItemCreateScreenState(
+      resourceType: resourceType == freezed
+          ? _value.resourceType
+          : resourceType // ignore: cast_nullable_to_non_nullable
+              as ResourceType?,
       imageFile: imageFile == freezed
           ? _value.imageFile
           : imageFile // ignore: cast_nullable_to_non_nullable
@@ -104,14 +116,16 @@ class __$ItemCreateScreenStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_ItemCreateScreenState implements _ItemCreateScreenState {
-  const _$_ItemCreateScreenState({this.imageFile});
+  const _$_ItemCreateScreenState({this.resourceType, this.imageFile});
 
+  @override
+  final ResourceType? resourceType;
   @override
   final File? imageFile;
 
   @override
   String toString() {
-    return 'ItemCreateScreenState(imageFile: $imageFile)';
+    return 'ItemCreateScreenState(resourceType: $resourceType, imageFile: $imageFile)';
   }
 
   @override
@@ -119,12 +133,16 @@ class _$_ItemCreateScreenState implements _ItemCreateScreenState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _ItemCreateScreenState &&
+            const DeepCollectionEquality()
+                .equals(other.resourceType, resourceType) &&
             const DeepCollectionEquality().equals(other.imageFile, imageFile));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(imageFile));
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(resourceType),
+      const DeepCollectionEquality().hash(imageFile));
 
   @JsonKey(ignore: true)
   @override
@@ -134,9 +152,11 @@ class _$_ItemCreateScreenState implements _ItemCreateScreenState {
 }
 
 abstract class _ItemCreateScreenState implements ItemCreateScreenState {
-  const factory _ItemCreateScreenState({File? imageFile}) =
-      _$_ItemCreateScreenState;
+  const factory _ItemCreateScreenState(
+      {ResourceType? resourceType, File? imageFile}) = _$_ItemCreateScreenState;
 
+  @override
+  ResourceType? get resourceType;
   @override
   File? get imageFile;
   @override

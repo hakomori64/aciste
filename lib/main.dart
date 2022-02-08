@@ -1,7 +1,10 @@
 import 'package:aciste/router.dart';
+import 'package:aciste/widgets/overlay_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import 'controllers/app_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,6 +20,13 @@ class MyApp extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
 
     final router = ref.watch(routerProvider);
+    final appControllerState = ref.watch(appControllerProvider);
+
+    if (router == null) {
+      return MaterialApp(
+        builder: (context, child) => const CircularProgressIndicator(),
+      );
+    }
 
     return MaterialApp.router(
       title: 'aciste',
@@ -25,6 +35,15 @@ class MyApp extends HookConsumerWidget {
       ),
       routerDelegate: router.routerDelegate,
       routeInformationParser: router.routeInformationParser,
+      builder: (context, child) => Stack(
+        children: [
+          child!,
+          Visibility(
+            visible: appControllerState.loading,
+            child: const OverlayLoading(),
+          )
+        ],
+      ),
     );
   }
 }

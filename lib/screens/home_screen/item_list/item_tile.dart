@@ -10,7 +10,6 @@ import 'package:aciste/widgets/resource_overview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 import 'item_tile/options_bottom_sheet.dart';
 
@@ -57,7 +56,7 @@ class ItemTile extends HookConsumerWidget {
                   context: context,
                   item: item,
                   onEdit: () {
-                    Navigator.of(context).pop();
+                    ref.read(routerProvider.notifier).pop();
                     showDialog(
                       context: context,
                       builder: (context) => ItemEditScreen(item: item)
@@ -92,7 +91,7 @@ class ItemTile extends HookConsumerWidget {
                   },
                   onShare: () async {
                     final resourceId = item.resource!.id!;
-                    final url = await ref.read(dynamicLinksControllerProvider).getItemImportUrl(resourceId: resourceId);
+                    final url = await ref.read(dynamicLinksControllerProvider.notifier).getItemImportUrl(resourceId: resourceId);
                     final data = ClipboardData(text: url);
                     await Clipboard.setData(data);
                   }
@@ -108,7 +107,7 @@ class ItemTile extends HookConsumerWidget {
               borderRadius: BorderRadius.circular(10),
               child: GestureDetector(
                 onTap: () {
-                  context.push(Routes.itemDetail.route, extra: item);
+                  ref.read(routerProvider.notifier).push(route: Routes.itemDetail, extra: item);
                 },
                 child: ResourceOverView(item: item),
               )

@@ -1,42 +1,58 @@
 import 'dart:async';
 
 import 'package:aciste/controllers/auth_controller.dart';
-import 'package:aciste/custom_exception.dart';
-import 'package:aciste/models/item.dart';
 import 'package:aciste/providers.dart';
 import 'package:aciste/repositories/dynamic_link_repository.dart';
-import 'package:aciste/repositories/resource_repository.dart';
-import 'package:aciste/router.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final dynamicLinksControllerProvider = Provider<DynamicLinksController>((ref) => DynamicLinksController(ref.read)..appStarted());
+part 'dynamic_links_controller.freezed.dart';
 
-class DynamicLinksController {
+@freezed
+class DynamicLinkState with _$DynamicLinkState {
+  const factory DynamicLinkState({
+    String? path,
+    Map<String, dynamic>? parameterMap,
+  }) = _DynamicLinkState;
+}
+
+final dynamicLinksControllerProvider = StateNotifierProvider<DynamicLinksController, DynamicLinkState>((ref) {
+  final user = ref.watch(authControllerProvider);
+  return DynamicLinksController(ref.read, user?.uid);
+});
+
+class DynamicLinksController extends StateNotifier<DynamicLinkState> {
   final Reader _read;
+  final String? _userId;
 
-  DynamicLinksController(this._read);
+  DynamicLinksController(this._read, this._userId) : super(const DynamicLinkState()) {
+    if (_userId != null) {
+      appStarted();
+    }
+  }
+
+  Future<void> _handleUrl({required String path, required Map<String, dynamic> parameters}) async {
+    state = state.copyWith(
+      path: path,
+      parameterMap: parameters
+    );
+  }
+
+  Future<void> getInitialLink() async {
+    final initialLink = await _read(firebaseDynamicLinksProvider).getInitialLink();
+    if (initialLink != null) {
+      final path = initialLink.link.path;
+      final parameters = initialLink.link.queryParameters;
+      await _handleUrl(path: path, parameters: parameters);
+    }
+  }
 
   void appStarted() async {
-    
+    await getInitialLink();
     _read(firebaseDynamicLinksProvider).onLink.listen((dynamicLinkData) async {
-      await Future.delayed(const Duration(seconds: 3));
-      final resourceId = dynamicLinkData.link.queryParameters['resourceId'];
-      if (resourceId == null) {
-        throw const CustomException(message: 'dynamiclink: resourceId is null');
-      }
-      final resource = await _read(resourceRepositoryProvider).retrieveResource(resourceId: resourceId);
-      if (resource.id == null) {
-        throw const CustomException(message: 'dynamiclink: resource is null');
-      }
-      final userId = _read(authControllerProvider)?.uid;
-      if (userId == null) {
-        throw const CustomException(message: 'dynamiclink: userId is null');
-      }
-      final item = Item.empty().copyWith(
-        resource: resource,
-        userId: userId,
-      );
-      _read(routerProvider).push(Routes.itemImport.route, extra: item);
+      final path = dynamicLinkData.link.path;
+      final parameters = dynamicLinkData.link.queryParameters;
+      await _handleUrl(path: path, parameters: parameters);
     });
   }
 

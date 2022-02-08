@@ -3,7 +3,6 @@ import 'package:aciste/custom_exception.dart';
 import 'package:aciste/enums/resource_type.dart';
 import 'package:aciste/router.dart';
 import 'package:aciste/screens/home_screen/home_screen_controller.dart';
-import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:aciste/controllers/user_controller.dart';
@@ -87,7 +86,7 @@ class HomeScreen extends HookConsumerWidget {
               child: RawMaterialButton(
                 onPressed: () {
                   ref.read(homeScreenControllerProvider.notifier).setIsSelecting(value: false);
-                  context.push(Routes.itemCreate.route, extra: ResourceType.photo);
+                  ref.read(routerProvider.notifier).push(route: Routes.itemCreate, extra: ResourceType.photo);
                 },
                 elevation: 2.0,
                 fillColor: Theme.of(context).primaryColor,

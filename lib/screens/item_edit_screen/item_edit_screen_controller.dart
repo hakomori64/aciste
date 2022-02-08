@@ -1,3 +1,4 @@
+import 'package:aciste/models/item.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -6,6 +7,7 @@ part 'item_edit_screen_controller.freezed.dart';
 @freezed
 class ItemEditScreenState with _$ItemEditScreenState {
   const factory ItemEditScreenState({
+    Item? item,
     @Default(false) bool isNameEditing,
     @Default(false) bool isDescriptionEditing,
   }) = _ItemEditScreenState;
@@ -17,6 +19,9 @@ final itemEditScreenControllerProvider = StateNotifierProvider.autoDispose<ItemE
 class ItemEditScreenController extends StateNotifier<ItemEditScreenState> {
   ItemEditScreenController() : super(const ItemEditScreenState());
 
+  void setItem(Item item) {
+    state = state.copyWith(item: item);
+  }
   Future<void> setIsNameEditing({required bool value}) async {
     state = state.copyWith(isNameEditing: value);
   }

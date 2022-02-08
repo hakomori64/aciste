@@ -1,6 +1,7 @@
 import 'package:aciste/controllers/auth_controller.dart';
 import 'package:aciste/controllers/item_controller.dart';
 import 'package:aciste/enums/resource_type.dart';
+import 'package:aciste/router.dart';
 import 'package:aciste/screens/item_create_screen/item_create_screen_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -9,8 +10,7 @@ import 'package:image_picker/image_picker.dart';
 
 class ItemCreateScreen extends HookConsumerWidget {
 
-  final ResourceType resourceType;
-  const ItemCreateScreen({Key? key, required this.resourceType}) : super(key: key);
+  const ItemCreateScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -82,7 +82,7 @@ class ItemCreateScreen extends HookConsumerWidget {
                           resourceType: ResourceType.photo,
                           content: imageFile
                       );
-                    Navigator.of(context).pop();
+                    ref.read(routerProvider.notifier).pop();
                   },
                   child: const Text('Add')
                 )

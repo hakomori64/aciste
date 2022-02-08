@@ -93,7 +93,7 @@ class ItemEditScreen extends HookConsumerWidget {
             )
             : Row(
               children: [
-                Text(nameController.text),
+                Text(descriptionController.text),
                 TextButton(
                   child: const Text('編集'),
                   onPressed: () {

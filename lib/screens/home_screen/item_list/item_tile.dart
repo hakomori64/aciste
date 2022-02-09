@@ -11,8 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'item_tile/options_bottom_sheet.dart';
-
 class ItemTile extends HookConsumerWidget {
   final Item item;
 
@@ -52,50 +50,81 @@ class ItemTile extends HookConsumerWidget {
             trailing: IconButton(
               icon: const Icon(Icons.more_vert),
               onPressed: () async {
-                await showOptionsBottomSheet(
-                  context: context,
-                  item: item,
-                  onEdit: () {
-                    ref.read(routerProvider.notifier).pop();
-                    showDialog(
-                      context: context,
-                      builder: (context) => ItemEditScreen(item: item)
-                    );
-                  },
-                  onDelete: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        title: Text('${item.name}の削除'),
-                        content: const Text('本当に削除しますか?'),
-                        actions: [
-                          TextButton(
-                            child: const Text('キャンセル'),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                          TextButton(
-                            child: const Text('削除'),
-                            onPressed: () async {
-                              await ref.read(itemListControllerProvider.notifier)
-                                .deleteItem(itemId: item.id!);
-                              Navigator.of(context).pop();
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        ],
-                      )
-                    );
-                  },
-                  onShare: () async {
-                    final resourceId = item.resource!.id!;
-                    final url = await ref.read(dynamicLinksControllerProvider.notifier).getItemImportUrl(resourceId: resourceId);
-                    final data = ClipboardData(text: url);
-                    await Clipboard.setData(data);
-                  }
-                );
+                await ref.read(routerProvider.notifier).showBottomSheet(child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ListTile(
+                      leading: const Icon(Icons.edit),
+                      title: const Text('編集'),
+                      onTap: () {
+                        ref.read(routerProvider.notifier).closeBottomSheet();
+                        ref.read(routerProvider.notifier).showDialog(
+                          child: ItemEditScreen(item: item)
+                        );
+                      },
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.delete),
+                      title: const Text('削除'),
+                      onTap: () {
+                        ref.read(routerProvider.notifier).closeBottomSheet();
+                        ref.read(routerProvider.notifier).showDialog(
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  '${item.name}の削除',
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                  )
+                                ),
+                                const SizedBox(height: 10),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: const [
+                                    Text('本当に削除しますか？')
+                                  ],
+                                ),
+                                const SizedBox(height: 10),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    TextButton(
+                                      child: const Text('キャンセル'),
+                                      onPressed: () {
+                                        ref.read(routerProvider.notifier).pop();
+                                      },
+                                    ),
+                                    TextButton(
+                                      child: const Text('削除'),
+                                      onPressed: () async {
+                                        await ref.read(itemListControllerProvider.notifier)
+                                          .deleteItem(itemId: item.id!);
+                                        ref.read(routerProvider.notifier).pop();
+                                      },
+                                    )
+                                  ],
+                                )
+                              ],
+                            )
+                          )
+                        );
+                      }
+                    ),
+                    if (item.userId == item.resource!.createdBy!.id) ListTile(
+                      leading: const Icon(Icons.share),
+                      title: const Text('共有'),
+                      onTap: () async {
+                        final resourceId = item.resource!.id!;
+                        final url = await ref.read(dynamicLinksControllerProvider.notifier).getItemImportUrl(resourceId: resourceId);
+                        final data = ClipboardData(text: url);
+                        await Clipboard.setData(data);
+                      },
+                    )
+                  ],
+                ));
               },
             ),
           ),

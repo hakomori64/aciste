@@ -18,8 +18,7 @@ class ItemEditScreen extends HookConsumerWidget {
     final descriptionController = useTextEditingController(text: item.description);
 
 
-    return Dialog(
-      child: SizedBox(
+    return SizedBox(
         height: MediaQuery.of(context).size.height / 2,
         child: Column(
           children: [
@@ -106,7 +105,6 @@ class ItemEditScreen extends HookConsumerWidget {
             ),
           ],
         )
-      )
     );
   }
 }

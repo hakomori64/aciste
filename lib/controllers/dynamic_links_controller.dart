@@ -60,4 +60,11 @@ class DynamicLinksController extends StateNotifier<DynamicLinkState> {
     final url = await _read(dynamicLinksRepositoryProvider).createItemImportDynamicLink(resourceId: resourceId);
     return url.toString();
   }
+
+  void clear() {
+    state = state.copyWith(
+      path: null,
+      parameterMap: null
+    );
+  }
 }

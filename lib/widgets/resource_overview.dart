@@ -20,7 +20,7 @@ class ResourceOverView extends StatelessWidget {
         return Image.network(
           item.resource!.url,
           fit: BoxFit.fitWidth,
-          
+          isAntiAlias: true,
         );
       case ResourceType.none:
         return const Center(child: Text("Unknown type"));

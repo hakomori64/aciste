@@ -6,9 +6,11 @@ import 'package:aciste/controllers/item_controller.dart';
 import 'package:aciste/models/item.dart';
 import 'package:aciste/router.dart';
 import 'package:aciste/screens/item_edit_screen.dart';
+import 'package:aciste/screens/qrcode_screen.dart';
+import 'package:aciste/screens/qrcode_screen/qrcode_screen_controller.dart';
 import 'package:aciste/widgets/resource_overview.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class ItemTile extends HookConsumerWidget {
@@ -119,8 +121,21 @@ class ItemTile extends HookConsumerWidget {
                       onTap: () async {
                         final resourceId = item.resource!.id!;
                         final url = await ref.read(dynamicLinksControllerProvider.notifier).getItemImportUrl(resourceId: resourceId);
-                        final data = ClipboardData(text: url);
-                        await Clipboard.setData(data);
+                        final box = context.findRenderObject() as RenderBox?;
+                        await Share.share(url, subject: url, sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
+                      },
+                    ),
+                    if (item.userId == item.resource!.createdBy!.id) ListTile(
+                      leading: const Icon(Icons.qr_code),
+                      title: const Text('QRコードで共有'),
+                      onTap: () async {
+                        ref.read(routerProvider.notifier).closeBottomSheet();
+                        final resourceId = item.resource!.id!;
+                        final url = await ref.read(dynamicLinksControllerProvider.notifier).getItemImportUrl(resourceId: resourceId);
+                        ref.read(qrCodeScreenControllerProvider.notifier).setUrl(url);
+                        ref.read(routerProvider.notifier).showDialog(
+                          child: const QRCodeScreen(),
+                        );
                       },
                     )
                   ],

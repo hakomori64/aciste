@@ -21,26 +21,30 @@ class DialogScreen extends HookConsumerWidget {
           width: double.infinity,
           height: double.infinity,
           child: Center(
-            child: Container(
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(12))
+            child: GestureDetector(
+              onTap: () {},
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(12))
+                ),
+                width: double.infinity,
+                margin: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: child!
+                    )
+                  ],
+                )
               ),
-              width: double.infinity,
-              margin: const EdgeInsets.symmetric(
-                horizontal: 24,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: child!
-                  )
-                ],
-              )
             ),
+            
           )
         ),
       )

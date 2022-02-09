@@ -2,10 +2,8 @@ import 'dart:math';
 
 import 'package:aciste/router.dart';
 import 'package:aciste/screens/item_import_screen/item_import_screen_controller.dart';
-import 'package:aciste/controllers/dynamic_links_controller.dart';
 import 'package:aciste/widgets/resource_overview.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class ItemImportScreen extends HookConsumerWidget {
@@ -15,15 +13,11 @@ class ItemImportScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final item = ref.watch(itemImportScreenControllerProvider).item;
-    final nameController = useTextEditingController();
-    final descriptionController = useTextEditingController();
 
     final boxSize = min(
       MediaQuery.of(context).size.height,
       MediaQuery.of(context).size.width
     ) * 3 / 4;
-
-    print("item $item");
 
     if (item == null) {
       return const Scaffold(

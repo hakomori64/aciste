@@ -1,8 +1,6 @@
-import 'package:aciste/custom_exception.dart';
 import 'package:aciste/models/item.dart';
 import 'package:aciste/controllers/dynamic_links_controller.dart';
 import 'package:aciste/repositories/resource_repository.dart';
-import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -43,7 +41,6 @@ class ItemImportScreenController extends StateNotifier<ItemImportScreenState> {
     final item = Item.empty().copyWith(
       resource: resource
     );
-    print('setting $item');
     setItem(item);
     //_read(dynamicLinksControllerProvider.notifier).clear();
   }

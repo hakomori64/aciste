@@ -21,7 +21,6 @@ final routerProvider = StateNotifierProvider<RouterController, GoRouter?>((ref) 
   ref.read,
   ref.watch(authControllerProvider)?.uid,
   ref.watch(dynamicLinksControllerProvider).path,
-  ref.watch(dynamicLinksControllerProvider).parameterMap,
 ));
 
 class RouterController extends StateNotifier<GoRouter?> {
@@ -29,7 +28,6 @@ class RouterController extends StateNotifier<GoRouter?> {
     this._read,
     this._userId,
     this._path,
-    this._parameterMap,
   ) : super(null) {
     _init();
   }
@@ -37,7 +35,6 @@ class RouterController extends StateNotifier<GoRouter?> {
   final Reader _read;
   final String? _userId;
   final String? _path;
-  final Map<String, dynamic>? _parameterMap;
 
   void _init() {
     state = GoRouter(
@@ -76,10 +73,6 @@ class RouterController extends StateNotifier<GoRouter?> {
         ),
       ],
       redirect: (state) {
-        print("path: $_path");
-        print("parameter map: $_parameterMap");
-        print('location ${state.location}');
-
         switch (_path) {
           case '/import':
             if (state.location != Routes.itemImport.route) {

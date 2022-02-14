@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "360069815795-ih7hvrqed6lbleorgu1q3n0gpu25uqbj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hakomori.aciste.dev",
+            "certificate_hash": "c3938a5560d631cf1f55897c3f2a1e91dee8f9d5"
+          }
+        },
+        {
           "client_id": "360069815795-pr10qjcn6pv039ng13kr86iln6lmhj83.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,6 +37,13 @@
             {
               "client_id": "360069815795-pr10qjcn6pv039ng13kr86iln6lmhj83.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "360069815795-1m39hqaq804m7r0jmni09gq8o9mqjj6l.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.hakomori.aciste"
+              }
             }
           ]
         }

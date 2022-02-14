@@ -10,7 +10,13 @@ import 'package:aciste/screens/item_detail_screen.dart';
 import 'package:aciste/screens/item_detail_screen/item_detail_screen_controller.dart';
 import 'package:aciste/screens/item_import_screen.dart';
 import 'package:aciste/screens/item_import_screen/item_import_screen_controller.dart';
+import 'package:aciste/screens/launch_screen.dart';
+import 'package:aciste/screens/logo_screen.dart';
+import 'package:aciste/screens/media_screen.dart';
+import 'package:aciste/screens/profile_screen.dart';
+import 'package:aciste/screens/profile_screen/profile_screen_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -38,11 +44,47 @@ class RouterController extends StateNotifier<GoRouter?> {
 
   void _init() {
     state = GoRouter(
-      initialLocation: Routes.home.route,
+      initialLocation: Routes.logo.route,
       routes: [
+        GoRoute(
+          path: Routes.logo.route,
+          builder:(context, state) => const LogoScreen(),
+          redirect: (state) {
+            if (_userId != null) {
+              return Routes.home.route;
+            } else {
+              return Routes.launch.route;
+            }
+          },
+        ),
+        GoRoute(
+          path: Routes.launch.route,
+          builder: (context, state) => const LaunchScreen(),
+        ),
         GoRoute(
           path: Routes.home.route,
           builder: (context, state) => const HomeScreen(),
+        ),
+        GoRoute(
+          path: Routes.media.route,
+          builder: (context, state) => const MediaScreen(),
+        ),
+        GoRoute(
+          path: Routes.profile.route,
+          pageBuilder:(context, state) => CustomTransitionPage(
+            key: state.pageKey,
+            child: const ProfileScreen(),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              SlideTransition(
+                position: animation.drive(
+                  Tween<Offset>(
+                    begin: const Offset(-1, 0),
+                    end: Offset.zero,
+                  ).chain(CurveTween(curve: Curves.easeIn)),
+                ),
+                child: child
+              ),
+          ),
         ),
         GoRoute(
           path: Routes.itemCreate.route,
@@ -109,9 +151,28 @@ class RouterController extends StateNotifier<GoRouter?> {
     state!.navigator!.pop();
   }
 
+  Future<void> rebirth() async {
+    await Phoenix.rebirth(state!.navigator!.context);
+  }
+
+  void go({required Routes route}) {
+    state!.go(route.route);
+  }
+
   Future<void> push({required Routes route, Object? extra}) async {
     switch (route) {
+      case Routes.launch:
+        break;
+      case Routes.login:
+        break;
+      case Routes.signup:
+        break;
       case Routes.home:
+        break;
+      case Routes.media:
+        break;
+      case Routes.profile:
+        await _read(profileScreenControllerProvider.notifier).setUser(userId: extra! as String);
         break;
       case Routes.itemCreate:
         _read(itemCreateScreenControllerProvider.notifier).setResourceType(extra! as ResourceType);
@@ -140,7 +201,13 @@ class RouterController extends StateNotifier<GoRouter?> {
 }
 
 enum Routes {
+  logo,
+  launch,
+  login,
+  signup,
   home,
+  profile,
+  media,
   itemCreate,
   itemDetail,
   itemImport,

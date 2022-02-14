@@ -1,6 +1,6 @@
 import 'package:aciste/constants.dart';
+import 'package:aciste/controllers/auth_controller.dart';
 import 'package:aciste/custom_exception.dart';
-import 'package:aciste/enums/resource_type.dart';
 import 'package:aciste/router.dart';
 import 'package:aciste/screens/home_screen/home_screen_controller.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +9,10 @@ import 'package:aciste/controllers/user_controller.dart';
 
 import './home_screen/item_list.dart';
 
+enum PopupItems {
+  account,
+  logout,
+}
 class HomeScreen extends HookConsumerWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -16,6 +20,7 @@ class HomeScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final userControllerState = ref.watch(userControllerProvider);
     final homeScreenControllerState = ref.watch(homeScreenControllerProvider);
+
 
     return WillPopScope(
       onWillPop: () async {
@@ -42,16 +47,40 @@ class HomeScreen extends HookConsumerWidget {
                     data: (user) => Container(
                       padding: const EdgeInsets.all(10),
                       child: ClipOval(
-                        child: GestureDetector(
-                          onTap: () {
-                            debugPrint("hello");
+                        child: PopupMenuButton(
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(5.0)
+                            )
+                          ),
+                          onSelected: (PopupItems item) async {
+                            //ref.read(routerProvider.notifier).push(route: Routes.profile, extra: user!.id);
+                            switch (item) {
+                              case PopupItems.account:
+                                ref.read(routerProvider.notifier).push(route: Routes.profile, extra: user!.id);
+                                break;
+                              case PopupItems.logout:
+                                ref.read(authControllerProvider.notifier).signOut();
+                                await ref.read(routerProvider.notifier).rebirth();
+                            }
                           },
                           child: Container(
                             decoration: BoxDecoration(
                               color: Colors.blue[50],
                             ),
                             child: Image.network(user?.photoUrl ?? defaultUserPhotoUrl)
-                          )
+                          ),
+                          itemBuilder: (context) => <PopupMenuEntry<PopupItems>>[
+                            const PopupMenuItem(
+                              value: PopupItems.account,
+                              child: Text('アカウント')
+                            ),
+                            const PopupMenuDivider(),
+                            const PopupMenuItem(
+                              value: PopupItems.logout,
+                              child: Text('ログアウト')
+                            )
+                          ],
                         )
                       ),
                     ),
@@ -84,9 +113,10 @@ class HomeScreen extends HookConsumerWidget {
             Container(
               margin: const EdgeInsets.only(bottom: 16.0),
               child: RawMaterialButton(
-                onPressed: () {
+                onPressed: () async {
                   ref.read(homeScreenControllerProvider.notifier).setIsSelecting(value: false);
-                  ref.read(routerProvider.notifier).push(route: Routes.itemCreate, extra: ResourceType.photo);
+                  //ref.read(routerProvider.notifier).push(route: Routes.itemCreate, extra: ResourceType.photo);
+                  await ref.read(routerProvider.notifier).push(route: Routes.media);
                 },
                 elevation: 2.0,
                 fillColor: Theme.of(context).primaryColor,

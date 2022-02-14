@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:aciste/repositories/auth_repository.dart';
 
-final authControllerProvider = StateNotifierProvider<AuthController, User?>((ref) => AuthController(ref.read)..appStarted());
+final authControllerProvider = StateNotifierProvider<AuthController, User?>((ref) => AuthController(ref.read));
 
 class AuthController extends StateNotifier<User?> {
   final Reader _read;
@@ -23,12 +23,26 @@ class AuthController extends StateNotifier<User?> {
     super.dispose();
   }
 
-  void appStarted() async {
-    final user = _read(authRepositoryProvider).getCurrentUser();
+  Future<void> signInAnonymously() async {
+    await _read(authRepositoryProvider).signInAnonymously();
+  }
 
-    if (user == null) {
-      await _read(authRepositoryProvider).signInAnonymously();
-    }
+  Future<User?> signInWithEmailAndPassword({required String email, required String password}) async {
+    return _read(authRepositoryProvider).signInWithEmailAndPassword(
+      email: email,
+      password: password
+    );
+  }
+
+  Future<User?> signUpWithEmailAndPassword({required String email, required String password}) async {
+    return _read(authRepositoryProvider).signUpWithEmailAndPassword(
+      email: email,
+      password: password
+    );
+  }
+
+  Future<void> googleSignIn() async {
+    await _read(authRepositoryProvider).googleSignIn();
   }
 
   void signOut() async {

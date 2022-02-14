@@ -26,11 +26,13 @@ class _$UserTearOff {
       {String? id,
       required String email,
       required String displayName,
+      required String bio,
       required String photoUrl}) {
     return _User(
       id: id,
       email: email,
       displayName: displayName,
+      bio: bio,
       photoUrl: photoUrl,
     );
   }
@@ -48,6 +50,7 @@ mixin _$User {
   String? get id => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
   String get displayName => throw _privateConstructorUsedError;
+  String get bio => throw _privateConstructorUsedError;
   String get photoUrl => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -59,7 +62,12 @@ mixin _$User {
 abstract class $UserCopyWith<$Res> {
   factory $UserCopyWith(User value, $Res Function(User) then) =
       _$UserCopyWithImpl<$Res>;
-  $Res call({String? id, String email, String displayName, String photoUrl});
+  $Res call(
+      {String? id,
+      String email,
+      String displayName,
+      String bio,
+      String photoUrl});
 }
 
 /// @nodoc
@@ -75,6 +83,7 @@ class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
     Object? id = freezed,
     Object? email = freezed,
     Object? displayName = freezed,
+    Object? bio = freezed,
     Object? photoUrl = freezed,
   }) {
     return _then(_value.copyWith(
@@ -90,6 +99,10 @@ class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
           ? _value.displayName
           : displayName // ignore: cast_nullable_to_non_nullable
               as String,
+      bio: bio == freezed
+          ? _value.bio
+          : bio // ignore: cast_nullable_to_non_nullable
+              as String,
       photoUrl: photoUrl == freezed
           ? _value.photoUrl
           : photoUrl // ignore: cast_nullable_to_non_nullable
@@ -103,7 +116,12 @@ abstract class _$UserCopyWith<$Res> implements $UserCopyWith<$Res> {
   factory _$UserCopyWith(_User value, $Res Function(_User) then) =
       __$UserCopyWithImpl<$Res>;
   @override
-  $Res call({String? id, String email, String displayName, String photoUrl});
+  $Res call(
+      {String? id,
+      String email,
+      String displayName,
+      String bio,
+      String photoUrl});
 }
 
 /// @nodoc
@@ -120,6 +138,7 @@ class __$UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
     Object? id = freezed,
     Object? email = freezed,
     Object? displayName = freezed,
+    Object? bio = freezed,
     Object? photoUrl = freezed,
   }) {
     return _then(_User(
@@ -134,6 +153,10 @@ class __$UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
       displayName: displayName == freezed
           ? _value.displayName
           : displayName // ignore: cast_nullable_to_non_nullable
+              as String,
+      bio: bio == freezed
+          ? _value.bio
+          : bio // ignore: cast_nullable_to_non_nullable
               as String,
       photoUrl: photoUrl == freezed
           ? _value.photoUrl
@@ -150,6 +173,7 @@ class _$_User extends _User {
       {this.id,
       required this.email,
       required this.displayName,
+      required this.bio,
       required this.photoUrl})
       : super._();
 
@@ -162,11 +186,13 @@ class _$_User extends _User {
   @override
   final String displayName;
   @override
+  final String bio;
+  @override
   final String photoUrl;
 
   @override
   String toString() {
-    return 'User(id: $id, email: $email, displayName: $displayName, photoUrl: $photoUrl)';
+    return 'User(id: $id, email: $email, displayName: $displayName, bio: $bio, photoUrl: $photoUrl)';
   }
 
   @override
@@ -178,6 +204,7 @@ class _$_User extends _User {
             const DeepCollectionEquality().equals(other.email, email) &&
             const DeepCollectionEquality()
                 .equals(other.displayName, displayName) &&
+            const DeepCollectionEquality().equals(other.bio, bio) &&
             const DeepCollectionEquality().equals(other.photoUrl, photoUrl));
   }
 
@@ -187,6 +214,7 @@ class _$_User extends _User {
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(email),
       const DeepCollectionEquality().hash(displayName),
+      const DeepCollectionEquality().hash(bio),
       const DeepCollectionEquality().hash(photoUrl));
 
   @JsonKey(ignore: true)
@@ -205,6 +233,7 @@ abstract class _User extends User {
       {String? id,
       required String email,
       required String displayName,
+      required String bio,
       required String photoUrl}) = _$_User;
   const _User._() : super._();
 
@@ -216,6 +245,8 @@ abstract class _User extends User {
   String get email;
   @override
   String get displayName;
+  @override
+  String get bio;
   @override
   String get photoUrl;
   @override

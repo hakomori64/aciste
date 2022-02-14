@@ -36,8 +36,8 @@ class ItemEditScreen extends HookConsumerWidget {
                 ),
                 TextButton(
                   child: const Text('決定'),
-                  onPressed: () {
-                    ref.read(itemListControllerProvider.notifier)
+                  onPressed: () async {
+                    await ref.read(itemListControllerProvider.notifier)
                       .updateItem(
                         updatedItem: item.copyWith(
                           name: nameController.text

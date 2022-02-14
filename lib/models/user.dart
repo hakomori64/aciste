@@ -13,12 +13,14 @@ abstract class User implements _$User {
     String? id,
     required String email,
     required String displayName,
+    required String bio,
     required String photoUrl,
   }) = _User;
 
   factory User.empty() => const User(
     email: "",
     displayName: "",
+    bio: "",
     photoUrl: defaultUserPhotoUrl,
   );
 

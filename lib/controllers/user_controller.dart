@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:aciste/controllers/auth_controller.dart';
 import 'package:aciste/models/user.dart';
 import 'package:aciste/custom_exception.dart';
 import 'package:aciste/repositories/user_repository.dart';
+import 'package:image_picker/image_picker.dart';
 
 final userExceptionProvider = StateProvider<CustomException?>((ref) => null);
 final userControllerProvider = StateNotifierProvider<UserController, AsyncValue<User?>>(
@@ -60,6 +63,18 @@ class UserController extends StateNotifier<AsyncValue<User?>> {
       state = AsyncValue.data(user);
     } on CustomException catch (e) {
       _read(userExceptionProvider.notifier).state = e;
+    }
+  }
+
+  Future<void> updatePhoto({required String userId, required XFile file}) async {
+    final _file = File(file.path);
+    final imageUrl = await _read(userRepositoryProvider).uploadPhoto(userId: userId, file: _file);
+    final user = state.asData?.value;
+    if (user != null) {
+      await updateUser(userId: user.id!, user: user.copyWith(
+        photoUrl: imageUrl
+      ));
+      state = AsyncValue.data(user.copyWith(photoUrl: imageUrl));
     }
   }
 

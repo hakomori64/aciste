@@ -1,15 +1,20 @@
+import 'dart:io';
+
 import 'package:aciste/models/user.dart';
 import 'package:aciste/providers.dart';
 import 'package:aciste/custom_exception.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:aciste/extensions/firebase_firestore_extension.dart';
+import 'package:mime/mime.dart';
+import 'package:uuid/uuid.dart';
 
 abstract class BaseUserRepository {
   Future<User?> getUser({required String userId});
   Future<String> createUser({required String userId, required User user});
   Future<void> updateUser({required String userId, required User user});
   Future<void> deleteUser({required String userId});
+  Future<String> uploadPhoto({required String userId, required File file});
 }
 
 final userRepositoryProvider = Provider<UserRepository>((ref) => UserRepository(ref.read));
@@ -57,6 +62,25 @@ class UserRepository implements BaseUserRepository {
     } on FirebaseException catch (e) {
       throw CustomException(message: e.message);
     }
+  }
+
+  @override
+  Future<String> uploadPhoto({required String userId, required File file}) async {
+    final mimeType = lookupMimeType(file.path);
+    if (mimeType != 'image/jpeg' && mimeType != 'image/png') {
+      throw const CustomException(message: 'Unrecognized type');
+    }
+
+    final extension = extensionFromMime(mimeType!);
+    const uuid = Uuid();
+    final id = uuid.v4();
+    final filename = '$id.$extension';
+    final imageRef = _read(firebaseStorageProvider).ref("resources")
+      .child(filename);
+    final snapshot = await imageRef.putFile(file);
+    
+    final imageUrl = await snapshot.ref.getDownloadURL();
+    return imageUrl;
   }
 
   @override

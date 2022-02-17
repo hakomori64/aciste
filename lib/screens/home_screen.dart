@@ -2,6 +2,7 @@ import 'package:aciste/constants.dart';
 import 'package:aciste/controllers/auth_controller.dart';
 import 'package:aciste/custom_exception.dart';
 import 'package:aciste/enums/resource_type.dart';
+import 'package:aciste/models/message.dart';
 import 'package:aciste/models/photo.dart';
 import 'package:aciste/router.dart';
 import 'package:aciste/screens/home_screen/home_screen_controller.dart';
@@ -124,6 +125,17 @@ class HomeScreen extends HookConsumerWidget {
                 fillColor: Theme.of(context).primaryColor,
                 child: const Icon(Icons.photo, size: 50.0, color: Colors.white),
                 shape: const CircleBorder(),
+              )
+            ),
+            Container(
+              margin: const EdgeInsets.only(bottom: 16.0),
+              child: RawMaterialButton(
+                onPressed: () async {
+                  ref.read(homeScreenControllerProvider.notifier).setIsSelecting(value: false);
+                  await ref.read(routerProvider.notifier).push(route: Routes.message, extra: MessageRouteParams(resourceType: ResourceType.message, onTapFunc: (message) async {
+                    ref.read(routerProvider.notifier).push(route: Routes.itemCreate, extra: ItemCreateRouteParams(resourceType: ResourceType.message, params: CreateMessageParams(message: message)));
+                  }));
+                },
               )
             )
           ],

@@ -34,3 +34,8 @@ abstract class Message extends Resource implements _$Message {
     return data;
   }
 }
+
+class CreateMessageParams extends CreateResourceParams {
+  final String message;
+  CreateMessageParams({required this.message});
+}

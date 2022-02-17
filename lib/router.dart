@@ -17,6 +17,8 @@ import 'package:aciste/screens/launch_screen.dart';
 import 'package:aciste/screens/logo_screen.dart';
 import 'package:aciste/screens/media_screen.dart';
 import 'package:aciste/screens/media_screen/media_screen_controller.dart';
+import 'package:aciste/screens/message_screen.dart';
+import 'package:aciste/screens/message_screen/message_screen_controller.dart';
 import 'package:aciste/screens/profile_screen.dart';
 import 'package:aciste/screens/profile_screen/profile_screen_controller.dart';
 import 'package:flutter/material.dart';
@@ -174,6 +176,11 @@ class RouterController extends StateNotifier<GoRouter?> {
         await _read(mediaScreenControllerProvider.notifier).setResourceType(resourceType: params.resourceType);
         await _read(mediaScreenControllerProvider.notifier).setOnTapFunc(onTapFunc: params.onTapFunc);
         break;
+      case Routes.message:
+        final params = extra! as MessageRouteParams;
+        _read(messageScreenControllerProvider.notifier).setResourceType(resourceType: params.resourceType);
+        _read(messageScreenControllerProvider.notifier).setOnTapFunc(onTapFunc: params.onTapFunc);
+        break;
       case Routes.profile:
         final params = extra! as ProfileRouteParams;
         await _read(profileScreenControllerProvider.notifier).setUser(userId: params.userId);
@@ -225,6 +232,7 @@ enum Routes {
   home,
   profile,
   media,
+  message,
   itemCreate,
   itemDetail,
   itemImport,
@@ -240,6 +248,13 @@ class MediaRouteParams {
   final Future<void> Function(File file) onTapFunc;
 
   const MediaRouteParams({required this.resourceType, required this.onTapFunc});
+}
+
+class MessageRouteParams {
+  final ResourceType resourceType;
+  final Future<void> Function(String) onTapFunc;
+
+  const MessageRouteParams({required this.resourceType, required this.onTapFunc});
 }
 
 class ProfileRouteParams {

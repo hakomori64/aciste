@@ -1,5 +1,6 @@
 import 'package:aciste/enums/resource_type.dart';
 import 'package:aciste/models/item.dart';
+import 'package:aciste/models/photo.dart';
 import 'package:flutter/material.dart';
 
 class ResourceOverView extends StatelessWidget {
@@ -15,10 +16,11 @@ class ResourceOverView extends StatelessWidget {
     if (item.resource == null) {
       return const Text("リソースが見つかりませんでした");
     }
-    switch (item.resource!.type) {
+    switch (item.resourceType!) {
       case ResourceType.photo:
+        final photo = item.resource as Photo;
         return Image.network(
-          item.resource!.url,
+          photo.url!,
           fit: BoxFit.fitWidth,
           isAntiAlias: true,
         );

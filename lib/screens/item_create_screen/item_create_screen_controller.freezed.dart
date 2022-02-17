@@ -18,10 +18,11 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$ItemCreateScreenStateTearOff {
   const _$ItemCreateScreenStateTearOff();
 
-  _ItemCreateScreenState call({ResourceType? resourceType, File? imageFile}) {
+  _ItemCreateScreenState call(
+      {ResourceType? resourceType, CreateResourceParams? params}) {
     return _ItemCreateScreenState(
       resourceType: resourceType,
-      imageFile: imageFile,
+      params: params,
     );
   }
 }
@@ -32,7 +33,7 @@ const $ItemCreateScreenState = _$ItemCreateScreenStateTearOff();
 /// @nodoc
 mixin _$ItemCreateScreenState {
   ResourceType? get resourceType => throw _privateConstructorUsedError;
-  File? get imageFile => throw _privateConstructorUsedError;
+  CreateResourceParams? get params => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ItemCreateScreenStateCopyWith<ItemCreateScreenState> get copyWith =>
@@ -44,7 +45,7 @@ abstract class $ItemCreateScreenStateCopyWith<$Res> {
   factory $ItemCreateScreenStateCopyWith(ItemCreateScreenState value,
           $Res Function(ItemCreateScreenState) then) =
       _$ItemCreateScreenStateCopyWithImpl<$Res>;
-  $Res call({ResourceType? resourceType, File? imageFile});
+  $Res call({ResourceType? resourceType, CreateResourceParams? params});
 }
 
 /// @nodoc
@@ -59,17 +60,17 @@ class _$ItemCreateScreenStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? resourceType = freezed,
-    Object? imageFile = freezed,
+    Object? params = freezed,
   }) {
     return _then(_value.copyWith(
       resourceType: resourceType == freezed
           ? _value.resourceType
           : resourceType // ignore: cast_nullable_to_non_nullable
               as ResourceType?,
-      imageFile: imageFile == freezed
-          ? _value.imageFile
-          : imageFile // ignore: cast_nullable_to_non_nullable
-              as File?,
+      params: params == freezed
+          ? _value.params
+          : params // ignore: cast_nullable_to_non_nullable
+              as CreateResourceParams?,
     ));
   }
 }
@@ -81,7 +82,7 @@ abstract class _$ItemCreateScreenStateCopyWith<$Res>
           $Res Function(_ItemCreateScreenState) then) =
       __$ItemCreateScreenStateCopyWithImpl<$Res>;
   @override
-  $Res call({ResourceType? resourceType, File? imageFile});
+  $Res call({ResourceType? resourceType, CreateResourceParams? params});
 }
 
 /// @nodoc
@@ -98,17 +99,17 @@ class __$ItemCreateScreenStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? resourceType = freezed,
-    Object? imageFile = freezed,
+    Object? params = freezed,
   }) {
     return _then(_ItemCreateScreenState(
       resourceType: resourceType == freezed
           ? _value.resourceType
           : resourceType // ignore: cast_nullable_to_non_nullable
               as ResourceType?,
-      imageFile: imageFile == freezed
-          ? _value.imageFile
-          : imageFile // ignore: cast_nullable_to_non_nullable
-              as File?,
+      params: params == freezed
+          ? _value.params
+          : params // ignore: cast_nullable_to_non_nullable
+              as CreateResourceParams?,
     ));
   }
 }
@@ -116,16 +117,16 @@ class __$ItemCreateScreenStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_ItemCreateScreenState implements _ItemCreateScreenState {
-  const _$_ItemCreateScreenState({this.resourceType, this.imageFile});
+  const _$_ItemCreateScreenState({this.resourceType, this.params});
 
   @override
   final ResourceType? resourceType;
   @override
-  final File? imageFile;
+  final CreateResourceParams? params;
 
   @override
   String toString() {
-    return 'ItemCreateScreenState(resourceType: $resourceType, imageFile: $imageFile)';
+    return 'ItemCreateScreenState(resourceType: $resourceType, params: $params)';
   }
 
   @override
@@ -135,14 +136,14 @@ class _$_ItemCreateScreenState implements _ItemCreateScreenState {
             other is _ItemCreateScreenState &&
             const DeepCollectionEquality()
                 .equals(other.resourceType, resourceType) &&
-            const DeepCollectionEquality().equals(other.imageFile, imageFile));
+            const DeepCollectionEquality().equals(other.params, params));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(resourceType),
-      const DeepCollectionEquality().hash(imageFile));
+      const DeepCollectionEquality().hash(params));
 
   @JsonKey(ignore: true)
   @override
@@ -153,12 +154,13 @@ class _$_ItemCreateScreenState implements _ItemCreateScreenState {
 
 abstract class _ItemCreateScreenState implements ItemCreateScreenState {
   const factory _ItemCreateScreenState(
-      {ResourceType? resourceType, File? imageFile}) = _$_ItemCreateScreenState;
+      {ResourceType? resourceType,
+      CreateResourceParams? params}) = _$_ItemCreateScreenState;
 
   @override
   ResourceType? get resourceType;
   @override
-  File? get imageFile;
+  CreateResourceParams? get params;
   @override
   @JsonKey(ignore: true)
   _$ItemCreateScreenStateCopyWith<_ItemCreateScreenState> get copyWith =>

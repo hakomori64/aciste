@@ -1,5 +1,6 @@
 import 'dart:typed_data';
-
+import 'dart:io';
+import 'package:aciste/enums/resource_type.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -13,22 +14,23 @@ class MediaScreenState with _$MediaScreenState {
     @Default(0) int currentPage,
     int? lastPage,
     @Default(-1) int albumIndex,
+    @Default(ResourceType.none) ResourceType resourceType, 
     AsyncValue<List<AssetPathEntity>>? albums,
     AsyncValue<List<Widget>>? photos,
+    Future<void> Function(File file)? onTapFunc,
   }) = _MediaScreenState;
 }
 
-final mediaScreenControllerProvider = StateNotifierProvider.autoDispose<MediaScreenController, MediaScreenState>((ref) => MediaScreenController(ref.read));
+final mediaScreenControllerProvider = StateNotifierProvider<MediaScreenController, MediaScreenState>((_) => MediaScreenController());
 
 class MediaScreenController extends StateNotifier<MediaScreenState> {
-  MediaScreenController(this._read) : super(const MediaScreenState(
+  MediaScreenController() : super(const MediaScreenState(
     albumIndex: -1,
     albums: AsyncValue.loading(),
     photos: AsyncValue.loading(),
   )) {
     _fetchMedia();
   }
-  final Reader _read;
 
   Future<void> handleScrollEvent(ScrollNotification scroll) async {
     if (scroll.metrics.pixels / scroll.metrics.maxScrollExtent > 0.33) {
@@ -44,7 +46,10 @@ class MediaScreenController extends StateNotifier<MediaScreenState> {
     );
     final result = await PhotoManager.requestPermissionExtend();
     if (result.isAuth) {
-      final albums = await PhotoManager.getAssetPathList(hasAll: true);
+      final albums = await PhotoManager.getAssetPathList(
+        hasAll: true,
+        type: requestType,
+      );
       state = state.copyWith(
         albums: AsyncValue.data(albums),
       );
@@ -61,26 +66,34 @@ class MediaScreenController extends StateNotifier<MediaScreenState> {
             future: asset.thumbDataWithSize(200, 200),
             builder: (BuildContext context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
-                return Stack(
-                  children: <Widget>[
-                    Positioned.fill(
-                      child: Image.memory(
-                        snapshot.data as Uint8List,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    if (asset.type == AssetType.video)
-                      const Align(
-                        alignment: Alignment.bottomRight,
-                        child: Padding(
-                          padding: EdgeInsets.only(right: 5, bottom: 5),
-                          child: Icon(
-                            Icons.videocam,
-                            color: Colors.white,
-                          ),
+                return GestureDetector(
+                  onTap: () async {
+                    final file = await asset.file;
+                    if (file != null) {
+                      await state.onTapFunc!(file);
+                    }
+                  },
+                  child: Stack(
+                    children: <Widget>[
+                      Positioned.fill(
+                        child: Image.memory(
+                          snapshot.data as Uint8List,
+                          fit: BoxFit.cover,
                         ),
                       ),
-                  ],
+                      if (asset.type == AssetType.video)
+                        const Align(
+                          alignment: Alignment.bottomRight,
+                          child: Padding(
+                            padding: EdgeInsets.only(right: 5, bottom: 5),
+                            child: Icon(
+                              Icons.videocam,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                    ],
+                  )
                 );
               }
               return Container();
@@ -120,5 +133,32 @@ class MediaScreenController extends StateNotifier<MediaScreenState> {
       photos: null,
     );
     await _fetchMedia();
+  }
+
+  Future<void> setResourceType({required ResourceType resourceType}) async {
+    state = state.copyWith(
+      albumIndex: -1,
+      currentPage: 0,
+      lastPage: null,
+      albums: null,
+      photos: null,
+      resourceType: resourceType,
+    );
+    await _fetchMedia();
+  }
+
+  Future<void> setOnTapFunc({required Future<void> Function(File) onTapFunc}) async {
+    state = state.copyWith(
+      onTapFunc: onTapFunc
+    );
+  }
+
+  RequestType get requestType {
+    switch (state.resourceType) {
+      case ResourceType.photo:
+        return RequestType.image;
+      case ResourceType.none:
+        return RequestType.common;
+    }
   }
 }

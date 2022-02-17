@@ -1,4 +1,5 @@
 import 'package:aciste/converters/timestamp_converter.dart';
+import 'package:aciste/enums/resource_type.dart';
 import 'package:aciste/models/resource.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -15,6 +16,7 @@ abstract class Item implements _$Item {
     required String name,
     required String description,
     Resource? resource,
+    ResourceType? resourceType,
     required String userId,
     @TimestampDateTimeConverter() DateTime? createdAt,
     @TimestampDateTimeConverter() DateTime? updatedAt,

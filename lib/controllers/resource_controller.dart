@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:aciste/controllers/auth_controller.dart';
 import 'package:aciste/custom_exception.dart';
 import 'package:aciste/enums/resource_type.dart';
@@ -18,23 +16,14 @@ class ResourceController {
 
   ResourceController(this._read, this._userId);
 
-  Future<Resource> createResource({required ResourceType resourceType, dynamic content}) async {
+  Future<Resource> createResource({required ResourceType resourceType, required CreateResourceParams content}) async {
     if (_userId == null) {
       throw const CustomException(message: 'user not authenticated');
     }
-    switch (resourceType) {
-      case ResourceType.photo:
-        try {
-          final file = content as File;
-          return _read(resourceRepositoryProvider).uploadPhoto(
-            userId: _userId!,
-            file: file
-          );
-        } on TypeError catch (_) {
-          throw const CustomException(message: 'data is not valid');
-        }
-      case ResourceType.none:
-        throw const CustomException(message: 'cannot create unknown type resource');
-    }
+    return _read(resourceRepositoryProvider).createResource(
+      userId: _userId!,
+      resourceType: resourceType,
+      createResourceParams: content
+    );
   }
 }

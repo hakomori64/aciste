@@ -151,7 +151,7 @@ class ItemTile extends HookConsumerWidget {
               borderRadius: BorderRadius.circular(10),
               child: GestureDetector(
                 onTap: () {
-                  ref.read(routerProvider.notifier).push(route: Routes.itemDetail, extra: item);
+                  ref.read(routerProvider.notifier).push(route: Routes.itemDetail, extra: ItemDetailRouteParams(item: item));
                 },
                 child: ResourceOverView(item: item),
               )

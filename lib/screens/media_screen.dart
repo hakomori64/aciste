@@ -26,10 +26,8 @@ class MediaScreen extends HookConsumerWidget {
             onSelected: (int index) async {
               await ref.read(mediaScreenControllerProvider.notifier).setIndex(index: index);
             },
-            child: Container(
-              child: Text(
-                data[albumIndex].name
-              )
+            child: Center(
+              child: Text(data[albumIndex].name),
             ),
             itemBuilder: (context) => data.asMap().entries.map((entry) => PopupMenuItem<int>(
               value: entry.key,

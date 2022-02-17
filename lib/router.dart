@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:aciste/controllers/auth_controller.dart';
 import 'package:aciste/controllers/dynamic_links_controller.dart';
 import 'package:aciste/enums/resource_type.dart';
+import 'package:aciste/models/resource.dart';
 import 'package:aciste/screens/dialog_screen.dart';
 import 'package:aciste/screens/dialog_screen/dialog_screen_controller.dart';
 import 'package:aciste/screens/item_create_screen.dart';
@@ -13,6 +16,7 @@ import 'package:aciste/screens/item_import_screen/item_import_screen_controller.
 import 'package:aciste/screens/launch_screen.dart';
 import 'package:aciste/screens/logo_screen.dart';
 import 'package:aciste/screens/media_screen.dart';
+import 'package:aciste/screens/media_screen/media_screen_controller.dart';
 import 'package:aciste/screens/profile_screen.dart';
 import 'package:aciste/screens/profile_screen/profile_screen_controller.dart';
 import 'package:flutter/material.dart';
@@ -155,11 +159,7 @@ class RouterController extends StateNotifier<GoRouter?> {
     await Phoenix.rebirth(state!.navigator!.context);
   }
 
-  void go({required Routes route}) {
-    state!.go(route.route);
-  }
-
-  Future<void> push({required Routes route, Object? extra}) async {
+  Future<void> _handleParams({required Routes route, Object? extra}) async {
     switch (route) {
       case Routes.launch:
         break;
@@ -170,23 +170,40 @@ class RouterController extends StateNotifier<GoRouter?> {
       case Routes.home:
         break;
       case Routes.media:
+        final params = extra! as MediaRouteParams;
+        await _read(mediaScreenControllerProvider.notifier).setResourceType(resourceType: params.resourceType);
+        await _read(mediaScreenControllerProvider.notifier).setOnTapFunc(onTapFunc: params.onTapFunc);
         break;
       case Routes.profile:
-        await _read(profileScreenControllerProvider.notifier).setUser(userId: extra! as String);
+        final params = extra! as ProfileRouteParams;
+        await _read(profileScreenControllerProvider.notifier).setUser(userId: params.userId);
         break;
       case Routes.itemCreate:
-        _read(itemCreateScreenControllerProvider.notifier).setResourceType(extra! as ResourceType);
+        final params = extra! as ItemCreateRouteParams;
+        _read(itemCreateScreenControllerProvider.notifier).setResourceType(params.resourceType);
+        _read(itemCreateScreenControllerProvider.notifier).setCreateResourceParams(params.params);
         break;
       case Routes.itemDetail:
-        _read(itemDetailScreenControllerProvider.notifier).setItem(extra as Item);
+        final params = extra! as ItemDetailRouteParams;
+        _read(itemDetailScreenControllerProvider.notifier).setItem(params.item);
         break;
       case Routes.itemImport:
-        _read(itemImportScreenControllerProvider.notifier).setItem(extra as Item);
+        final params = extra! as ItemImportRouteParams;
+        _read(itemImportScreenControllerProvider.notifier).setItem(params.item);
         break;
       default:
         return;
     }
-    await Future.delayed(const Duration(microseconds: 200));
+    return;
+  }
+
+  Future<void> go({required Routes route, Object? extra}) async {
+    await _handleParams(route: route, extra: extra);
+    state!.go(route.route);
+  }
+
+  Future<void> push({required Routes route, Object? extra}) async {
+    await _handleParams(route: route, extra: extra);
     state!.push(route.route);
   }
 
@@ -216,4 +233,32 @@ enum Routes {
 
 extension RoutesExtension on Routes {
   String get route => '/${toString().split(".")[1]}';
+}
+
+class MediaRouteParams {
+  final ResourceType resourceType;
+  final Future<void> Function(File file) onTapFunc;
+
+  const MediaRouteParams({required this.resourceType, required this.onTapFunc});
+}
+
+class ProfileRouteParams {
+  final String userId;
+  const ProfileRouteParams({required this.userId});
+}
+
+class ItemCreateRouteParams {
+  final ResourceType resourceType;
+  final CreateResourceParams? params;
+  ItemCreateRouteParams({required this.resourceType, required this.params});
+}
+
+class ItemDetailRouteParams {
+  final Item item;
+  ItemDetailRouteParams({required this.item});
+}
+
+class ItemImportRouteParams {
+  final Item item;
+  ItemImportRouteParams({required this.item});
 }

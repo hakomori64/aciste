@@ -21,9 +21,17 @@ class ItemRepository implements BaseItemRepository {
 
   const ItemRepository(this._read);
 
-  Future<Item> _getItem(DocumentSnapshot<Map<String, dynamic>> doc) async {
+  Future<Item> _getItem({
+    required DocumentSnapshot<Map<String, dynamic>> doc,
+    required String userId
+      }) async {
     final item = Item.fromDocumentSnapshot(doc);
-    final resource = await _read(resourceRepositoryProvider).retrieveResource(resourceId: doc.data()!['resourceId']);
+    final resourceType = item.resourceType;
+    final resource = await _read(resourceRepositoryProvider).retrieveResource(
+      resourceType: resourceType!,
+      resourceId: doc.data()!['resourceId'],
+      userId: userId
+    );
     return item.copyWith(resource: resource);
   }
 
@@ -34,7 +42,10 @@ class ItemRepository implements BaseItemRepository {
         .userItemsRef(userId)
         .get();
       
-      return Future.wait(snapshot.docs.map(_getItem).toList());
+      return Future.wait(snapshot.docs.map((doc) => _getItem(
+        userId: userId,
+        doc: doc
+      )).toList());
     } on FirebaseException catch (e) {
       throw CustomException(message: e.message);
     }

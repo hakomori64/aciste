@@ -13,6 +13,8 @@ _$_Item _$$_ItemFromJson(Map<String, dynamic> json) => _$_Item(
       resource: json['resource'] == null
           ? null
           : Resource.fromJson(json['resource'] as Map<String, dynamic>),
+      resourceType:
+          $enumDecodeNullable(_$ResourceTypeEnumMap, json['resourceType']),
       userId: json['userId'] as String,
       createdAt: const TimestampDateTimeConverter()
           .fromJson(json['createdAt'] as Timestamp?),
@@ -25,9 +27,15 @@ Map<String, dynamic> _$$_ItemToJson(_$_Item instance) => <String, dynamic>{
       'name': instance.name,
       'description': instance.description,
       'resource': instance.resource,
+      'resourceType': _$ResourceTypeEnumMap[instance.resourceType],
       'userId': instance.userId,
       'createdAt':
           const TimestampDateTimeConverter().toJson(instance.createdAt),
       'updatedAt':
           const TimestampDateTimeConverter().toJson(instance.updatedAt),
     };
+
+const _$ResourceTypeEnumMap = {
+  ResourceType.photo: 'photo',
+  ResourceType.none: 'none',
+};

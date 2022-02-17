@@ -1,3 +1,5 @@
+import 'package:aciste/controllers/auth_controller.dart';
+import 'package:aciste/enums/resource_type.dart';
 import 'package:aciste/models/item.dart';
 import 'package:aciste/controllers/dynamic_links_controller.dart';
 import 'package:aciste/repositories/resource_repository.dart';
@@ -16,19 +18,22 @@ class ItemImportScreenState with _$ItemImportScreenState {
 final itemImportScreenControllerProvider = StateNotifierProvider<ItemImportScreenController, ItemImportScreenState>((ref) {
   final path = ref.watch(dynamicLinksControllerProvider).path;
   final parameterMap = ref.watch(dynamicLinksControllerProvider).parameterMap;
-  return ItemImportScreenController(ref.read, path, parameterMap);
+  final uid = ref.watch(authControllerProvider)?.uid;
+  return ItemImportScreenController(ref.read, path, parameterMap, uid);
 });
 
 class ItemImportScreenController extends StateNotifier<ItemImportScreenState> {
   final Reader _read;
   final String? path;
   final Map<String, dynamic>? parameterMap;
+  final String? userId;
   ItemImportScreenController(
     this._read,
     this.path,
-    this.parameterMap
+    this.parameterMap,
+    this.userId,
   ) : super(const ItemImportScreenState()) {
-    if (path == '/import' && parameterMap != null) {
+    if (path == '/import' && parameterMap != null && userId != null) {
       _init();
     }
   }
@@ -36,7 +41,12 @@ class ItemImportScreenController extends StateNotifier<ItemImportScreenState> {
   void _init() async {
     // set Item using resourceId
     final resourceId = parameterMap!['resourceId'] as String;
-    final resource = await _read(resourceRepositoryProvider).retrieveResource(resourceId: resourceId);
+    final resourceType = parameterMap!['resourceType'] as ResourceType;
+    final resource = await _read(resourceRepositoryProvider).retrieveResource(
+      userId: userId!,
+      resourceId: resourceId,
+      resourceType: resourceType
+      );
     
     final item = Item.empty().copyWith(
       resource: resource

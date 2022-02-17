@@ -22,14 +22,18 @@ class _$MediaScreenStateTearOff {
       {int currentPage = 0,
       int? lastPage,
       int albumIndex = -1,
+      ResourceType resourceType = ResourceType.none,
       AsyncValue<List<AssetPathEntity>>? albums,
-      AsyncValue<List<Widget>>? photos}) {
+      AsyncValue<List<Widget>>? photos,
+      Future<void> Function(File)? onTapFunc}) {
     return _MediaScreenState(
       currentPage: currentPage,
       lastPage: lastPage,
       albumIndex: albumIndex,
+      resourceType: resourceType,
       albums: albums,
       photos: photos,
+      onTapFunc: onTapFunc,
     );
   }
 }
@@ -42,9 +46,12 @@ mixin _$MediaScreenState {
   int get currentPage => throw _privateConstructorUsedError;
   int? get lastPage => throw _privateConstructorUsedError;
   int get albumIndex => throw _privateConstructorUsedError;
+  ResourceType get resourceType => throw _privateConstructorUsedError;
   AsyncValue<List<AssetPathEntity>>? get albums =>
       throw _privateConstructorUsedError;
   AsyncValue<List<Widget>>? get photos => throw _privateConstructorUsedError;
+  Future<void> Function(File)? get onTapFunc =>
+      throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $MediaScreenStateCopyWith<MediaScreenState> get copyWith =>
@@ -60,8 +67,10 @@ abstract class $MediaScreenStateCopyWith<$Res> {
       {int currentPage,
       int? lastPage,
       int albumIndex,
+      ResourceType resourceType,
       AsyncValue<List<AssetPathEntity>>? albums,
-      AsyncValue<List<Widget>>? photos});
+      AsyncValue<List<Widget>>? photos,
+      Future<void> Function(File)? onTapFunc});
 }
 
 /// @nodoc
@@ -78,8 +87,10 @@ class _$MediaScreenStateCopyWithImpl<$Res>
     Object? currentPage = freezed,
     Object? lastPage = freezed,
     Object? albumIndex = freezed,
+    Object? resourceType = freezed,
     Object? albums = freezed,
     Object? photos = freezed,
+    Object? onTapFunc = freezed,
   }) {
     return _then(_value.copyWith(
       currentPage: currentPage == freezed
@@ -94,6 +105,10 @@ class _$MediaScreenStateCopyWithImpl<$Res>
           ? _value.albumIndex
           : albumIndex // ignore: cast_nullable_to_non_nullable
               as int,
+      resourceType: resourceType == freezed
+          ? _value.resourceType
+          : resourceType // ignore: cast_nullable_to_non_nullable
+              as ResourceType,
       albums: albums == freezed
           ? _value.albums
           : albums // ignore: cast_nullable_to_non_nullable
@@ -102,6 +117,10 @@ class _$MediaScreenStateCopyWithImpl<$Res>
           ? _value.photos
           : photos // ignore: cast_nullable_to_non_nullable
               as AsyncValue<List<Widget>>?,
+      onTapFunc: onTapFunc == freezed
+          ? _value.onTapFunc
+          : onTapFunc // ignore: cast_nullable_to_non_nullable
+              as Future<void> Function(File)?,
     ));
   }
 }
@@ -117,8 +136,10 @@ abstract class _$MediaScreenStateCopyWith<$Res>
       {int currentPage,
       int? lastPage,
       int albumIndex,
+      ResourceType resourceType,
       AsyncValue<List<AssetPathEntity>>? albums,
-      AsyncValue<List<Widget>>? photos});
+      AsyncValue<List<Widget>>? photos,
+      Future<void> Function(File)? onTapFunc});
 }
 
 /// @nodoc
@@ -137,8 +158,10 @@ class __$MediaScreenStateCopyWithImpl<$Res>
     Object? currentPage = freezed,
     Object? lastPage = freezed,
     Object? albumIndex = freezed,
+    Object? resourceType = freezed,
     Object? albums = freezed,
     Object? photos = freezed,
+    Object? onTapFunc = freezed,
   }) {
     return _then(_MediaScreenState(
       currentPage: currentPage == freezed
@@ -153,6 +176,10 @@ class __$MediaScreenStateCopyWithImpl<$Res>
           ? _value.albumIndex
           : albumIndex // ignore: cast_nullable_to_non_nullable
               as int,
+      resourceType: resourceType == freezed
+          ? _value.resourceType
+          : resourceType // ignore: cast_nullable_to_non_nullable
+              as ResourceType,
       albums: albums == freezed
           ? _value.albums
           : albums // ignore: cast_nullable_to_non_nullable
@@ -161,6 +188,10 @@ class __$MediaScreenStateCopyWithImpl<$Res>
           ? _value.photos
           : photos // ignore: cast_nullable_to_non_nullable
               as AsyncValue<List<Widget>>?,
+      onTapFunc: onTapFunc == freezed
+          ? _value.onTapFunc
+          : onTapFunc // ignore: cast_nullable_to_non_nullable
+              as Future<void> Function(File)?,
     ));
   }
 }
@@ -172,8 +203,10 @@ class _$_MediaScreenState implements _MediaScreenState {
       {this.currentPage = 0,
       this.lastPage,
       this.albumIndex = -1,
+      this.resourceType = ResourceType.none,
       this.albums,
-      this.photos});
+      this.photos,
+      this.onTapFunc});
 
   @JsonKey()
   @override
@@ -183,14 +216,19 @@ class _$_MediaScreenState implements _MediaScreenState {
   @JsonKey()
   @override
   final int albumIndex;
+  @JsonKey()
+  @override
+  final ResourceType resourceType;
   @override
   final AsyncValue<List<AssetPathEntity>>? albums;
   @override
   final AsyncValue<List<Widget>>? photos;
+  @override
+  final Future<void> Function(File)? onTapFunc;
 
   @override
   String toString() {
-    return 'MediaScreenState(currentPage: $currentPage, lastPage: $lastPage, albumIndex: $albumIndex, albums: $albums, photos: $photos)';
+    return 'MediaScreenState(currentPage: $currentPage, lastPage: $lastPage, albumIndex: $albumIndex, resourceType: $resourceType, albums: $albums, photos: $photos, onTapFunc: $onTapFunc)';
   }
 
   @override
@@ -203,8 +241,12 @@ class _$_MediaScreenState implements _MediaScreenState {
             const DeepCollectionEquality().equals(other.lastPage, lastPage) &&
             const DeepCollectionEquality()
                 .equals(other.albumIndex, albumIndex) &&
+            const DeepCollectionEquality()
+                .equals(other.resourceType, resourceType) &&
             const DeepCollectionEquality().equals(other.albums, albums) &&
-            const DeepCollectionEquality().equals(other.photos, photos));
+            const DeepCollectionEquality().equals(other.photos, photos) &&
+            (identical(other.onTapFunc, onTapFunc) ||
+                other.onTapFunc == onTapFunc));
   }
 
   @override
@@ -213,8 +255,10 @@ class _$_MediaScreenState implements _MediaScreenState {
       const DeepCollectionEquality().hash(currentPage),
       const DeepCollectionEquality().hash(lastPage),
       const DeepCollectionEquality().hash(albumIndex),
+      const DeepCollectionEquality().hash(resourceType),
       const DeepCollectionEquality().hash(albums),
-      const DeepCollectionEquality().hash(photos));
+      const DeepCollectionEquality().hash(photos),
+      onTapFunc);
 
   @JsonKey(ignore: true)
   @override
@@ -227,8 +271,10 @@ abstract class _MediaScreenState implements MediaScreenState {
       {int currentPage,
       int? lastPage,
       int albumIndex,
+      ResourceType resourceType,
       AsyncValue<List<AssetPathEntity>>? albums,
-      AsyncValue<List<Widget>>? photos}) = _$_MediaScreenState;
+      AsyncValue<List<Widget>>? photos,
+      Future<void> Function(File)? onTapFunc}) = _$_MediaScreenState;
 
   @override
   int get currentPage;
@@ -237,9 +283,13 @@ abstract class _MediaScreenState implements MediaScreenState {
   @override
   int get albumIndex;
   @override
+  ResourceType get resourceType;
+  @override
   AsyncValue<List<AssetPathEntity>>? get albums;
   @override
   AsyncValue<List<Widget>>? get photos;
+  @override
+  Future<void> Function(File)? get onTapFunc;
   @override
   @JsonKey(ignore: true)
   _$MediaScreenStateCopyWith<_MediaScreenState> get copyWith =>

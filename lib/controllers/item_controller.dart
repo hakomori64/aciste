@@ -2,6 +2,7 @@ import 'package:aciste/controllers/resource_controller.dart';
 import 'package:aciste/custom_exception.dart';
 import 'package:aciste/enums/resource_type.dart';
 import 'package:aciste/models/item.dart';
+import 'package:aciste/models/resource.dart';
 import 'package:aciste/repositories/item_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -41,7 +42,7 @@ class ItemListController extends StateNotifier<AsyncValue<List<Item>>> {
     required String description,
     required String createdBy,
     required ResourceType resourceType,
-    required dynamic content,
+    required CreateResourceParams content,
   }) async {
     try {
       final resource = await _read(resourceControllerProvider).createResource(
@@ -56,6 +57,7 @@ class ItemListController extends StateNotifier<AsyncValue<List<Item>>> {
           name: name,
           description: description,
           resource: resource,
+          resourceType: resourceType,
           userId: _userId!,
         );
       final itemId = await _read(itemRepositoryProvider).createItem(

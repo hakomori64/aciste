@@ -1,5 +1,6 @@
 import 'package:aciste/enums/resource_type.dart';
 import 'package:aciste/models/item.dart';
+import 'package:aciste/models/photo.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:photo_view/photo_view.dart';
@@ -14,8 +15,9 @@ class ResourceView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
-    switch (item.resource!.type) {
+    switch (item.resourceType!) {
       case ResourceType.photo:
+        final photo = item.resource as Photo;
         return PhotoView(
           minScale: PhotoViewComputedScale.contained * 0.8,
           maxScale: PhotoViewComputedScale.covered * 1.8,
@@ -23,7 +25,7 @@ class ResourceView extends HookConsumerWidget {
           backgroundDecoration: BoxDecoration(
             color: Colors.black.withOpacity(0.5),
           ),
-          imageProvider: CachedNetworkImageProvider(item.resource!.url),
+          imageProvider: CachedNetworkImageProvider(photo.url!),
         );
       case ResourceType.none:
         return const Text('unrecognized type');

@@ -1,6 +1,8 @@
 import 'package:aciste/constants.dart';
 import 'package:aciste/controllers/auth_controller.dart';
 import 'package:aciste/custom_exception.dart';
+import 'package:aciste/enums/resource_type.dart';
+import 'package:aciste/models/photo.dart';
 import 'package:aciste/router.dart';
 import 'package:aciste/screens/home_screen/home_screen_controller.dart';
 import 'package:flutter/material.dart';
@@ -54,10 +56,9 @@ class HomeScreen extends HookConsumerWidget {
                             )
                           ),
                           onSelected: (PopupItems item) async {
-                            //ref.read(routerProvider.notifier).push(route: Routes.profile, extra: user!.id);
                             switch (item) {
                               case PopupItems.account:
-                                ref.read(routerProvider.notifier).push(route: Routes.profile, extra: user!.id);
+                                ref.read(routerProvider.notifier).push(route: Routes.profile, extra: ProfileRouteParams(userId: user!.id!));
                                 break;
                               case PopupItems.logout:
                                 ref.read(authControllerProvider.notifier).signOut();
@@ -115,8 +116,9 @@ class HomeScreen extends HookConsumerWidget {
               child: RawMaterialButton(
                 onPressed: () async {
                   ref.read(homeScreenControllerProvider.notifier).setIsSelecting(value: false);
-                  //ref.read(routerProvider.notifier).push(route: Routes.itemCreate, extra: ResourceType.photo);
-                  await ref.read(routerProvider.notifier).push(route: Routes.media);
+                  await ref.read(routerProvider.notifier).push(route: Routes.media, extra: MediaRouteParams(resourceType: ResourceType.photo, onTapFunc: (file) async {
+                    ref.read(routerProvider.notifier).push(route: Routes.itemCreate, extra: ItemCreateRouteParams(resourceType: ResourceType.photo, params: CreatePhotoParams(file: file)));
+                  }));
                 },
                 elevation: 2.0,
                 fillColor: Theme.of(context).primaryColor,

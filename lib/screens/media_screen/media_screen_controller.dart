@@ -5,6 +5,7 @@ import 'package:aciste/enums/resource_type.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 part 'media_screen_controller.freezed.dart';
@@ -102,7 +103,28 @@ class MediaScreenController extends StateNotifier<MediaScreenState> {
           ),
         );
 
-        List<Widget> prevPhotos = [Container()];
+        List<Widget> prevPhotos = [GestureDetector(
+          onTap: () async {
+            final _picker = ImagePicker();
+            final photo = await _picker.pickImage(source: ImageSource.camera);
+            if (photo == null) {
+              return;
+            }
+            final file = File(photo.path);
+            await state.onTapFunc!(file);
+          },
+          child: Container(
+            color: Colors.black45.withOpacity(0.5),
+            child: const Center(
+              child: Icon(
+                Icons.camera_enhance,
+                size: 30,
+                color: Colors.white,
+              )
+            )
+          )
+        )
+        ];
         if (state.photos?.asData?.value != null) {
           prevPhotos = state.photos!.asData!.value;
         }
@@ -114,7 +136,30 @@ class MediaScreenController extends StateNotifier<MediaScreenState> {
       } else {
         state = state.copyWith(
           albums: const AsyncValue.data([]),
-          photos: AsyncValue.data([Container()]),
+          photos: AsyncValue.data([GestureDetector(
+            onTap: () async {
+              final _picker = ImagePicker();
+              final photo = await _picker.pickImage(source: ImageSource.camera);
+              if (photo == null) {
+                return;
+              }
+              final file = File(photo.path);
+              if (file != null) {
+                await state.onTapFunc!(file);
+              }
+            },
+            child: Container(
+              color: Colors.black45.withOpacity(0.5),
+              child: const Center(
+                child: Icon(
+                  Icons.camera_enhance,
+                  size: 30,
+                  color: Colors.white,
+                )
+              )
+            )
+          )
+          ]),
           albumIndex: -1,
           lastPage: null,
           currentPage: 0,

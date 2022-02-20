@@ -19,23 +19,54 @@ class ResourceView extends HookConsumerWidget {
     switch (item.resourceType!) {
       case ResourceType.photo:
         final photo = item.resource as Photo;
-        return PhotoView(
-          minScale: PhotoViewComputedScale.contained * 0.8,
-          maxScale: PhotoViewComputedScale.covered * 1.8,
-          initialScale: PhotoViewComputedScale.contained,
-          backgroundDecoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.5),
-          ),
-          imageProvider: CachedNetworkImageProvider(photo.url!),
+        return ClipRRect(
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: PhotoView(
+              minScale: PhotoViewComputedScale.contained * 0.8,
+              maxScale: PhotoViewComputedScale.covered * 1.8,
+              initialScale: PhotoViewComputedScale.contained,
+              backgroundDecoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.5),
+              ),
+              imageProvider: CachedNetworkImageProvider(photo.url!),
+            )
+          )
         );
       case ResourceType.message:
         final message = item.resource as Message;
-        return Center(
-          child: Text(
-            message.text!,
-            style: const TextStyle(
-              fontSize: 24,
-            )
+        return SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              /*
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: SizedBox(
+                  child: Text(
+                    message.text!,
+                    style: const TextStyle(
+                      fontSize: 24,
+                    )
+                  ),
+                )
+              )*/
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Container(
+                  width: double.infinity,
+                  child: Text(
+                    message.text!,
+                    style: const TextStyle(
+                      fontSize: 24,
+                    )
+                  )
+                ),
+              ),
+              Container(),
+            ],
           )
         );
       case ResourceType.none:

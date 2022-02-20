@@ -29,7 +29,8 @@ class CreateResourceOverView extends StatelessWidget {
         );
       case ResourceType.message:
         final createMessageParams = params as CreateMessageParams;
-        return Center(
+        return SizedBox(
+          width: double.infinity,
           child: Text(
             createMessageParams.message,
             style: const TextStyle(

@@ -28,13 +28,7 @@ class ItemDetailScreen extends HookConsumerWidget {
           onPressed: () => ref.read(routerProvider.notifier).pop(),
         ),
       ),
-      body: ClipRRect(
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height,
-
-          child:ResourceView(item: itemDetailScreenState.item!),
-        ),
-      ),
+      body: ResourceView(item: itemDetailScreenState.item!),
     );
   }
 }

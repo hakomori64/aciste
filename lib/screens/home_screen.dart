@@ -71,7 +71,10 @@ class HomeScreen extends HookConsumerWidget {
                             decoration: const BoxDecoration(
                               color: Colors.white,
                             ),
-                            child: CachedNetworkImage(imageUrl: user?.photoUrl ?? defaultUserPhotoUrl)
+                            child: CachedNetworkImage(
+                              imageUrl: user?.photoUrl ?? defaultUserPhotoUrl,
+                              fit: BoxFit.cover,
+                            )
                           ),
                           itemBuilder: (context) => <PopupMenuEntry<PopupItems>>[
                             const PopupMenuItem(
@@ -124,7 +127,10 @@ class HomeScreen extends HookConsumerWidget {
                 },
                 elevation: 2.0,
                 fillColor: Theme.of(context).primaryColor,
-                child: const Icon(Icons.photo, size: 50.0, color: Colors.white),
+                child: const Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: Icon(Icons.photo, size: 40.0, color: Colors.white),
+                ),
                 shape: const CircleBorder(),
               )
             ),
@@ -139,7 +145,10 @@ class HomeScreen extends HookConsumerWidget {
                 },
                 elevation: 2.0,
                 fillColor: Theme.of(context).primaryColor,
-                child: const Icon(Icons.message, size: 50.0, color: Colors.white),
+                child: const Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: Icon(Icons.message, size: 40.0, color: Colors.white),
+                ),
                 shape: const CircleBorder(),
               )
             )
@@ -157,7 +166,10 @@ class HomeScreen extends HookConsumerWidget {
                 },
                 elevation: 2.0,
                 fillColor: Theme.of(context).primaryColor,
-                child: const Icon(Icons.add, size: 50.0, color: Colors.white),
+                child: const Padding(
+                  padding: EdgeInsets.all(5),
+                  child: Icon(Icons.add, size: 40.0, color: Colors.white),
+                ),
                 shape: const CircleBorder(),
               )
             )

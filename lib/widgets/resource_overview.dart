@@ -30,7 +30,8 @@ class ResourceOverView extends StatelessWidget {
         );
       case ResourceType.message:
         final message = item.resource as Message;
-        return Center(
+        return SizedBox(
+          width: double.infinity,
           child: Text(
             message.text!,
             style: const TextStyle(

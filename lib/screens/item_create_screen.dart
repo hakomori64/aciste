@@ -73,22 +73,40 @@ class ItemCreateScreen extends HookConsumerWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              CreateResourceOverView(
-                resourceType: resourceType,
-                params: params,
-              ),
               TextField(
                 controller: nameController,
-                autofocus: true,
                 decoration: const InputDecoration(hintText: '名前'),
               ),
               const SizedBox(height: 12.0),
               TextField(
                 controller: descriptionController,
                 maxLines: null,
-                autofocus: true,
                 decoration: const InputDecoration(hintText: '説明'),
               ),
+              const SizedBox(height: 30),
+              ExpansionTile(
+                backgroundColor: Theme.of(context).primaryColorLight.withOpacity(0.2),
+                title: const Text(
+                  '内容',
+                  style: TextStyle(
+                    color: Colors.black45,
+                    fontSize: 20,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SingleChildScrollView(
+                      physics: const NeverScrollableScrollPhysics(),
+                      child: CreateResourceOverView(
+                        resourceType: resourceType,
+                        params: params,
+                      ),
+                    )
+                  ),
+                ],
+              )
             ],
           )
         ),

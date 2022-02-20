@@ -107,6 +107,7 @@ class ProfileScreen extends HookConsumerWidget {
                   ),
                   onPressed: () async {
                     await ref.read(userControllerProvider.notifier).unfollow(fromId: me.uid, toId: user.id!);
+                    await ref.read(profileScreenControllerProvider.notifier).setUser(userId: user.id!);
                   },
                   child: const SizedBox(
                     width: 100,
@@ -131,6 +132,7 @@ class ProfileScreen extends HookConsumerWidget {
                   ),
                   onPressed: () async {
                     await ref.read(userControllerProvider.notifier).follow(fromId: me.uid, toId: user.id!);
+                    await ref.read(profileScreenControllerProvider.notifier).setUser(userId: user.id!);
                   },
                   child: const SizedBox(
                     width: 100,

@@ -10,10 +10,12 @@ class ItemEditScreenState with _$ItemEditScreenState {
     Item? item,
     @Default(false) bool isNameEditing,
     @Default(false) bool isDescriptionEditing,
+    @Default("") String name,
+    @Default("") String description,
   }) = _ItemEditScreenState;
 }
 
-final itemEditScreenControllerProvider = StateNotifierProvider.autoDispose<ItemEditScreenController, ItemEditScreenState>((ref) => ItemEditScreenController());
+final itemEditScreenControllerProvider = StateNotifierProvider<ItemEditScreenController, ItemEditScreenState>((ref) => ItemEditScreenController());
 
 
 class ItemEditScreenController extends StateNotifier<ItemEditScreenState> {
@@ -21,12 +23,15 @@ class ItemEditScreenController extends StateNotifier<ItemEditScreenState> {
 
   void setItem(Item item) {
     state = state.copyWith(item: item);
+    setName(item.name);
+    setDescription(item.description);
   }
-  Future<void> setIsNameEditing({required bool value}) async {
-    state = state.copyWith(isNameEditing: value);
+  
+  void setName(String name) {
+    state = state.copyWith(name: name);
   }
 
-  Future<void> setIsDescriptionEditing({required bool value}) async {
-    state = state.copyWith(isDescriptionEditing: value);
+  void setDescription(String description) {
+    state = state.copyWith(description: description);
   }
 }

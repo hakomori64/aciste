@@ -1,109 +1,97 @@
 import 'package:aciste/controllers/item_controller.dart';
-import 'package:aciste/models/item.dart';
+import 'package:aciste/router.dart';
 import 'package:aciste/screens/item_edit_screen/item_edit_screen_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class ItemEditScreen extends HookConsumerWidget {
-  final Item item;
 
-  const ItemEditScreen({Key? key, required this.item}) : super(key: key);
+  const ItemEditScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
     final itemEditScreenState = ref.watch(itemEditScreenControllerProvider);
-    final nameController = useTextEditingController(text: item.name);
-    final descriptionController = useTextEditingController(text: item.description);
+    final item = itemEditScreenState.item;
+    final name = itemEditScreenState.name;
+    final description = itemEditScreenState.description;
+    final nameController = useTextEditingController(text: name);
+    final descriptionController = useTextEditingController(text: description);
 
 
-    return SizedBox(
+    return Container(
         height: MediaQuery.of(context).size.height / 2,
-        child: Column(
-          children: [
-            const Text('タイトル'),
-            itemEditScreenState.isNameEditing
-            ? Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Flexible(
-                  child: TextField(
-                    controller: nameController,
-                    autofocus: true,
-                    decoration: const InputDecoration(hintText: 'タイトル')
-                  ),
-                ),
-                TextButton(
-                  child: const Text('決定'),
-                  onPressed: () async {
-                    await ref.read(itemListControllerProvider.notifier)
-                      .updateItem(
-                        updatedItem: item.copyWith(
-                          name: nameController.text
+        padding: const EdgeInsets.all(15),
+        child: SingleChildScrollView(
+
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                width: double.infinity,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color?>(Theme.of(context).primaryColor),
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                          )
                         )
-                      );
-                    ref.read(itemEditScreenControllerProvider.notifier)
-                      .setIsNameEditing(value: false);
-                  },
-                )
-              ],
-            )
-            : Row(
-              children: [
-                Text(nameController.text),
-                TextButton(
-                  child: const Text('編集'),
-                  onPressed: () {
-                    ref.read(itemEditScreenControllerProvider.notifier)
-                      .setIsNameEditing(value: true);
-                      
-                  },
-                )
-              ],
-            ),
-            const SizedBox(height: 20),
-            const Text('説明'),
-            itemEditScreenState.isDescriptionEditing
-            ? Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Flexible(
-                  child: TextField(
-                    controller: descriptionController,
-                    autofocus: true,
-                    decoration: const InputDecoration(hintText: '説明')
-                  ),
+                      ),
+                      onPressed: (name.isNotEmpty && description.isNotEmpty) ? () async {
+                        await ref.read(itemListControllerProvider.notifier)
+                          .updateItem(updatedItem: item!.copyWith(
+                            name: name,
+                            description: description
+                          ));
+                        ref.read(routerProvider.notifier).closeDialog();
+                      } : null,
+                      child: const Text(
+                        '作成',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.white,
+                        ),
+                      )
+                    ),
+                  ],
                 ),
-                TextButton(
-                  child: const Text('決定'),
-                  onPressed: () {
-                    ref.read(itemListControllerProvider.notifier)
-                      .updateItem(
-                        updatedItem: item.copyWith(
-                          description: descriptionController.text
-                        )
-                      );
-                    ref.read(itemEditScreenControllerProvider.notifier)
-                      .setIsDescriptionEditing(value: false);
-                  },
+              ),
+              const Text(
+                'タイトル',
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black54,
                 )
-              ],
-            )
-            : Row(
-              children: [
-                Text(descriptionController.text),
-                TextButton(
-                  child: const Text('編集'),
-                  onPressed: () {
-                    ref.read(itemEditScreenControllerProvider.notifier)
-                      .setIsDescriptionEditing(value: true);
-                      
-                  },
+              ),
+              TextField(
+                controller: nameController,
+                onChanged: ref.read(itemEditScreenControllerProvider.notifier).setName,
+                decoration: const InputDecoration(hintText: 'タイトル')
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                '説明',
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black54,
                 )
-              ],
-            ),
-          ],
+              ),
+              TextField(
+                controller: descriptionController,
+                maxLines: null,
+                onChanged: ref.read(itemEditScreenControllerProvider.notifier).setDescription,
+                decoration: const InputDecoration(hintText: '説明')
+              ),
+            ],
+          )
         )
     );
   }

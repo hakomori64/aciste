@@ -11,6 +11,8 @@ import 'package:aciste/screens/home_screen.dart';
 import 'package:aciste/screens/item_create_screen/item_create_screen_controller.dart';
 import 'package:aciste/screens/item_detail_screen.dart';
 import 'package:aciste/screens/item_detail_screen/item_detail_screen_controller.dart';
+import 'package:aciste/screens/item_edit_screen.dart';
+import 'package:aciste/screens/item_edit_screen/item_edit_screen_controller.dart';
 import 'package:aciste/screens/item_import_screen.dart';
 import 'package:aciste/screens/item_import_screen/item_import_screen_controller.dart';
 import 'package:aciste/screens/launch_screen.dart';
@@ -55,7 +57,7 @@ class RouterController extends StateNotifier<GoRouter?> {
       routes: [
         GoRoute(
           path: Routes.logo.route,
-          builder:(context, state) => const LogoScreen(),
+          builder:(context, state) => screen(route: Routes.logo),
           redirect: (state) {
             if (_userId != null) {
               return Routes.home.route;
@@ -66,25 +68,25 @@ class RouterController extends StateNotifier<GoRouter?> {
         ),
         GoRoute(
           path: Routes.launch.route,
-          builder: (context, state) => const LaunchScreen(),
+          builder: (context, state) => screen(route: Routes.launch),
         ),
         GoRoute(
           path: Routes.home.route,
-          builder: (context, state) => const HomeScreen(),
+          builder: (context, state) => screen(route: Routes.home),
         ),
         GoRoute(
           path: Routes.media.route,
-          builder: (context, state) => const MediaScreen(),
+          builder: (context, state) => screen(route: Routes.media),
         ),
         GoRoute(
           path: Routes.message.route,
-          builder: (context, state) => const MessageScreen(),
+          builder: (context, state) => screen(route: Routes.message),
         ),
         GoRoute(
           path: Routes.profile.route,
           pageBuilder:(context, state) => CustomTransitionPage(
             key: state.pageKey,
-            child: const ProfileScreen(),
+            child: screen(route: Routes.profile),
             transitionsBuilder: (context, animation, secondaryAnimation, child) =>
               SlideTransition(
                 position: animation.drive(
@@ -99,22 +101,22 @@ class RouterController extends StateNotifier<GoRouter?> {
         ),
         GoRoute(
           path: Routes.profileEdit.route,
-          builder: (context, state) => const ProfileEditScreen(),
+          builder: (context, state) => screen(route: Routes.profileEdit),
         ),
         GoRoute(
           path: Routes.itemCreate.route,
           //builder: (context, state) => ItemCreateScreen(resourceType: state.extra! as ResourceType),
-          builder: (context, state) => const ItemCreateScreen()
+          builder: (context, state) => screen(route: Routes.itemCreate),
         ),
         GoRoute(
           path: Routes.itemDetail.route,
           //builder: (context, state) => ItemDetailScreen(item: state.extra! as Item),
-          builder: (context, state) => const ItemDetailScreen()
+          builder: (context, state) => screen(route: Routes.itemDetail),
         ),
         GoRoute(
           path: Routes.itemImport.route,
           //builder:(context, state) => ItemImportScreen(item: state.extra! as Item),
-          builder: (context, state) => const ItemImportScreen()
+          builder: (context, state) => screen(route: Routes.itemImport),
         ),
         GoRoute(
           path: Routes.dialog.route,
@@ -123,7 +125,7 @@ class RouterController extends StateNotifier<GoRouter?> {
             barrierColor: Colors.black.withOpacity(0.5),
             barrierDismissible: true,
             fullscreenDialog: true,
-            child: const DialogScreen(),
+            child: screen(route: Routes.dialog),
             transitionDuration: const Duration(milliseconds: 100),
             transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(opacity: animation, child: child),
           )
@@ -141,6 +143,14 @@ class RouterController extends StateNotifier<GoRouter?> {
         }
       },
     );
+  }
+
+  Future<void> showDialogRoute({required Routes route, Object? extra}) async {
+    await _handleParams(route: route, extra: extra);
+    _read(dialogScreenControllerProvider.notifier).setChild(screen(route: route));
+    if (state!.location != Routes.dialog.route) {
+      state!.push(Routes.dialog.route);
+    }
   }
 
   void showDialog({required Widget child}) {
@@ -174,10 +184,6 @@ class RouterController extends StateNotifier<GoRouter?> {
     switch (route) {
       case Routes.launch:
         break;
-      case Routes.login:
-        break;
-      case Routes.signup:
-        break;
       case Routes.home:
         break;
       case Routes.media:
@@ -200,6 +206,10 @@ class RouterController extends StateNotifier<GoRouter?> {
         final params = extra! as ItemCreateRouteParams;
         _read(itemCreateScreenControllerProvider.notifier).setResourceType(params.resourceType);
         _read(itemCreateScreenControllerProvider.notifier).setCreateResourceParams(params.params);
+        break;
+      case Routes.itemEdit:
+        final params = extra! as ItemEditRouteParams;
+        _read(itemEditScreenControllerProvider.notifier).setItem(params.item);
         break;
       case Routes.itemDetail:
         final params = extra! as ItemDetailRouteParams;
@@ -233,19 +243,47 @@ class RouterController extends StateNotifier<GoRouter?> {
     state!.go(Routes.home.route);
     _read(dynamicLinksControllerProvider.notifier).clear();
   }
+
+  Widget screen({required Routes route}) {
+    switch (route) {
+      case Routes.logo:
+        return const LogoScreen();
+      case Routes.launch:
+        return const LaunchScreen();
+      case Routes.home:
+        return const HomeScreen();
+      case Routes.media:
+        return const MediaScreen();
+      case Routes.message:
+        return const MessageScreen();
+      case Routes.profile:
+        return const ProfileScreen();
+      case Routes.profileEdit:
+        return const ProfileEditScreen();
+      case Routes.itemCreate:
+        return const ItemCreateScreen();
+      case Routes.itemEdit:
+        return const ItemEditScreen();
+      case Routes.itemDetail:
+        return const ItemDetailScreen();
+      case Routes.itemImport:
+        return const ItemImportScreen();
+      case Routes.dialog:
+        return const DialogScreen();
+    }
+  }
 }
 
 enum Routes {
   logo,
   launch,
-  login,
-  signup,
   home,
   profile,
   profileEdit,
   media,
   message,
   itemCreate,
+  itemEdit,
   itemDetail,
   itemImport,
   dialog,
@@ -278,6 +316,11 @@ class ItemCreateRouteParams {
   final ResourceType resourceType;
   final CreateResourceParams? params;
   ItemCreateRouteParams({required this.resourceType, required this.params});
+}
+
+class ItemEditRouteParams {
+  final Item item;
+  ItemEditRouteParams({required this.item});
 }
 
 class ItemDetailRouteParams {

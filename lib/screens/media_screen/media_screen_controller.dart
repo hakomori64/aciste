@@ -144,9 +144,7 @@ class MediaScreenController extends StateNotifier<MediaScreenState> {
                 return;
               }
               final file = File(photo.path);
-              if (file != null) {
-                await state.onTapFunc!(file);
-              }
+              await state.onTapFunc!(file);
             },
             child: Container(
               color: Colors.black45.withOpacity(0.5),

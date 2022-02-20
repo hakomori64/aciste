@@ -5,7 +5,6 @@ import 'package:aciste/controllers/dynamic_links_controller.dart';
 import 'package:aciste/controllers/item_controller.dart';
 import 'package:aciste/models/item.dart';
 import 'package:aciste/router.dart';
-import 'package:aciste/screens/item_edit_screen.dart';
 import 'package:aciste/screens/qrcode_screen.dart';
 import 'package:aciste/screens/qrcode_screen/qrcode_screen_controller.dart';
 import 'package:aciste/widgets/resource_overview.dart';
@@ -69,8 +68,11 @@ class ItemTile extends HookConsumerWidget {
                       title: const Text('編集'),
                       onTap: () {
                         ref.read(routerProvider.notifier).closeBottomSheet();
-                        ref.read(routerProvider.notifier).showDialog(
-                          child: ItemEditScreen(item: item)
+                        ref.read(routerProvider.notifier).showDialogRoute(
+                          route: Routes.itemEdit,
+                          extra: ItemEditRouteParams(
+                            item: item
+                          )
                         );
                       },
                     ),

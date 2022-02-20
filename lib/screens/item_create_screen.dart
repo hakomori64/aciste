@@ -1,7 +1,6 @@
 import 'package:aciste/controllers/app_controller.dart';
 import 'package:aciste/controllers/auth_controller.dart';
 import 'package:aciste/controllers/item_controller.dart';
-import 'package:aciste/enums/resource_type.dart';
 import 'package:aciste/router.dart';
 import 'package:aciste/screens/item_create_screen/item_create_screen_controller.dart';
 import 'package:aciste/widgets/create_resource_overview.dart';
@@ -57,7 +56,13 @@ class ItemCreateScreen extends HookConsumerWidget {
                 ref.read(appControllerProvider.notifier).setloading(value: false);
                 ref.read(routerProvider.notifier).go(route: Routes.home);
               },
-              child: const Text('作成')
+              child: const Text(
+                '作成',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                ),
+              )
             ),
           )
         ],

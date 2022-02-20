@@ -27,13 +27,23 @@ class _$UserTearOff {
       required String email,
       required String displayName,
       required String bio,
-      required String photoUrl}) {
+      required String photoUrl,
+      required String backgroundImageUrl,
+      @TimestampDateTimeConverter() DateTime? createdAt,
+      @TimestampDateTimeConverter() DateTime? updatedAt,
+      List<String> following = const [],
+      List<String> followedBy = const []}) {
     return _User(
       id: id,
       email: email,
       displayName: displayName,
       bio: bio,
       photoUrl: photoUrl,
+      backgroundImageUrl: backgroundImageUrl,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
+      following: following,
+      followedBy: followedBy,
     );
   }
 
@@ -52,6 +62,13 @@ mixin _$User {
   String get displayName => throw _privateConstructorUsedError;
   String get bio => throw _privateConstructorUsedError;
   String get photoUrl => throw _privateConstructorUsedError;
+  String get backgroundImageUrl => throw _privateConstructorUsedError;
+  @TimestampDateTimeConverter()
+  DateTime? get createdAt => throw _privateConstructorUsedError;
+  @TimestampDateTimeConverter()
+  DateTime? get updatedAt => throw _privateConstructorUsedError;
+  List<String> get following => throw _privateConstructorUsedError;
+  List<String> get followedBy => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -67,7 +84,12 @@ abstract class $UserCopyWith<$Res> {
       String email,
       String displayName,
       String bio,
-      String photoUrl});
+      String photoUrl,
+      String backgroundImageUrl,
+      @TimestampDateTimeConverter() DateTime? createdAt,
+      @TimestampDateTimeConverter() DateTime? updatedAt,
+      List<String> following,
+      List<String> followedBy});
 }
 
 /// @nodoc
@@ -85,6 +107,11 @@ class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
     Object? displayName = freezed,
     Object? bio = freezed,
     Object? photoUrl = freezed,
+    Object? backgroundImageUrl = freezed,
+    Object? createdAt = freezed,
+    Object? updatedAt = freezed,
+    Object? following = freezed,
+    Object? followedBy = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -107,6 +134,26 @@ class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
           ? _value.photoUrl
           : photoUrl // ignore: cast_nullable_to_non_nullable
               as String,
+      backgroundImageUrl: backgroundImageUrl == freezed
+          ? _value.backgroundImageUrl
+          : backgroundImageUrl // ignore: cast_nullable_to_non_nullable
+              as String,
+      createdAt: createdAt == freezed
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      updatedAt: updatedAt == freezed
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      following: following == freezed
+          ? _value.following
+          : following // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      followedBy: followedBy == freezed
+          ? _value.followedBy
+          : followedBy // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ));
   }
 }
@@ -121,7 +168,12 @@ abstract class _$UserCopyWith<$Res> implements $UserCopyWith<$Res> {
       String email,
       String displayName,
       String bio,
-      String photoUrl});
+      String photoUrl,
+      String backgroundImageUrl,
+      @TimestampDateTimeConverter() DateTime? createdAt,
+      @TimestampDateTimeConverter() DateTime? updatedAt,
+      List<String> following,
+      List<String> followedBy});
 }
 
 /// @nodoc
@@ -140,6 +192,11 @@ class __$UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
     Object? displayName = freezed,
     Object? bio = freezed,
     Object? photoUrl = freezed,
+    Object? backgroundImageUrl = freezed,
+    Object? createdAt = freezed,
+    Object? updatedAt = freezed,
+    Object? following = freezed,
+    Object? followedBy = freezed,
   }) {
     return _then(_User(
       id: id == freezed
@@ -162,6 +219,26 @@ class __$UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
           ? _value.photoUrl
           : photoUrl // ignore: cast_nullable_to_non_nullable
               as String,
+      backgroundImageUrl: backgroundImageUrl == freezed
+          ? _value.backgroundImageUrl
+          : backgroundImageUrl // ignore: cast_nullable_to_non_nullable
+              as String,
+      createdAt: createdAt == freezed
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      updatedAt: updatedAt == freezed
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      following: following == freezed
+          ? _value.following
+          : following // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      followedBy: followedBy == freezed
+          ? _value.followedBy
+          : followedBy // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ));
   }
 }
@@ -174,7 +251,12 @@ class _$_User extends _User {
       required this.email,
       required this.displayName,
       required this.bio,
-      required this.photoUrl})
+      required this.photoUrl,
+      required this.backgroundImageUrl,
+      @TimestampDateTimeConverter() this.createdAt,
+      @TimestampDateTimeConverter() this.updatedAt,
+      this.following = const [],
+      this.followedBy = const []})
       : super._();
 
   factory _$_User.fromJson(Map<String, dynamic> json) => _$$_UserFromJson(json);
@@ -189,10 +271,24 @@ class _$_User extends _User {
   final String bio;
   @override
   final String photoUrl;
+  @override
+  final String backgroundImageUrl;
+  @override
+  @TimestampDateTimeConverter()
+  final DateTime? createdAt;
+  @override
+  @TimestampDateTimeConverter()
+  final DateTime? updatedAt;
+  @JsonKey()
+  @override
+  final List<String> following;
+  @JsonKey()
+  @override
+  final List<String> followedBy;
 
   @override
   String toString() {
-    return 'User(id: $id, email: $email, displayName: $displayName, bio: $bio, photoUrl: $photoUrl)';
+    return 'User(id: $id, email: $email, displayName: $displayName, bio: $bio, photoUrl: $photoUrl, backgroundImageUrl: $backgroundImageUrl, createdAt: $createdAt, updatedAt: $updatedAt, following: $following, followedBy: $followedBy)';
   }
 
   @override
@@ -205,7 +301,14 @@ class _$_User extends _User {
             const DeepCollectionEquality()
                 .equals(other.displayName, displayName) &&
             const DeepCollectionEquality().equals(other.bio, bio) &&
-            const DeepCollectionEquality().equals(other.photoUrl, photoUrl));
+            const DeepCollectionEquality().equals(other.photoUrl, photoUrl) &&
+            const DeepCollectionEquality()
+                .equals(other.backgroundImageUrl, backgroundImageUrl) &&
+            const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
+            const DeepCollectionEquality().equals(other.updatedAt, updatedAt) &&
+            const DeepCollectionEquality().equals(other.following, following) &&
+            const DeepCollectionEquality()
+                .equals(other.followedBy, followedBy));
   }
 
   @override
@@ -215,7 +318,12 @@ class _$_User extends _User {
       const DeepCollectionEquality().hash(email),
       const DeepCollectionEquality().hash(displayName),
       const DeepCollectionEquality().hash(bio),
-      const DeepCollectionEquality().hash(photoUrl));
+      const DeepCollectionEquality().hash(photoUrl),
+      const DeepCollectionEquality().hash(backgroundImageUrl),
+      const DeepCollectionEquality().hash(createdAt),
+      const DeepCollectionEquality().hash(updatedAt),
+      const DeepCollectionEquality().hash(following),
+      const DeepCollectionEquality().hash(followedBy));
 
   @JsonKey(ignore: true)
   @override
@@ -234,7 +342,12 @@ abstract class _User extends User {
       required String email,
       required String displayName,
       required String bio,
-      required String photoUrl}) = _$_User;
+      required String photoUrl,
+      required String backgroundImageUrl,
+      @TimestampDateTimeConverter() DateTime? createdAt,
+      @TimestampDateTimeConverter() DateTime? updatedAt,
+      List<String> following,
+      List<String> followedBy}) = _$_User;
   const _User._() : super._();
 
   factory _User.fromJson(Map<String, dynamic> json) = _$_User.fromJson;
@@ -249,6 +362,18 @@ abstract class _User extends User {
   String get bio;
   @override
   String get photoUrl;
+  @override
+  String get backgroundImageUrl;
+  @override
+  @TimestampDateTimeConverter()
+  DateTime? get createdAt;
+  @override
+  @TimestampDateTimeConverter()
+  DateTime? get updatedAt;
+  @override
+  List<String> get following;
+  @override
+  List<String> get followedBy;
   @override
   @JsonKey(ignore: true)
   _$UserCopyWith<_User> get copyWith => throw _privateConstructorUsedError;

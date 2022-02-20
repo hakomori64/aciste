@@ -9,6 +9,7 @@ import 'package:aciste/screens/item_edit_screen.dart';
 import 'package:aciste/screens/qrcode_screen.dart';
 import 'package:aciste/screens/qrcode_screen/qrcode_screen_controller.dart';
 import 'package:aciste/widgets/resource_overview.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -33,12 +34,20 @@ class ItemTile extends HookConsumerWidget {
               width: 40,
               height: 40,
               child: ClipOval(
-                child: Container(
-                  height: 40,
-                  width: 40,
-                  color: Colors.grey[50],
-                  child: Image.network(item.resource?.createdBy?.photoUrl ?? defaultUserPhotoUrl),
-                )
+                child: GestureDetector(
+                  onTap:() {
+                    ref.read(routerProvider.notifier).push(route: Routes.profile, extra: ProfileRouteParams(userId: item.resource!.createdBy!.id!));
+                  },
+                  child: Container(
+                    height: 40,
+                    width: 40,
+                    color: Colors.grey[50],
+                    child: CachedNetworkImage(
+                      imageUrl: item.resource?.createdBy?.photoUrl ?? defaultUserPhotoUrl,
+                      fit: BoxFit.cover,
+                    ),
+                  )
+                ),
               ),
             ),
             title: Center(child: Text(item.name)),

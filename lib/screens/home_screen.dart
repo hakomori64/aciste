@@ -6,6 +6,7 @@ import 'package:aciste/models/message.dart';
 import 'package:aciste/models/photo.dart';
 import 'package:aciste/router.dart';
 import 'package:aciste/screens/home_screen/home_screen_controller.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:aciste/controllers/user_controller.dart';
@@ -45,7 +46,7 @@ class HomeScreen extends HookConsumerWidget {
                 child: AppBar(
                   centerTitle: true,
                   backgroundColor: Theme.of(context).primaryColor,
-                  title: const Text('aciste'),
+                  title: const Text('Aciste'),
                   leading: userControllerState.when(
                     data: (user) => Container(
                       padding: const EdgeInsets.all(10),
@@ -70,7 +71,7 @@ class HomeScreen extends HookConsumerWidget {
                             decoration: const BoxDecoration(
                               color: Colors.white,
                             ),
-                            child: Image.network(user?.photoUrl ?? defaultUserPhotoUrl)
+                            child: CachedNetworkImage(imageUrl: user?.photoUrl ?? defaultUserPhotoUrl)
                           ),
                           itemBuilder: (context) => <PopupMenuEntry<PopupItems>>[
                             const PopupMenuItem(

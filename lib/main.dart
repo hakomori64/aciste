@@ -29,14 +29,26 @@ class MyApp extends HookConsumerWidget {
       );
     }
 
-    const primaryColor = Color(0xffea9215);
-    const secondaryColor = Color(0xfff7c873);
+    const primaryColor = Color(0xfff7c873);
+    const secondaryColor = Color(0xffea9215);
+    const primaryColorLight = Color(0xfff8dbb2);
 
     return MaterialApp.router(
       title: 'aciste',
       theme: ThemeData(
         brightness: Brightness.light,
         primaryColor: primaryColor,
+        splashColor: primaryColor,
+        colorScheme: const ColorScheme.light().copyWith(secondary: primaryColor),
+        indicatorColor: primaryColor,
+        highlightColor: primaryColor,
+        primaryColorDark: secondaryColor,
+        primaryColorLight: primaryColorLight,
+        progressIndicatorTheme: const ProgressIndicatorThemeData(
+          color: primaryColor
+        ),
+        platform: Theme.of(context).platform,
+        androidOverscrollIndicator: AndroidOverscrollIndicator.glow,
         secondaryHeaderColor: secondaryColor,
         textSelectionTheme: const TextSelectionThemeData(
           cursorColor: primaryColor,
@@ -47,6 +59,9 @@ class MyApp extends HookConsumerWidget {
           style: ButtonStyle(
             foregroundColor: MaterialStateProperty.all<Color?>(primaryColor),
           )
+        ),
+        appBarTheme: const AppBarTheme(
+          color: primaryColor,
         ),
         inputDecorationTheme: const InputDecorationTheme(
           labelStyle: TextStyle(color: Color(0xffea9215)),

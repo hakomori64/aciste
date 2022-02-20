@@ -1,6 +1,7 @@
 import 'package:aciste/custom_exception.dart';
 
 const defaultUserPhotoUrl = 'https://storage.googleapis.com/aciste-100b9.appspot.com/default_user.png';
+const defaultUserBackgroundImageUrl = 'https://storage.googleapis.com/aciste-100b9.appspot.com/default_background.png';
 const flavor = String.fromEnvironment('FLAVOR');
 
 String getDynamicLinkUriPrefix() {

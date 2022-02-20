@@ -66,15 +66,41 @@ class UserController extends StateNotifier<AsyncValue<User?>> {
     }
   }
 
-  Future<void> updatePhoto({required String userId, required XFile file}) async {
-    final _file = File(file.path);
-    final imageUrl = await _read(userRepositoryProvider).uploadPhoto(userId: userId, file: _file);
+  Future<void> follow({required String fromId, required String toId}) async {
+    try {
+      await _read(userRepositoryProvider).follow(fromId: fromId, toId: toId);
+    } on CustomException catch (e) {
+      _read(userExceptionProvider.notifier).state = e;
+    }
+  }
+
+  Future<void> unfollow({required String fromId, required String toId}) async {
+    try {
+      await _read(userRepositoryProvider).unfollow(fromId: fromId, toId: toId);
+    } on CustomException catch (e) {
+      _read(userExceptionProvider.notifier).state = e;
+    }
+  }
+
+  Future<void> updatePhoto({required String userId, required File file}) async {
+    final imageUrl = await _read(userRepositoryProvider).uploadPhoto(userId: userId, file: file);
     final user = state.asData?.value;
     if (user != null) {
       await updateUser(userId: user.id!, user: user.copyWith(
         photoUrl: imageUrl
       ));
       state = AsyncValue.data(user.copyWith(photoUrl: imageUrl));
+    }
+  }
+
+  Future<void> updateBackgroundImage({required String userId, required File file}) async {
+    final imageUrl = await _read(userRepositoryProvider).uploadPhoto(userId: userId, file: file);
+    final user = state.asData?.value;
+    if (user != null) {
+      await updateUser(userId: user.id!, user: user.copyWith(
+        backgroundImageUrl: imageUrl
+      ));
+      state = AsyncValue.data(user.copyWith(backgroundImageUrl: imageUrl));
     }
   }
 

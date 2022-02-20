@@ -19,6 +19,7 @@ import 'package:aciste/screens/media_screen.dart';
 import 'package:aciste/screens/media_screen/media_screen_controller.dart';
 import 'package:aciste/screens/message_screen.dart';
 import 'package:aciste/screens/message_screen/message_screen_controller.dart';
+import 'package:aciste/screens/profile_edit_screen.dart';
 import 'package:aciste/screens/profile_screen.dart';
 import 'package:aciste/screens/profile_screen/profile_screen_controller.dart';
 import 'package:flutter/material.dart';
@@ -95,6 +96,10 @@ class RouterController extends StateNotifier<GoRouter?> {
                 child: child
               ),
           ),
+        ),
+        GoRoute(
+          path: Routes.profileEdit.route,
+          builder: (context, state) => const ProfileEditScreen(),
         ),
         GoRoute(
           path: Routes.itemCreate.route,
@@ -189,6 +194,8 @@ class RouterController extends StateNotifier<GoRouter?> {
         final params = extra! as ProfileRouteParams;
         await _read(profileScreenControllerProvider.notifier).setUser(userId: params.userId);
         break;
+      case Routes.profileEdit:
+        break;
       case Routes.itemCreate:
         final params = extra! as ItemCreateRouteParams;
         _read(itemCreateScreenControllerProvider.notifier).setResourceType(params.resourceType);
@@ -235,6 +242,7 @@ enum Routes {
   signup,
   home,
   profile,
+  profileEdit,
   media,
   message,
   itemCreate,

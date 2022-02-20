@@ -13,11 +13,10 @@ class MessageScreenState with _$MessageScreenState {
   }) = _MessageScreenState;
 }
 
-final messageScreenControllerProvider = StateNotifierProvider<MessageScreenController, MessageScreenState>((ref) => MessageScreenController(ref.read));
+final messageScreenControllerProvider = StateNotifierProvider<MessageScreenController, MessageScreenState>((_) => MessageScreenController());
 
 class MessageScreenController extends StateNotifier<MessageScreenState> {
-  final Reader _read;
-  MessageScreenController(this._read) : super(const MessageScreenState());
+  MessageScreenController() : super(const MessageScreenState());
 
   void setResourceType({required ResourceType? resourceType}) {
     state = state.copyWith(

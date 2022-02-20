@@ -15,6 +15,8 @@ abstract class BaseUserRepository {
   Future<void> updateUser({required String userId, required User user});
   Future<void> deleteUser({required String userId});
   Future<String> uploadPhoto({required String userId, required File file});
+  Future<bool> follow({required String fromId, required String toId});
+  Future<bool> unfollow({required String fromId, required String toId});
 }
 
 final userRepositoryProvider = Provider<UserRepository>((ref) => UserRepository(ref.read));
@@ -58,7 +60,7 @@ class UserRepository implements BaseUserRepository {
     try {
       await _read(firebaseFirestoreProvider)
         .userRef(userId)
-        .update(user.toDocument());
+        .update(user.copyWith(updatedAt: DateTime.now()).toDocument());
     } on FirebaseException catch (e) {
       throw CustomException(message: e.message);
     }
@@ -91,6 +93,58 @@ class UserRepository implements BaseUserRepository {
         .delete();
     } on FirebaseException catch (e) {
       throw CustomException(message: e.message);
+    }
+  }
+
+  @override
+  Future<bool> follow({required String fromId, required String toId}) async {
+    final fromUser = await getUser(userId: fromId); // followingに追加
+    final toUser = await getUser(userId: toId); // followedByに追加
+
+    if (fromUser == null || toUser == null) {
+      return false;
+    }
+
+    if (!fromUser.following.contains(toId) && !toUser.followedBy.contains(fromId)) {
+      fromUser.following.add(toId);
+      toUser.followedBy.add(fromId);
+      await updateUser(
+        userId: fromId,
+        user: fromUser
+      );
+      await updateUser(
+        userId: toId,
+        user: toUser
+      );
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  @override
+  Future<bool> unfollow({required String fromId, required String toId}) async {
+    final fromUser = await getUser(userId: fromId); // followingに追加
+    final toUser = await getUser(userId: toId); // followedByに追加
+
+    if (fromUser == null || toUser == null) {
+      return false;
+    }
+
+    if (fromUser.following.contains(toId) && toUser.followedBy.contains(fromId)) {
+      fromUser.following.remove(toId);
+      toUser.followedBy.remove(fromId);
+      await updateUser(
+        userId: fromId,
+        user: fromUser
+      );
+      await updateUser(
+        userId: toId,
+        user: toUser
+      );
+      return true;
+    } else {
+      return false;
     }
   }
 }

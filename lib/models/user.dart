@@ -1,5 +1,5 @@
 import 'package:aciste/constants.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:aciste/converters/timestamp_converter.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'user.freezed.dart';
@@ -15,13 +15,23 @@ abstract class User implements _$User {
     required String displayName,
     required String bio,
     required String photoUrl,
+    required String backgroundImageUrl,
+    @TimestampDateTimeConverter() DateTime? createdAt,
+    @TimestampDateTimeConverter() DateTime? updatedAt,
+    @Default([]) List<String> following,
+    @Default([]) List<String> followedBy,
   }) = _User;
 
-  factory User.empty() => const User(
+  factory User.empty() => User(
     email: "",
     displayName: "",
     bio: "",
     photoUrl: defaultUserPhotoUrl,
+    backgroundImageUrl: defaultUserBackgroundImageUrl,
+    createdAt: DateTime.now(),
+    updatedAt: DateTime.now(),
+    following: [""],
+    followedBy: [""]
   );
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

@@ -15,14 +15,13 @@ class ProfileEditScreenState with _$ProfileEditScreenState {
 
 final profileEditScreenControllerProvider = StateNotifierProvider.autoDispose<ProfileEditScreenController, ProfileEditScreenState>((ref) {
   final user = ref.watch(userControllerProvider).asData?.value;
-  return ProfileEditScreenController(ref.read, user);
+  return ProfileEditScreenController(user);
 });
 
 
 class ProfileEditScreenController extends StateNotifier<ProfileEditScreenState> {
-  final Reader _read;
   final User? _user;
-  ProfileEditScreenController(this._read, this._user) : super(const ProfileEditScreenState()) {
+  ProfileEditScreenController(this._user) : super(const ProfileEditScreenState()) {
     if (_user != null) {
       _init();
     }

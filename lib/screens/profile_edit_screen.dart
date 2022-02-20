@@ -1,9 +1,7 @@
-import 'package:aciste/constants.dart';
 import 'package:aciste/controllers/app_controller.dart';
 import 'package:aciste/controllers/user_controller.dart';
 import 'package:aciste/custom_exception.dart';
 import 'package:aciste/enums/resource_type.dart';
-import 'package:aciste/models/resource.dart';
 import 'package:aciste/router.dart';
 import 'package:aciste/screens/profile_edit_screen/profile_edit_screen_controller.dart';
 import 'package:aciste/screens/profile_screen/profile_screen_controller.dart';
@@ -11,7 +9,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:image_picker/image_picker.dart';
 
 class ProfileEditScreen extends HookConsumerWidget {
   const ProfileEditScreen({Key? key}) : super(key: key);
@@ -149,7 +146,6 @@ class ProfileEditScreen extends HookConsumerWidget {
                         )
                       ),
                       onPressed: (displayName.isNotEmpty && bio.isNotEmpty) ? () async {
-                        print('aiai');
                         FocusManager.instance.primaryFocus?.unfocus();
                         ref.read(appControllerProvider.notifier).setloading(value: true);
                         await ref.read(userControllerProvider.notifier).updateUser(

@@ -8,6 +8,7 @@ part 'message_screen_controller.freezed.dart';
 class MessageScreenState with _$MessageScreenState {
   const factory MessageScreenState({
     ResourceType? resourceType,
+    @Default("") String text,
     Future<void> Function(String text)? onTapFunc,
   }) = _MessageScreenState;
 }
@@ -27,6 +28,12 @@ class MessageScreenController extends StateNotifier<MessageScreenState> {
   void setOnTapFunc({required Future<void> Function(String) onTapFunc}) {
     state = state.copyWith(
       onTapFunc: onTapFunc,
+    );
+  }
+
+  void setText(String text) {
+    state = state.copyWith(
+      text: text
     );
   }
 }

@@ -29,10 +29,34 @@ class MyApp extends HookConsumerWidget {
       );
     }
 
+    const primaryColor = Color(0xffea9215);
+    const secondaryColor = Color(0xfff7c873);
+
     return MaterialApp.router(
       title: 'aciste',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        brightness: Brightness.light,
+        primaryColor: primaryColor,
+        secondaryHeaderColor: secondaryColor,
+        textSelectionTheme: const TextSelectionThemeData(
+          cursorColor: primaryColor,
+          selectionColor: primaryColor,
+          selectionHandleColor: primaryColor,
+        ),
+        textButtonTheme: TextButtonThemeData(
+          style: ButtonStyle(
+            foregroundColor: MaterialStateProperty.all<Color?>(primaryColor),
+          )
+        ),
+        inputDecorationTheme: const InputDecorationTheme(
+          labelStyle: TextStyle(color: Color(0xffea9215)),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+              style: BorderStyle.solid,
+              color: Color(0xffea9215)
+            )
+          )
+        )
       ),
       routerDelegate: router.routerDelegate,
       routeInformationParser: router.routeInformationParser,

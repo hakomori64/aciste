@@ -60,8 +60,8 @@ class MyAccount extends HookConsumerWidget {
               child: Container(
                 height: 100,
                 width: 100,
-                decoration: BoxDecoration(
-                  color: Colors.blue[50],
+                decoration: const BoxDecoration(
+                  color: Colors.white,
                 ),
                 child: Image.network(user?.photoUrl ?? defaultUserPhotoUrl)
               )

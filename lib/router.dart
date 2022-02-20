@@ -76,6 +76,10 @@ class RouterController extends StateNotifier<GoRouter?> {
           builder: (context, state) => const MediaScreen(),
         ),
         GoRoute(
+          path: Routes.message.route,
+          builder: (context, state) => const MessageScreen(),
+        ),
+        GoRoute(
           path: Routes.profile.route,
           pageBuilder:(context, state) => CustomTransitionPage(
             key: state.pageKey,

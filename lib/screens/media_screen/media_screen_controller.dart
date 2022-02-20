@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'dart:io';
+import 'package:aciste/custom_exception.dart';
 import 'package:aciste/enums/resource_type.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -157,6 +158,8 @@ class MediaScreenController extends StateNotifier<MediaScreenState> {
     switch (state.resourceType) {
       case ResourceType.photo:
         return RequestType.image;
+      case ResourceType.message:
+        throw const CustomException(message: 'メディアに変換できないタイプです');
       case ResourceType.none:
         return RequestType.common;
     }

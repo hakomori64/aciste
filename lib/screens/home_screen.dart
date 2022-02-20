@@ -67,8 +67,8 @@ class HomeScreen extends HookConsumerWidget {
                             }
                           },
                           child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.blue[50],
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
                             ),
                             child: Image.network(user?.photoUrl ?? defaultUserPhotoUrl)
                           ),
@@ -136,6 +136,10 @@ class HomeScreen extends HookConsumerWidget {
                     ref.read(routerProvider.notifier).push(route: Routes.itemCreate, extra: ItemCreateRouteParams(resourceType: ResourceType.message, params: CreateMessageParams(message: message)));
                   }));
                 },
+                elevation: 2.0,
+                fillColor: Theme.of(context).primaryColor,
+                child: const Icon(Icons.message, size: 50.0, color: Colors.white),
+                shape: const CircleBorder(),
               )
             )
           ],

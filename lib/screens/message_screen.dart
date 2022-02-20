@@ -2,6 +2,7 @@ import 'package:aciste/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:aciste/screens/message_screen/message_screen_controller.dart';
 
 class MessageScreen extends HookConsumerWidget {
   const MessageScreen({Key? key}) : super(key: key);
@@ -9,6 +10,7 @@ class MessageScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final messageController = useTextEditingController();
+    final text = ref.watch(messageScreenControllerProvider).text;
 
     return Scaffold(
       appBar: AppBar(
@@ -30,10 +32,10 @@ class MessageScreen extends HookConsumerWidget {
                   )
                 )
               ),
-              onPressed: () async {
+              onPressed: (text.isNotEmpty) ? () async {
                 FocusManager.instance.primaryFocus?.unfocus();
-
-              },
+                await ref.read(messageScreenControllerProvider).onTapFunc!(text);
+              } : null,
               child: const Text('決定'),
             )
           )
@@ -44,6 +46,7 @@ class MessageScreen extends HookConsumerWidget {
         child: SingleChildScrollView(
           child: TextField(
             controller: messageController,
+            onChanged: ref.read(messageScreenControllerProvider.notifier).setText,
             maxLines: null,
             autofocus: true,
             decoration: const InputDecoration(hintText: 'メッセージを入力してください'),

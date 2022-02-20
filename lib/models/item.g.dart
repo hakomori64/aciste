@@ -37,5 +37,6 @@ Map<String, dynamic> _$$_ItemToJson(_$_Item instance) => <String, dynamic>{
 
 const _$ResourceTypeEnumMap = {
   ResourceType.photo: 'photo',
+  ResourceType.message: 'message',
   ResourceType.none: 'none',
 };

@@ -19,9 +19,12 @@ class _$MessageScreenStateTearOff {
   const _$MessageScreenStateTearOff();
 
   _MessageScreenState call(
-      {ResourceType? resourceType, Future<void> Function(String)? onTapFunc}) {
+      {ResourceType? resourceType,
+      String text = "",
+      Future<void> Function(String)? onTapFunc}) {
     return _MessageScreenState(
       resourceType: resourceType,
+      text: text,
       onTapFunc: onTapFunc,
     );
   }
@@ -33,6 +36,7 @@ const $MessageScreenState = _$MessageScreenStateTearOff();
 /// @nodoc
 mixin _$MessageScreenState {
   ResourceType? get resourceType => throw _privateConstructorUsedError;
+  String get text => throw _privateConstructorUsedError;
   Future<void> Function(String)? get onTapFunc =>
       throw _privateConstructorUsedError;
 
@@ -47,7 +51,9 @@ abstract class $MessageScreenStateCopyWith<$Res> {
           MessageScreenState value, $Res Function(MessageScreenState) then) =
       _$MessageScreenStateCopyWithImpl<$Res>;
   $Res call(
-      {ResourceType? resourceType, Future<void> Function(String)? onTapFunc});
+      {ResourceType? resourceType,
+      String text,
+      Future<void> Function(String)? onTapFunc});
 }
 
 /// @nodoc
@@ -62,6 +68,7 @@ class _$MessageScreenStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? resourceType = freezed,
+    Object? text = freezed,
     Object? onTapFunc = freezed,
   }) {
     return _then(_value.copyWith(
@@ -69,6 +76,10 @@ class _$MessageScreenStateCopyWithImpl<$Res>
           ? _value.resourceType
           : resourceType // ignore: cast_nullable_to_non_nullable
               as ResourceType?,
+      text: text == freezed
+          ? _value.text
+          : text // ignore: cast_nullable_to_non_nullable
+              as String,
       onTapFunc: onTapFunc == freezed
           ? _value.onTapFunc
           : onTapFunc // ignore: cast_nullable_to_non_nullable
@@ -85,7 +96,9 @@ abstract class _$MessageScreenStateCopyWith<$Res>
       __$MessageScreenStateCopyWithImpl<$Res>;
   @override
   $Res call(
-      {ResourceType? resourceType, Future<void> Function(String)? onTapFunc});
+      {ResourceType? resourceType,
+      String text,
+      Future<void> Function(String)? onTapFunc});
 }
 
 /// @nodoc
@@ -102,6 +115,7 @@ class __$MessageScreenStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? resourceType = freezed,
+    Object? text = freezed,
     Object? onTapFunc = freezed,
   }) {
     return _then(_MessageScreenState(
@@ -109,6 +123,10 @@ class __$MessageScreenStateCopyWithImpl<$Res>
           ? _value.resourceType
           : resourceType // ignore: cast_nullable_to_non_nullable
               as ResourceType?,
+      text: text == freezed
+          ? _value.text
+          : text // ignore: cast_nullable_to_non_nullable
+              as String,
       onTapFunc: onTapFunc == freezed
           ? _value.onTapFunc
           : onTapFunc // ignore: cast_nullable_to_non_nullable
@@ -120,16 +138,20 @@ class __$MessageScreenStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_MessageScreenState implements _MessageScreenState {
-  const _$_MessageScreenState({this.resourceType, this.onTapFunc});
+  const _$_MessageScreenState(
+      {this.resourceType, this.text = "", this.onTapFunc});
 
   @override
   final ResourceType? resourceType;
+  @JsonKey()
+  @override
+  final String text;
   @override
   final Future<void> Function(String)? onTapFunc;
 
   @override
   String toString() {
-    return 'MessageScreenState(resourceType: $resourceType, onTapFunc: $onTapFunc)';
+    return 'MessageScreenState(resourceType: $resourceType, text: $text, onTapFunc: $onTapFunc)';
   }
 
   @override
@@ -139,13 +161,17 @@ class _$_MessageScreenState implements _MessageScreenState {
             other is _MessageScreenState &&
             const DeepCollectionEquality()
                 .equals(other.resourceType, resourceType) &&
+            const DeepCollectionEquality().equals(other.text, text) &&
             (identical(other.onTapFunc, onTapFunc) ||
                 other.onTapFunc == onTapFunc));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType,
-      const DeepCollectionEquality().hash(resourceType), onTapFunc);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(resourceType),
+      const DeepCollectionEquality().hash(text),
+      onTapFunc);
 
   @JsonKey(ignore: true)
   @override
@@ -156,10 +182,13 @@ class _$_MessageScreenState implements _MessageScreenState {
 abstract class _MessageScreenState implements MessageScreenState {
   const factory _MessageScreenState(
       {ResourceType? resourceType,
+      String text,
       Future<void> Function(String)? onTapFunc}) = _$_MessageScreenState;
 
   @override
   ResourceType? get resourceType;
+  @override
+  String get text;
   @override
   Future<void> Function(String)? get onTapFunc;
   @override

@@ -17,6 +17,10 @@ abstract class Message extends Resource implements _$Message {
     @TimestampDateTimeConverter() DateTime? createdAt,
   }) = _Message;
 
+  factory Message.empty() => Message(
+    createdAt: DateTime.now()
+  );
+
   factory Message.fromJson(Map<String, dynamic> json) => _$MessageFromJson(json);
 
   factory Message.fromDocumentSnapshot(DocumentSnapshot<Map<String, dynamic>> doc) {

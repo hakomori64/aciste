@@ -1,5 +1,6 @@
 import 'package:aciste/enums/resource_type.dart';
 import 'package:aciste/models/item.dart';
+import 'package:aciste/models/message.dart';
 import 'package:aciste/models/photo.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -26,6 +27,16 @@ class ResourceView extends HookConsumerWidget {
             color: Colors.black.withOpacity(0.5),
           ),
           imageProvider: CachedNetworkImageProvider(photo.url!),
+        );
+      case ResourceType.message:
+        final message = item.resource as Message;
+        return Center(
+          child: Text(
+            message.text!,
+            style: const TextStyle(
+              fontSize: 24,
+            )
+          )
         );
       case ResourceType.none:
         return const Text('unrecognized type');

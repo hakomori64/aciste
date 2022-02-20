@@ -36,7 +36,7 @@ class ItemCreateScreen extends HookConsumerWidget {
             padding: const EdgeInsets.all(8.0),
             child: TextButton(
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color?>(Colors.blue[100]),
+                backgroundColor: MaterialStateProperty.all<Color?>(Theme.of(context).primaryColor),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(18.0),
@@ -51,7 +51,7 @@ class ItemCreateScreen extends HookConsumerWidget {
                       name: nameController.text.trim(),
                       description: descriptionController.text.trim(),
                       createdBy: authUserState!.uid,
-                      resourceType: ResourceType.photo,
+                      resourceType: resourceType!,
                       content: params!
                   );
                 ref.read(appControllerProvider.notifier).setloading(value: false);

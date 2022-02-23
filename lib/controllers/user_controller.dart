@@ -5,21 +5,22 @@ import 'package:aciste/controllers/auth_controller.dart';
 import 'package:aciste/models/user.dart';
 import 'package:aciste/custom_exception.dart';
 import 'package:aciste/repositories/user_repository.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 
 final userExceptionProvider = StateProvider<CustomException?>((ref) => null);
 final userControllerProvider = StateNotifierProvider<UserController, AsyncValue<User?>>(
   (ref) {
     final user = ref.watch(authControllerProvider);
-    return UserController(ref.read, user?.uid);
+    return UserController(ref.read, user);
   }
 );
 
 class UserController extends StateNotifier<AsyncValue<User?>> {
   final Reader _read;
-  final String? _userId;
+  final auth.User? _user;
 
-  UserController(this._read, this._userId) : super(const AsyncValue.loading()) {
-    if (_userId != null) {
+  UserController(this._read, this._user) : super(const AsyncValue.loading()) {
+    if (_user?.uid != null) {
       getUser();
     }
   }
@@ -27,15 +28,17 @@ class UserController extends StateNotifier<AsyncValue<User?>> {
   Future<void> getUser({bool isRefreshing = false}) async {
     if (isRefreshing) state = const AsyncValue.loading();
     try {
-      if (_userId == null) {
+      if (_user == null) {
         throw const CustomException(message: "_userIdがnullです");
       }
-      var user = await _read(userRepositoryProvider).getUser(userId: _userId!);
+      var user = await _read(userRepositoryProvider).getUser(userId: _user!.uid);
       if (user == null) {
         await _read(userRepositoryProvider).createUser(
-          userId: _userId!,
-          user: User.empty());
-        user = await _read(userRepositoryProvider).getUser(userId: _userId!);
+          userId: _user!.uid,
+          user: User.empty().copyWith(
+            email: _user?.email ?? ''
+          ));
+        user = await _read(userRepositoryProvider).getUser(userId: _user!.uid);
         if (user == null) {
           throw const CustomException(message: "ユーザーを取得できませんでした");
         }

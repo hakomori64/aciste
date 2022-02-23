@@ -24,11 +24,15 @@ class _$PhotoTearOff {
 
   _Photo call(
       {String? id,
+      String name = "",
+      String description = "",
       User? createdBy,
       String? url,
       @TimestampDateTimeConverter() DateTime? createdAt}) {
     return _Photo(
       id: id,
+      name: name,
+      description: description,
       createdBy: createdBy,
       url: url,
       createdAt: createdAt,
@@ -46,6 +50,8 @@ const $Photo = _$PhotoTearOff();
 /// @nodoc
 mixin _$Photo {
   String? get id => throw _privateConstructorUsedError;
+  String get name => throw _privateConstructorUsedError;
+  String get description => throw _privateConstructorUsedError;
   User? get createdBy => throw _privateConstructorUsedError;
   String? get url => throw _privateConstructorUsedError;
   @TimestampDateTimeConverter()
@@ -62,6 +68,8 @@ abstract class $PhotoCopyWith<$Res> {
       _$PhotoCopyWithImpl<$Res>;
   $Res call(
       {String? id,
+      String name,
+      String description,
       User? createdBy,
       String? url,
       @TimestampDateTimeConverter() DateTime? createdAt});
@@ -80,6 +88,8 @@ class _$PhotoCopyWithImpl<$Res> implements $PhotoCopyWith<$Res> {
   @override
   $Res call({
     Object? id = freezed,
+    Object? name = freezed,
+    Object? description = freezed,
     Object? createdBy = freezed,
     Object? url = freezed,
     Object? createdAt = freezed,
@@ -89,6 +99,14 @@ class _$PhotoCopyWithImpl<$Res> implements $PhotoCopyWith<$Res> {
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
+      name: name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      description: description == freezed
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String,
       createdBy: createdBy == freezed
           ? _value.createdBy
           : createdBy // ignore: cast_nullable_to_non_nullable
@@ -123,6 +141,8 @@ abstract class _$PhotoCopyWith<$Res> implements $PhotoCopyWith<$Res> {
   @override
   $Res call(
       {String? id,
+      String name,
+      String description,
       User? createdBy,
       String? url,
       @TimestampDateTimeConverter() DateTime? createdAt});
@@ -143,6 +163,8 @@ class __$PhotoCopyWithImpl<$Res> extends _$PhotoCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
+    Object? name = freezed,
+    Object? description = freezed,
     Object? createdBy = freezed,
     Object? url = freezed,
     Object? createdAt = freezed,
@@ -152,6 +174,14 @@ class __$PhotoCopyWithImpl<$Res> extends _$PhotoCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
+      name: name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      description: description == freezed
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String,
       createdBy: createdBy == freezed
           ? _value.createdBy
           : createdBy // ignore: cast_nullable_to_non_nullable
@@ -173,6 +203,8 @@ class __$PhotoCopyWithImpl<$Res> extends _$PhotoCopyWithImpl<$Res>
 class _$_Photo extends _Photo {
   const _$_Photo(
       {this.id,
+      this.name = "",
+      this.description = "",
       this.createdBy,
       this.url,
       @TimestampDateTimeConverter() this.createdAt})
@@ -183,6 +215,12 @@ class _$_Photo extends _Photo {
 
   @override
   final String? id;
+  @JsonKey()
+  @override
+  final String name;
+  @JsonKey()
+  @override
+  final String description;
   @override
   final User? createdBy;
   @override
@@ -193,7 +231,7 @@ class _$_Photo extends _Photo {
 
   @override
   String toString() {
-    return 'Photo(id: $id, createdBy: $createdBy, url: $url, createdAt: $createdAt)';
+    return 'Photo(id: $id, name: $name, description: $description, createdBy: $createdBy, url: $url, createdAt: $createdAt)';
   }
 
   @override
@@ -202,6 +240,9 @@ class _$_Photo extends _Photo {
         (other.runtimeType == runtimeType &&
             other is _Photo &&
             const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.name, name) &&
+            const DeepCollectionEquality()
+                .equals(other.description, description) &&
             const DeepCollectionEquality().equals(other.createdBy, createdBy) &&
             const DeepCollectionEquality().equals(other.url, url) &&
             const DeepCollectionEquality().equals(other.createdAt, createdAt));
@@ -211,6 +252,8 @@ class _$_Photo extends _Photo {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(name),
+      const DeepCollectionEquality().hash(description),
       const DeepCollectionEquality().hash(createdBy),
       const DeepCollectionEquality().hash(url),
       const DeepCollectionEquality().hash(createdAt));
@@ -229,6 +272,8 @@ class _$_Photo extends _Photo {
 abstract class _Photo extends Photo {
   const factory _Photo(
       {String? id,
+      String name,
+      String description,
       User? createdBy,
       String? url,
       @TimestampDateTimeConverter() DateTime? createdAt}) = _$_Photo;
@@ -238,6 +283,10 @@ abstract class _Photo extends Photo {
 
   @override
   String? get id;
+  @override
+  String get name;
+  @override
+  String get description;
   @override
   User? get createdBy;
   @override

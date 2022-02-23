@@ -7,11 +7,13 @@ part 'video.freezed.dart';
 part 'video.g.dart';
 
 @freezed
-abstract class Video extends Resource implements _$Video {
+abstract class Video with _$Video implements Resource {
   const Video._();
 
   const factory Video({
     String? id,
+    @Default("") String name,
+    @Default("") String description,
     User? createdBy,
     String? url,
     @TimestampDateTimeConverter() DateTime? createdAt,

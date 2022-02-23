@@ -10,6 +10,7 @@ import 'package:aciste/extensions/firebase_firestore_extension.dart';
 abstract class BaseMessageRepository {
   Future<Message> retrieveMessage({required String userId, required String messageId});
   Future<Message> createMessage({required String userId, required CreateMessageParams createMessageParams});
+  Future<Message> updateMessage({required String userId, required Message message});
 }
 
 final messageRepositoryProvider = Provider<MessageRepository>((ref) => MessageRepository(ref.read));
@@ -56,5 +57,15 @@ class MessageRepository implements BaseMessageRepository {
       message: message.copyWith(id: docRef.id),
       userId: userId
     );
+  }
+
+  @override
+  Future<Message> updateMessage({required userId, required message}) async {
+    await _read(firebaseFirestoreProvider)
+      .messagesRef()
+      .doc(message.id!)
+      .update(message.toDocument());
+    
+    return message;
   }
 }

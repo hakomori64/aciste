@@ -24,11 +24,15 @@ class _$MessageTearOff {
 
   _Message call(
       {String? id,
+      String name = "",
+      String description = "",
       User? createdBy,
       String? text,
       @TimestampDateTimeConverter() DateTime? createdAt}) {
     return _Message(
       id: id,
+      name: name,
+      description: description,
       createdBy: createdBy,
       text: text,
       createdAt: createdAt,
@@ -46,6 +50,8 @@ const $Message = _$MessageTearOff();
 /// @nodoc
 mixin _$Message {
   String? get id => throw _privateConstructorUsedError;
+  String get name => throw _privateConstructorUsedError;
+  String get description => throw _privateConstructorUsedError;
   User? get createdBy => throw _privateConstructorUsedError;
   String? get text => throw _privateConstructorUsedError;
   @TimestampDateTimeConverter()
@@ -62,6 +68,8 @@ abstract class $MessageCopyWith<$Res> {
       _$MessageCopyWithImpl<$Res>;
   $Res call(
       {String? id,
+      String name,
+      String description,
       User? createdBy,
       String? text,
       @TimestampDateTimeConverter() DateTime? createdAt});
@@ -80,6 +88,8 @@ class _$MessageCopyWithImpl<$Res> implements $MessageCopyWith<$Res> {
   @override
   $Res call({
     Object? id = freezed,
+    Object? name = freezed,
+    Object? description = freezed,
     Object? createdBy = freezed,
     Object? text = freezed,
     Object? createdAt = freezed,
@@ -89,6 +99,14 @@ class _$MessageCopyWithImpl<$Res> implements $MessageCopyWith<$Res> {
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
+      name: name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      description: description == freezed
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String,
       createdBy: createdBy == freezed
           ? _value.createdBy
           : createdBy // ignore: cast_nullable_to_non_nullable
@@ -123,6 +141,8 @@ abstract class _$MessageCopyWith<$Res> implements $MessageCopyWith<$Res> {
   @override
   $Res call(
       {String? id,
+      String name,
+      String description,
       User? createdBy,
       String? text,
       @TimestampDateTimeConverter() DateTime? createdAt});
@@ -143,6 +163,8 @@ class __$MessageCopyWithImpl<$Res> extends _$MessageCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
+    Object? name = freezed,
+    Object? description = freezed,
     Object? createdBy = freezed,
     Object? text = freezed,
     Object? createdAt = freezed,
@@ -152,6 +174,14 @@ class __$MessageCopyWithImpl<$Res> extends _$MessageCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
+      name: name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      description: description == freezed
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String,
       createdBy: createdBy == freezed
           ? _value.createdBy
           : createdBy // ignore: cast_nullable_to_non_nullable
@@ -173,6 +203,8 @@ class __$MessageCopyWithImpl<$Res> extends _$MessageCopyWithImpl<$Res>
 class _$_Message extends _Message {
   const _$_Message(
       {this.id,
+      this.name = "",
+      this.description = "",
       this.createdBy,
       this.text,
       @TimestampDateTimeConverter() this.createdAt})
@@ -183,6 +215,12 @@ class _$_Message extends _Message {
 
   @override
   final String? id;
+  @JsonKey()
+  @override
+  final String name;
+  @JsonKey()
+  @override
+  final String description;
   @override
   final User? createdBy;
   @override
@@ -193,7 +231,7 @@ class _$_Message extends _Message {
 
   @override
   String toString() {
-    return 'Message(id: $id, createdBy: $createdBy, text: $text, createdAt: $createdAt)';
+    return 'Message(id: $id, name: $name, description: $description, createdBy: $createdBy, text: $text, createdAt: $createdAt)';
   }
 
   @override
@@ -202,6 +240,9 @@ class _$_Message extends _Message {
         (other.runtimeType == runtimeType &&
             other is _Message &&
             const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.name, name) &&
+            const DeepCollectionEquality()
+                .equals(other.description, description) &&
             const DeepCollectionEquality().equals(other.createdBy, createdBy) &&
             const DeepCollectionEquality().equals(other.text, text) &&
             const DeepCollectionEquality().equals(other.createdAt, createdAt));
@@ -211,6 +252,8 @@ class _$_Message extends _Message {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(name),
+      const DeepCollectionEquality().hash(description),
       const DeepCollectionEquality().hash(createdBy),
       const DeepCollectionEquality().hash(text),
       const DeepCollectionEquality().hash(createdAt));
@@ -229,6 +272,8 @@ class _$_Message extends _Message {
 abstract class _Message extends Message {
   const factory _Message(
       {String? id,
+      String name,
+      String description,
       User? createdBy,
       String? text,
       @TimestampDateTimeConverter() DateTime? createdAt}) = _$_Message;
@@ -238,6 +283,10 @@ abstract class _Message extends Message {
 
   @override
   String? get id;
+  @override
+  String get name;
+  @override
+  String get description;
   @override
   User? get createdBy;
   @override

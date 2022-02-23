@@ -58,6 +58,16 @@ class ItemRepository implements BaseItemRepository {
         .userItemsRef(userId)
         .add(item.toDocument());
       
+      if (item.resource?.createdBy?.id == userId) {
+        await _read(resourceRepositoryProvider).updateResource(
+          userId: userId,
+          resourceType: item.resourceType!,
+          resource: item.resource!.copyWith(
+            name: item.name,
+            description: item.description,
+          )
+        );
+      }
       return docRef.id;
     } on FirebaseException catch (e) {
       throw CustomException(message: e.message);
@@ -71,6 +81,17 @@ class ItemRepository implements BaseItemRepository {
         .userItemsRef(userId)
         .doc(item.id)
         .update(item.toDocument());
+      
+      if (item.resource?.createdBy?.id == userId) {
+        await _read(resourceRepositoryProvider).updateResource(
+          userId: userId,
+          resourceType: item.resourceType!,
+          resource: item.resource!.copyWith(
+            name: item.name,
+            description: item.description,
+          )
+        );
+      }
     } on FirebaseException catch (e) {
       throw CustomException(message: e.message);
     }

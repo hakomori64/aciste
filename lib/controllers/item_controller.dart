@@ -70,6 +70,36 @@ class ItemListController extends StateNotifier<AsyncValue<List<Item>>> {
     }
   }
 
+  Future<void> importItem({
+    required String name,
+    required String description,
+    required Resource resource,
+    required ResourceType resourceType,
+    required String? userId,
+  }) async {
+    if (userId == null) {
+      state = const AsyncValue.error(CustomException(message: 'ログインが済んでいません'));
+      return;
+    }
+
+    try {
+      final item = Item.empty().copyWith(
+        name: name,
+        description: description,
+        resource: resource,
+        resourceType: resourceType,
+        userId: userId
+      );
+      final itemId = await _read(itemRepositoryProvider).createItem(
+        userId: userId,
+        item: item
+      );
+      state.whenData((items) => state = AsyncValue.data(items..add(item.copyWith(id: itemId))));
+    } on CustomException catch (e) {
+      state = AsyncValue.error(e);
+    }
+  }
+
   Future<void> updateItem({required Item updatedItem}) async {
     try {
       await _read(itemRepositoryProvider).updateItem(userId: _userId!, item: updatedItem);

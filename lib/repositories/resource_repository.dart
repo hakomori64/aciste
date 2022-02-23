@@ -10,6 +10,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 abstract class BaseResourceRepository {
   Future<Resource> retrieveResource({required String userId, required ResourceType resourceType, required String resourceId});
   Future<Resource> createResource({required String userId, required ResourceType resourceType, required CreateResourceParams createResourceParams});
+  Future<Resource> updateResource({required String userId, required ResourceType resourceType, required Resource resource});
 }
 
 final resourceRepositoryProvider = Provider<ResourceRepository>((ref) => ResourceRepository(ref.read));
@@ -38,6 +39,18 @@ class ResourceRepository implements BaseResourceRepository {
         return _read(photoRepositoryProvider).createPhoto(userId: userId, createPhotoParams: createResourceParams as CreatePhotoParams);
       case ResourceType.message:
         return _read(messageRepositoryProvider).createMessage(userId: userId, createMessageParams: createResourceParams as CreateMessageParams);
+      case ResourceType.none:
+        throw const CustomException(message: '不明なリソースタイプです');
+    }
+  }
+
+  @override
+  Future<Resource> updateResource({required String userId, required ResourceType resourceType, required Resource resource}) async {
+    switch (resourceType) {
+      case ResourceType.photo:
+        return _read(photoRepositoryProvider).updatePhoto(userId: userId, photo: resource as Photo);
+      case ResourceType.message:
+        return _read(messageRepositoryProvider).updateMessage(userId: userId, message: resource as Message);
       case ResourceType.none:
         throw const CustomException(message: '不明なリソースタイプです');
     }

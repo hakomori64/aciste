@@ -7,11 +7,13 @@ part 'message.freezed.dart';
 part 'message.g.dart';
 
 @freezed
-abstract class Message extends Resource implements _$Message {
+abstract class Message with _$Message implements Resource {
   const Message._();
 
   const factory Message({
     String? id,
+    @Default("") String name,
+    @Default("") String description,
     User? createdBy,
     String? text,
     @TimestampDateTimeConverter() DateTime? createdAt,

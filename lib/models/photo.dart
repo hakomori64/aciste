@@ -9,11 +9,13 @@ part 'photo.freezed.dart';
 part 'photo.g.dart';
 
 @freezed
-abstract class Photo extends Resource implements _$Photo {
+abstract class Photo with _$Photo implements Resource {
   const Photo._();
 
   const factory Photo({
     String? id,
+    @Default("") String name,
+    @Default("") String description,
     User? createdBy,
     String? url,
     @TimestampDateTimeConverter() DateTime? createdAt,

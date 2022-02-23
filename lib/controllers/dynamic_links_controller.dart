@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:aciste/controllers/auth_controller.dart';
+import 'package:aciste/enums/resource_type.dart';
 import 'package:aciste/providers.dart';
 import 'package:aciste/repositories/dynamic_link_repository.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -52,12 +53,17 @@ class DynamicLinksController extends StateNotifier<DynamicLinkState> {
     _read(firebaseDynamicLinksProvider).onLink.listen((dynamicLinkData) async {
       final path = dynamicLinkData.link.path;
       final parameters = dynamicLinkData.link.queryParameters;
-      await _handleUrl(path: path, parameters: parameters);
+      if (mounted) {
+        await _handleUrl(path: path, parameters: parameters);
+      }
     });
   }
 
-  Future<String> getItemImportUrl({required String resourceId}) async {
-    final url = await _read(dynamicLinksRepositoryProvider).createItemImportDynamicLink(resourceId: resourceId);
+  Future<String> getItemImportUrl({required String resourceId, required ResourceType resourceType}) async {
+    final url = await _read(dynamicLinksRepositoryProvider).createItemImportDynamicLink(
+      resourceId: resourceId,
+      resourceType: resourceType,
+    );
     return url.toString();
   }
 

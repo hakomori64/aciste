@@ -12,6 +12,7 @@ import 'package:uuid/uuid.dart';
 abstract class BasePhotoRepository {
   Future<Photo> retrievePhoto({required String userId, required String photoId});
   Future<Photo> createPhoto({required String userId, required CreatePhotoParams createPhotoParams});
+  Future<Photo> updatePhoto({required String userId, required Photo photo});
 }
 
 final photoRepositoryProvider = Provider<PhotoRepository>((ref) => PhotoRepository(ref.read));
@@ -70,5 +71,15 @@ class PhotoRepository implements BasePhotoRepository {
     return _fillUser(
       photo: photo.copyWith(id: docRef.id),
       userId: userId);
+  }
+
+  @override
+  Future<Photo> updatePhoto({required userId, required photo}) async {
+    await _read(firebaseFirestoreProvider)
+      .photosRef()
+      .doc(photo.id!)
+      .update(photo.toDocument());
+    
+    return photo;
   }
 }

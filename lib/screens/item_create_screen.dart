@@ -47,8 +47,8 @@ class ItemCreateScreen extends HookConsumerWidget {
                 ref.read(appControllerProvider.notifier).setloading(value: true);
                 await ref.read(itemListControllerProvider.notifier)
                   .addItem(
-                      name: nameController.text.trim(),
-                      description: descriptionController.text.trim(),
+                      name: nameController.text,
+                      description: descriptionController.text,
                       createdBy: authUserState!.uid,
                       resourceType: resourceType!,
                       content: params!

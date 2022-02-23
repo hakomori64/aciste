@@ -3,6 +3,7 @@ import 'package:aciste/enums/resource_type.dart';
 import 'package:aciste/models/item.dart';
 import 'package:aciste/controllers/dynamic_links_controller.dart';
 import 'package:aciste/repositories/resource_repository.dart';
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -12,6 +13,8 @@ part 'item_import_screen_controller.freezed.dart';
 class ItemImportScreenState with _$ItemImportScreenState {
   const factory ItemImportScreenState({
     Item? item,
+    @Default("") String name,
+    @Default("") String description,
   }) = _ItemImportScreenState;
 }
 
@@ -41,21 +44,32 @@ class ItemImportScreenController extends StateNotifier<ItemImportScreenState> {
   void _init() async {
     // set Item using resourceId
     final resourceId = parameterMap!['resourceId'] as String;
-    final resourceType = parameterMap!['resourceType'] as ResourceType;
+    final resourceType = EnumToString.fromString(ResourceType.values, parameterMap!['resourceType']);
     final resource = await _read(resourceRepositoryProvider).retrieveResource(
       userId: userId!,
       resourceId: resourceId,
-      resourceType: resourceType
+      resourceType: resourceType!
       );
     
     final item = Item.empty().copyWith(
-      resource: resource
+      resource: resource,
+      resourceType: resourceType,
     );
     setItem(item);
+    setName(resource.name ?? '');
+    setDescription(resource.description ?? '');
     //_read(dynamicLinksControllerProvider.notifier).clear();
   }
 
   void setItem(Item item) {
     state = state.copyWith(item: item);
+  }
+
+  void setName(String name) {
+    state = state.copyWith(name: name);
+  }
+
+  void setDescription(String description) {
+    state = state.copyWith(description: description);
   }
 }

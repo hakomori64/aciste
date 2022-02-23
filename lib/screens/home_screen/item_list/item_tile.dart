@@ -131,7 +131,10 @@ class ItemTile extends HookConsumerWidget {
                       title: const Text('共有'),
                       onTap: () async {
                         final resourceId = item.resource!.id!;
-                        final url = await ref.read(dynamicLinksControllerProvider.notifier).getItemImportUrl(resourceId: resourceId);
+                        final url = await ref.read(dynamicLinksControllerProvider.notifier).getItemImportUrl(
+                          resourceId: resourceId,
+                          resourceType: item.resourceType!,
+                        );
                         final box = context.findRenderObject() as RenderBox?;
                         await Share.share(url, subject: url, sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
                       },
@@ -142,7 +145,10 @@ class ItemTile extends HookConsumerWidget {
                       onTap: () async {
                         ref.read(routerProvider.notifier).closeBottomSheet();
                         final resourceId = item.resource!.id!;
-                        final url = await ref.read(dynamicLinksControllerProvider.notifier).getItemImportUrl(resourceId: resourceId);
+                        final url = await ref.read(dynamicLinksControllerProvider.notifier).getItemImportUrl(
+                          resourceId: resourceId,
+                          resourceType: item.resourceType!,
+                        );
                         ref.read(qrCodeScreenControllerProvider.notifier).setUrl(url);
                         ref.read(routerProvider.notifier).showDialog(
                           child: const QRCodeScreen(),

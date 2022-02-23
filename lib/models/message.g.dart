@@ -8,6 +8,8 @@ part of 'message.dart';
 
 _$_Message _$$_MessageFromJson(Map<String, dynamic> json) => _$_Message(
       id: json['id'] as String?,
+      name: json['name'] as String? ?? "",
+      description: json['description'] as String? ?? "",
       createdBy: json['createdBy'] == null
           ? null
           : User.fromJson(json['createdBy'] as Map<String, dynamic>),
@@ -19,6 +21,8 @@ _$_Message _$$_MessageFromJson(Map<String, dynamic> json) => _$_Message(
 Map<String, dynamic> _$$_MessageToJson(_$_Message instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'name': instance.name,
+      'description': instance.description,
       'createdBy': instance.createdBy,
       'text': instance.text,
       'createdAt':

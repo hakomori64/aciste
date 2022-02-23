@@ -1,16 +1,19 @@
 import 'package:aciste/models/user.dart';
 
-abstract class Resource {
-  final String? id;
-  final User? createdBy;
-  final DateTime? createdAt;
-  const Resource({this.id, this.createdAt, this.createdBy});
+abstract class FreezedClass<T> {
+  const FreezedClass();
+  T get copyWith;
+  Map<String, dynamic> toJson();
+}
+
+abstract class Resource extends FreezedClass {
+  String? get id;
+  String? get name;
+  String? get description;
+  User? get createdBy;
+  DateTime? get createdAt;
 
   factory Resource.fromJson(Map<String, dynamic> json) {
-    throw UnimplementedError();
-  }
-
-  Map<String, dynamic> toJson() {
     throw UnimplementedError();
   }
 }

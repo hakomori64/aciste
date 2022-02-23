@@ -41,6 +41,10 @@ class AuthController extends StateNotifier<User?> {
     );
   }
 
+  Future<void> sendPasswordResetEmail({required String email}) async {
+    return _read(authRepositoryProvider).sendPasswordResetEmail(email: email);
+  }
+
   Future<void> googleSignIn() async {
     await _read(authRepositoryProvider).googleSignIn();
   }

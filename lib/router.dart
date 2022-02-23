@@ -6,6 +6,8 @@ import 'package:aciste/enums/resource_type.dart';
 import 'package:aciste/models/resource.dart';
 import 'package:aciste/screens/dialog_screen.dart';
 import 'package:aciste/screens/dialog_screen/dialog_screen_controller.dart';
+import 'package:aciste/screens/email_check_screen.dart';
+import 'package:aciste/screens/email_check_screen/email_check_screen_controller.dart';
 import 'package:aciste/screens/item_create_screen.dart';
 import 'package:aciste/screens/home_screen.dart';
 import 'package:aciste/screens/item_create_screen/item_create_screen_controller.dart';
@@ -15,7 +17,7 @@ import 'package:aciste/screens/item_edit_screen.dart';
 import 'package:aciste/screens/item_edit_screen/item_edit_screen_controller.dart';
 import 'package:aciste/screens/item_import_screen.dart';
 import 'package:aciste/screens/item_import_screen/item_import_screen_controller.dart';
-import 'package:aciste/screens/launch_screen.dart';
+import 'package:aciste/screens/login_screen.dart';
 import 'package:aciste/screens/logo_screen.dart';
 import 'package:aciste/screens/media_screen.dart';
 import 'package:aciste/screens/media_screen/media_screen_controller.dart';
@@ -24,6 +26,8 @@ import 'package:aciste/screens/message_screen/message_screen_controller.dart';
 import 'package:aciste/screens/profile_edit_screen.dart';
 import 'package:aciste/screens/profile_screen.dart';
 import 'package:aciste/screens/profile_screen/profile_screen_controller.dart';
+import 'package:aciste/screens/signup_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:go_router/go_router.dart';
@@ -34,21 +38,21 @@ import 'models/item.dart';
 
 final routerProvider = StateNotifierProvider<RouterController, GoRouter?>((ref) => RouterController(
   ref.read,
-  ref.watch(authControllerProvider)?.uid,
+  ref.watch(authControllerProvider),
   ref.watch(dynamicLinksControllerProvider).path,
 ));
 
 class RouterController extends StateNotifier<GoRouter?> {
   RouterController(
     this._read,
-    this._userId,
+    this._user,
     this._path,
   ) : super(null) {
     _init();
   }
 
   final Reader _read;
-  final String? _userId;
+  final User? _user;
   final String? _path;
 
   void _init() {
@@ -59,16 +63,24 @@ class RouterController extends StateNotifier<GoRouter?> {
           path: Routes.logo.route,
           builder:(context, state) => screen(route: Routes.logo),
           redirect: (state) {
-            if (_userId != null) {
+            if (_user?.uid != null && _user!.emailVerified) {
               return Routes.home.route;
             } else {
-              return Routes.launch.route;
+              return Routes.login.route;
             }
           },
         ),
         GoRoute(
-          path: Routes.launch.route,
-          builder: (context, state) => screen(route: Routes.launch),
+          path: Routes.login.route,
+          builder: (context, state) => screen(route: Routes.login),
+        ),
+        GoRoute(
+          path: Routes.signup.route,
+          builder: (context, state) => screen(route: Routes.signup),
+        ),
+        GoRoute(
+          path: Routes.emailCheck.route,
+          builder: (context, state) => screen(route: Routes.emailCheck),
         ),
         GoRoute(
           path: Routes.home.route,
@@ -182,7 +194,7 @@ class RouterController extends StateNotifier<GoRouter?> {
 
   Future<void> _handleParams({required Routes route, Object? extra}) async {
     switch (route) {
-      case Routes.launch:
+      case Routes.login:
         break;
       case Routes.home:
         break;
@@ -190,6 +202,12 @@ class RouterController extends StateNotifier<GoRouter?> {
         final params = extra! as MediaRouteParams;
         await _read(mediaScreenControllerProvider.notifier).setResourceType(resourceType: params.resourceType);
         await _read(mediaScreenControllerProvider.notifier).setOnTapFunc(onTapFunc: params.onTapFunc);
+        break;
+      case Routes.emailCheck:
+        final params = extra! as EmailCheckRouteParams;
+        _read(emailCheckScreenControllerProvider.notifier).setEmail(email: params.email);
+        _read(emailCheckScreenControllerProvider.notifier).setPassword(password: params.password);
+        _read(emailCheckScreenControllerProvider.notifier).setFrom(from: params.from);
         break;
       case Routes.message:
         final params = extra! as MessageRouteParams;
@@ -248,8 +266,12 @@ class RouterController extends StateNotifier<GoRouter?> {
     switch (route) {
       case Routes.logo:
         return const LogoScreen();
-      case Routes.launch:
-        return const LaunchScreen();
+      case Routes.login:
+        return const LoginScreen();
+      case Routes.signup:
+        return const SignupScreen();
+      case Routes.emailCheck:
+        return const EmailCheckScreen();
       case Routes.home:
         return const HomeScreen();
       case Routes.media:
@@ -276,7 +298,9 @@ class RouterController extends StateNotifier<GoRouter?> {
 
 enum Routes {
   logo,
-  launch,
+  login,
+  signup,
+  emailCheck,
   home,
   profile,
   profileEdit,
@@ -298,6 +322,13 @@ class MediaRouteParams {
   final Future<void> Function(File file) onTapFunc;
 
   const MediaRouteParams({required this.resourceType, required this.onTapFunc});
+}
+
+class EmailCheckRouteParams {
+  final String email;
+  final String password;
+  final Routes from;
+  const EmailCheckRouteParams({required this.email, required this.password, required this.from});
 }
 
 class MessageRouteParams {

@@ -13,6 +13,7 @@ abstract class BaseAuthRepository {
 
   Future<User?> signInWithEmailAndPassword({required String email, required String password});
   Future<User?> signUpWithEmailAndPassword({required String email, required String password});
+  Future<void> sendPasswordResetEmail({required String email});
 
   Future<User?> googleSignIn();
 
@@ -69,6 +70,11 @@ class AuthRepository implements BaseAuthRepository {
     } on FirebaseAuthException catch (_) {
       return null;
     }
+  }
+
+  @override
+  Future<void> sendPasswordResetEmail({required email}) async {
+    await _read(firebaseAuthProvider).sendPasswordResetEmail(email: email);
   }
 
   @override

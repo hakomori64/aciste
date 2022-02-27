@@ -36,7 +36,7 @@ class PhotoRepository implements BasePhotoRepository {
         .get();
       
       final photo = Photo.fromDocumentSnapshot(doc);
-      return _fillUser(photo: photo, userId: userId);
+      return _fillUser(photo: photo, userId: doc.data()!['createdById']);
     } on FirebaseException catch (e) {
       throw CustomException(message: e.message);
     }

@@ -28,7 +28,8 @@ class _$MessageTearOff {
       String description = "",
       User? createdBy,
       String? text,
-      @TimestampDateTimeConverter() DateTime? createdAt}) {
+      @TimestampDateTimeConverter() DateTime? createdAt,
+      int viewCount = 0}) {
     return _Message(
       id: id,
       name: name,
@@ -36,6 +37,7 @@ class _$MessageTearOff {
       createdBy: createdBy,
       text: text,
       createdAt: createdAt,
+      viewCount: viewCount,
     );
   }
 
@@ -56,6 +58,7 @@ mixin _$Message {
   String? get text => throw _privateConstructorUsedError;
   @TimestampDateTimeConverter()
   DateTime? get createdAt => throw _privateConstructorUsedError;
+  int get viewCount => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -72,7 +75,8 @@ abstract class $MessageCopyWith<$Res> {
       String description,
       User? createdBy,
       String? text,
-      @TimestampDateTimeConverter() DateTime? createdAt});
+      @TimestampDateTimeConverter() DateTime? createdAt,
+      int viewCount});
 
   $UserCopyWith<$Res>? get createdBy;
 }
@@ -93,6 +97,7 @@ class _$MessageCopyWithImpl<$Res> implements $MessageCopyWith<$Res> {
     Object? createdBy = freezed,
     Object? text = freezed,
     Object? createdAt = freezed,
+    Object? viewCount = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -119,6 +124,10 @@ class _$MessageCopyWithImpl<$Res> implements $MessageCopyWith<$Res> {
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      viewCount: viewCount == freezed
+          ? _value.viewCount
+          : viewCount // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 
@@ -145,7 +154,8 @@ abstract class _$MessageCopyWith<$Res> implements $MessageCopyWith<$Res> {
       String description,
       User? createdBy,
       String? text,
-      @TimestampDateTimeConverter() DateTime? createdAt});
+      @TimestampDateTimeConverter() DateTime? createdAt,
+      int viewCount});
 
   @override
   $UserCopyWith<$Res>? get createdBy;
@@ -168,6 +178,7 @@ class __$MessageCopyWithImpl<$Res> extends _$MessageCopyWithImpl<$Res>
     Object? createdBy = freezed,
     Object? text = freezed,
     Object? createdAt = freezed,
+    Object? viewCount = freezed,
   }) {
     return _then(_Message(
       id: id == freezed
@@ -194,6 +205,10 @@ class __$MessageCopyWithImpl<$Res> extends _$MessageCopyWithImpl<$Res>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      viewCount: viewCount == freezed
+          ? _value.viewCount
+          : viewCount // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -207,7 +222,8 @@ class _$_Message extends _Message {
       this.description = "",
       this.createdBy,
       this.text,
-      @TimestampDateTimeConverter() this.createdAt})
+      @TimestampDateTimeConverter() this.createdAt,
+      this.viewCount = 0})
       : super._();
 
   factory _$_Message.fromJson(Map<String, dynamic> json) =>
@@ -228,10 +244,13 @@ class _$_Message extends _Message {
   @override
   @TimestampDateTimeConverter()
   final DateTime? createdAt;
+  @JsonKey()
+  @override
+  final int viewCount;
 
   @override
   String toString() {
-    return 'Message(id: $id, name: $name, description: $description, createdBy: $createdBy, text: $text, createdAt: $createdAt)';
+    return 'Message(id: $id, name: $name, description: $description, createdBy: $createdBy, text: $text, createdAt: $createdAt, viewCount: $viewCount)';
   }
 
   @override
@@ -245,7 +264,8 @@ class _$_Message extends _Message {
                 .equals(other.description, description) &&
             const DeepCollectionEquality().equals(other.createdBy, createdBy) &&
             const DeepCollectionEquality().equals(other.text, text) &&
-            const DeepCollectionEquality().equals(other.createdAt, createdAt));
+            const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
+            const DeepCollectionEquality().equals(other.viewCount, viewCount));
   }
 
   @override
@@ -256,7 +276,8 @@ class _$_Message extends _Message {
       const DeepCollectionEquality().hash(description),
       const DeepCollectionEquality().hash(createdBy),
       const DeepCollectionEquality().hash(text),
-      const DeepCollectionEquality().hash(createdAt));
+      const DeepCollectionEquality().hash(createdAt),
+      const DeepCollectionEquality().hash(viewCount));
 
   @JsonKey(ignore: true)
   @override
@@ -276,7 +297,8 @@ abstract class _Message extends Message {
       String description,
       User? createdBy,
       String? text,
-      @TimestampDateTimeConverter() DateTime? createdAt}) = _$_Message;
+      @TimestampDateTimeConverter() DateTime? createdAt,
+      int viewCount}) = _$_Message;
   const _Message._() : super._();
 
   factory _Message.fromJson(Map<String, dynamic> json) = _$_Message.fromJson;
@@ -294,6 +316,8 @@ abstract class _Message extends Message {
   @override
   @TimestampDateTimeConverter()
   DateTime? get createdAt;
+  @override
+  int get viewCount;
   @override
   @JsonKey(ignore: true)
   _$MessageCopyWith<_Message> get copyWith =>

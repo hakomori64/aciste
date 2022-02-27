@@ -52,7 +52,12 @@ class LoginScreenController extends StateNotifier<LoginScreenState> {
   }
 
   Future<void> onForgotPassword() async {
-    await _read(authControllerProvider.notifier).sendPasswordResetEmail(email: state.email);
-    _read(routerProvider.notifier).showDialog(child: const SendEmailDialog());
+    setError('');
+    try {
+      await _read(authControllerProvider.notifier).sendPasswordResetEmail(email: state.email);
+      _read(routerProvider.notifier).showDialog(child: const SendEmailDialog());
+    } catch (e) {
+      setError('再設定メールの送信中にエラーが発生しました');
+    }
   }
 }

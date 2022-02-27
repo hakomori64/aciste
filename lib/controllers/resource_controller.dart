@@ -26,4 +26,15 @@ class ResourceController {
       createResourceParams: content
     );
   }
+
+  Future<Resource> updateResource({required ResourceType resourceType, required Resource resource}) async {
+    if (_userId == null) {
+      throw const CustomException(message: 'user not authenticated');
+    }
+    return _read(resourceRepositoryProvider).updateResource(
+      resource: resource,
+      resourceType: resourceType,
+      userId: _userId!,
+    );
+  }
 }

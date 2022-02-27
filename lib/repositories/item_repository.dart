@@ -12,6 +12,7 @@ abstract class BaseItemRepository {
   Future<String> createItem({required String userId, required Item item});
   Future<void> updateItem({required String userId, required Item item});
   Future<void> deleteItem({required String userId, required String itemId});
+  Future<bool> checkHasResource({required String userId, required String resourceId});
 }
 
 final itemRepositoryProvider = Provider<ItemRepository>((ref) => ItemRepository(ref.read));
@@ -104,6 +105,22 @@ class ItemRepository implements BaseItemRepository {
         .userItemsRef(userId)
         .doc(itemId)
         .delete();
+    } on FirebaseException catch (e) {
+      throw CustomException(message: e.message);
+    }
+  }
+
+  @override
+  Future<bool> checkHasResource({required userId, required resourceId}) async {
+    try {
+      final snapshot = await _read(firebaseFirestoreProvider)
+        .userItemsRef(userId)
+        .where('resourceId', isEqualTo: resourceId)
+        .limit(1)
+        .get();
+      
+      return snapshot.docs.isNotEmpty;
+      
     } on FirebaseException catch (e) {
       throw CustomException(message: e.message);
     }

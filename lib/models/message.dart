@@ -17,6 +17,7 @@ abstract class Message with _$Message implements Resource {
     User? createdBy,
     String? text,
     @TimestampDateTimeConverter() DateTime? createdAt,
+    @Default(0) int viewCount,
   }) = _Message;
 
   factory Message.empty() => Message(

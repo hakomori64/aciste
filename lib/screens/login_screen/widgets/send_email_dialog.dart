@@ -1,4 +1,5 @@
 import 'package:aciste/router.dart';
+import 'package:aciste/screens/login_screen/login_screen_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -38,6 +39,7 @@ class SendEmailDialog extends HookConsumerWidget {
             ),
             onPressed: () {
               ref.read(routerProvider.notifier).closeDialog();
+              ref.read(loginScreenControllerProvider.notifier).setError('');
             }
           ),
         ],

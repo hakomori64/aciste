@@ -30,7 +30,8 @@ class _$ItemTearOff {
       ResourceType? resourceType,
       required String userId,
       @TimestampDateTimeConverter() DateTime? createdAt,
-      @TimestampDateTimeConverter() DateTime? updatedAt}) {
+      @TimestampDateTimeConverter() DateTime? updatedAt,
+      int rank = -1}) {
     return _Item(
       id: id,
       name: name,
@@ -40,6 +41,7 @@ class _$ItemTearOff {
       userId: userId,
       createdAt: createdAt,
       updatedAt: updatedAt,
+      rank: rank,
     );
   }
 
@@ -63,6 +65,7 @@ mixin _$Item {
   DateTime? get createdAt => throw _privateConstructorUsedError;
   @TimestampDateTimeConverter()
   DateTime? get updatedAt => throw _privateConstructorUsedError;
+  int get rank => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -81,7 +84,8 @@ abstract class $ItemCopyWith<$Res> {
       ResourceType? resourceType,
       String userId,
       @TimestampDateTimeConverter() DateTime? createdAt,
-      @TimestampDateTimeConverter() DateTime? updatedAt});
+      @TimestampDateTimeConverter() DateTime? updatedAt,
+      int rank});
 }
 
 /// @nodoc
@@ -102,6 +106,7 @@ class _$ItemCopyWithImpl<$Res> implements $ItemCopyWith<$Res> {
     Object? userId = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
+    Object? rank = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -136,6 +141,10 @@ class _$ItemCopyWithImpl<$Res> implements $ItemCopyWith<$Res> {
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      rank: rank == freezed
+          ? _value.rank
+          : rank // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -153,7 +162,8 @@ abstract class _$ItemCopyWith<$Res> implements $ItemCopyWith<$Res> {
       ResourceType? resourceType,
       String userId,
       @TimestampDateTimeConverter() DateTime? createdAt,
-      @TimestampDateTimeConverter() DateTime? updatedAt});
+      @TimestampDateTimeConverter() DateTime? updatedAt,
+      int rank});
 }
 
 /// @nodoc
@@ -175,6 +185,7 @@ class __$ItemCopyWithImpl<$Res> extends _$ItemCopyWithImpl<$Res>
     Object? userId = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
+    Object? rank = freezed,
   }) {
     return _then(_Item(
       id: id == freezed
@@ -209,6 +220,10 @@ class __$ItemCopyWithImpl<$Res> extends _$ItemCopyWithImpl<$Res>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      rank: rank == freezed
+          ? _value.rank
+          : rank // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -224,7 +239,8 @@ class _$_Item extends _Item {
       this.resourceType,
       required this.userId,
       @TimestampDateTimeConverter() this.createdAt,
-      @TimestampDateTimeConverter() this.updatedAt})
+      @TimestampDateTimeConverter() this.updatedAt,
+      this.rank = -1})
       : super._();
 
   factory _$_Item.fromJson(Map<String, dynamic> json) => _$$_ItemFromJson(json);
@@ -247,10 +263,13 @@ class _$_Item extends _Item {
   @override
   @TimestampDateTimeConverter()
   final DateTime? updatedAt;
+  @JsonKey()
+  @override
+  final int rank;
 
   @override
   String toString() {
-    return 'Item(id: $id, name: $name, description: $description, resource: $resource, resourceType: $resourceType, userId: $userId, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'Item(id: $id, name: $name, description: $description, resource: $resource, resourceType: $resourceType, userId: $userId, createdAt: $createdAt, updatedAt: $updatedAt, rank: $rank)';
   }
 
   @override
@@ -267,7 +286,8 @@ class _$_Item extends _Item {
                 .equals(other.resourceType, resourceType) &&
             const DeepCollectionEquality().equals(other.userId, userId) &&
             const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
-            const DeepCollectionEquality().equals(other.updatedAt, updatedAt));
+            const DeepCollectionEquality().equals(other.updatedAt, updatedAt) &&
+            const DeepCollectionEquality().equals(other.rank, rank));
   }
 
   @override
@@ -280,7 +300,8 @@ class _$_Item extends _Item {
       const DeepCollectionEquality().hash(resourceType),
       const DeepCollectionEquality().hash(userId),
       const DeepCollectionEquality().hash(createdAt),
-      const DeepCollectionEquality().hash(updatedAt));
+      const DeepCollectionEquality().hash(updatedAt),
+      const DeepCollectionEquality().hash(rank));
 
   @JsonKey(ignore: true)
   @override
@@ -302,7 +323,8 @@ abstract class _Item extends Item {
       ResourceType? resourceType,
       required String userId,
       @TimestampDateTimeConverter() DateTime? createdAt,
-      @TimestampDateTimeConverter() DateTime? updatedAt}) = _$_Item;
+      @TimestampDateTimeConverter() DateTime? updatedAt,
+      int rank}) = _$_Item;
   const _Item._() : super._();
 
   factory _Item.fromJson(Map<String, dynamic> json) = _$_Item.fromJson;
@@ -325,6 +347,8 @@ abstract class _Item extends Item {
   @override
   @TimestampDateTimeConverter()
   DateTime? get updatedAt;
+  @override
+  int get rank;
   @override
   @JsonKey(ignore: true)
   _$ItemCopyWith<_Item> get copyWith => throw _privateConstructorUsedError;

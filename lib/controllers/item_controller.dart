@@ -76,6 +76,7 @@ class ItemListController extends StateNotifier<AsyncValue<List<Item>>> {
     required Resource resource,
     required ResourceType resourceType,
     required String? userId,
+    required int rank,
   }) async {
     if (userId == null) {
       state = const AsyncValue.error(CustomException(message: 'ログインが済んでいません'));
@@ -88,7 +89,8 @@ class ItemListController extends StateNotifier<AsyncValue<List<Item>>> {
         description: description,
         resource: resource,
         resourceType: resourceType,
-        userId: userId
+        userId: userId,
+        rank: rank
       );
       final itemId = await _read(itemRepositoryProvider).createItem(
         userId: userId,
@@ -125,5 +127,9 @@ class ItemListController extends StateNotifier<AsyncValue<List<Item>>> {
     } on CustomException catch (e) {
       state = AsyncValue.error(e);
     }
+  }
+
+  Future<bool> checkHasResource({required String resourceId}) async {
+    return _read(itemRepositoryProvider).checkHasResource(userId: _userId!, resourceId: resourceId);
   }
 }

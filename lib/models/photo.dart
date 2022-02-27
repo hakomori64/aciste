@@ -19,6 +19,7 @@ abstract class Photo with _$Photo implements Resource {
     User? createdBy,
     String? url,
     @TimestampDateTimeConverter() DateTime? createdAt,
+    @Default(0) int viewCount,
   }) = _Photo;
 
   factory Photo.empty() => Photo(

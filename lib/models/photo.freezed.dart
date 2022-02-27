@@ -28,7 +28,8 @@ class _$PhotoTearOff {
       String description = "",
       User? createdBy,
       String? url,
-      @TimestampDateTimeConverter() DateTime? createdAt}) {
+      @TimestampDateTimeConverter() DateTime? createdAt,
+      int viewCount = 0}) {
     return _Photo(
       id: id,
       name: name,
@@ -36,6 +37,7 @@ class _$PhotoTearOff {
       createdBy: createdBy,
       url: url,
       createdAt: createdAt,
+      viewCount: viewCount,
     );
   }
 
@@ -56,6 +58,7 @@ mixin _$Photo {
   String? get url => throw _privateConstructorUsedError;
   @TimestampDateTimeConverter()
   DateTime? get createdAt => throw _privateConstructorUsedError;
+  int get viewCount => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -72,7 +75,8 @@ abstract class $PhotoCopyWith<$Res> {
       String description,
       User? createdBy,
       String? url,
-      @TimestampDateTimeConverter() DateTime? createdAt});
+      @TimestampDateTimeConverter() DateTime? createdAt,
+      int viewCount});
 
   $UserCopyWith<$Res>? get createdBy;
 }
@@ -93,6 +97,7 @@ class _$PhotoCopyWithImpl<$Res> implements $PhotoCopyWith<$Res> {
     Object? createdBy = freezed,
     Object? url = freezed,
     Object? createdAt = freezed,
+    Object? viewCount = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -119,6 +124,10 @@ class _$PhotoCopyWithImpl<$Res> implements $PhotoCopyWith<$Res> {
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      viewCount: viewCount == freezed
+          ? _value.viewCount
+          : viewCount // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 
@@ -145,7 +154,8 @@ abstract class _$PhotoCopyWith<$Res> implements $PhotoCopyWith<$Res> {
       String description,
       User? createdBy,
       String? url,
-      @TimestampDateTimeConverter() DateTime? createdAt});
+      @TimestampDateTimeConverter() DateTime? createdAt,
+      int viewCount});
 
   @override
   $UserCopyWith<$Res>? get createdBy;
@@ -168,6 +178,7 @@ class __$PhotoCopyWithImpl<$Res> extends _$PhotoCopyWithImpl<$Res>
     Object? createdBy = freezed,
     Object? url = freezed,
     Object? createdAt = freezed,
+    Object? viewCount = freezed,
   }) {
     return _then(_Photo(
       id: id == freezed
@@ -194,6 +205,10 @@ class __$PhotoCopyWithImpl<$Res> extends _$PhotoCopyWithImpl<$Res>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      viewCount: viewCount == freezed
+          ? _value.viewCount
+          : viewCount // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -207,7 +222,8 @@ class _$_Photo extends _Photo {
       this.description = "",
       this.createdBy,
       this.url,
-      @TimestampDateTimeConverter() this.createdAt})
+      @TimestampDateTimeConverter() this.createdAt,
+      this.viewCount = 0})
       : super._();
 
   factory _$_Photo.fromJson(Map<String, dynamic> json) =>
@@ -228,10 +244,13 @@ class _$_Photo extends _Photo {
   @override
   @TimestampDateTimeConverter()
   final DateTime? createdAt;
+  @JsonKey()
+  @override
+  final int viewCount;
 
   @override
   String toString() {
-    return 'Photo(id: $id, name: $name, description: $description, createdBy: $createdBy, url: $url, createdAt: $createdAt)';
+    return 'Photo(id: $id, name: $name, description: $description, createdBy: $createdBy, url: $url, createdAt: $createdAt, viewCount: $viewCount)';
   }
 
   @override
@@ -245,7 +264,8 @@ class _$_Photo extends _Photo {
                 .equals(other.description, description) &&
             const DeepCollectionEquality().equals(other.createdBy, createdBy) &&
             const DeepCollectionEquality().equals(other.url, url) &&
-            const DeepCollectionEquality().equals(other.createdAt, createdAt));
+            const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
+            const DeepCollectionEquality().equals(other.viewCount, viewCount));
   }
 
   @override
@@ -256,7 +276,8 @@ class _$_Photo extends _Photo {
       const DeepCollectionEquality().hash(description),
       const DeepCollectionEquality().hash(createdBy),
       const DeepCollectionEquality().hash(url),
-      const DeepCollectionEquality().hash(createdAt));
+      const DeepCollectionEquality().hash(createdAt),
+      const DeepCollectionEquality().hash(viewCount));
 
   @JsonKey(ignore: true)
   @override
@@ -276,7 +297,8 @@ abstract class _Photo extends Photo {
       String description,
       User? createdBy,
       String? url,
-      @TimestampDateTimeConverter() DateTime? createdAt}) = _$_Photo;
+      @TimestampDateTimeConverter() DateTime? createdAt,
+      int viewCount}) = _$_Photo;
   const _Photo._() : super._();
 
   factory _Photo.fromJson(Map<String, dynamic> json) = _$_Photo.fromJson;
@@ -294,6 +316,8 @@ abstract class _Photo extends Photo {
   @override
   @TimestampDateTimeConverter()
   DateTime? get createdAt;
+  @override
+  int get viewCount;
   @override
   @JsonKey(ignore: true)
   _$PhotoCopyWith<_Photo> get copyWith => throw _privateConstructorUsedError;

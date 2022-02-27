@@ -20,6 +20,7 @@ _$_Item _$$_ItemFromJson(Map<String, dynamic> json) => _$_Item(
           .fromJson(json['createdAt'] as Timestamp?),
       updatedAt: const TimestampDateTimeConverter()
           .fromJson(json['updatedAt'] as Timestamp?),
+      rank: json['rank'] as int? ?? -1,
     );
 
 Map<String, dynamic> _$$_ItemToJson(_$_Item instance) => <String, dynamic>{
@@ -33,6 +34,7 @@ Map<String, dynamic> _$$_ItemToJson(_$_Item instance) => <String, dynamic>{
           const TimestampDateTimeConverter().toJson(instance.createdAt),
       'updatedAt':
           const TimestampDateTimeConverter().toJson(instance.updatedAt),
+      'rank': instance.rank,
     };
 
 const _$ResourceTypeEnumMap = {

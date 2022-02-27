@@ -12,6 +12,7 @@ abstract class Resource extends FreezedClass {
   String? get description;
   User? get createdBy;
   DateTime? get createdAt;
+  int get viewCount;
 
   factory Resource.fromJson(Map<String, dynamic> json) {
     throw UnimplementedError();

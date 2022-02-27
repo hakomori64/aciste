@@ -16,6 +16,7 @@ _$_Message _$$_MessageFromJson(Map<String, dynamic> json) => _$_Message(
       text: json['text'] as String?,
       createdAt: const TimestampDateTimeConverter()
           .fromJson(json['createdAt'] as Timestamp?),
+      viewCount: json['viewCount'] as int? ?? 0,
     );
 
 Map<String, dynamic> _$$_MessageToJson(_$_Message instance) =>
@@ -27,4 +28,5 @@ Map<String, dynamic> _$$_MessageToJson(_$_Message instance) =>
       'text': instance.text,
       'createdAt':
           const TimestampDateTimeConverter().toJson(instance.createdAt),
+      'viewCount': instance.viewCount,
     };

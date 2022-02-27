@@ -4,12 +4,16 @@ import 'package:aciste/controllers/app_controller.dart';
 import 'package:aciste/controllers/auth_controller.dart';
 import 'package:aciste/controllers/dynamic_links_controller.dart';
 import 'package:aciste/controllers/item_controller.dart';
+import 'package:aciste/controllers/resource_controller.dart';
 import 'package:aciste/router.dart';
 import 'package:aciste/screens/item_import_screen/item_import_screen_controller.dart';
+import 'package:aciste/screens/item_import_screen/widgets/item_import_celebrate_dialog.dart';
 import 'package:aciste/widgets/resource_overview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import 'item_import_screen/widgets/item_import_already_own_dialog.dart';
 
 class ItemImportScreen extends HookConsumerWidget {
 
@@ -60,6 +64,16 @@ class ItemImportScreen extends HookConsumerWidget {
               onPressed: () async {
                 FocusManager.instance.primaryFocus?.unfocus();
                 ref.read(appControllerProvider.notifier).setloading(value: true);
+                final ownResource = await ref.read(itemListControllerProvider.notifier)
+                  .checkHasResource(resourceId: item.resource!.id!);
+                if (ownResource) {
+                  ref.read(appControllerProvider.notifier).setloading(value: false);
+                  ref.read(dynamicLinksControllerProvider.notifier).clear();
+                  await ref.read(routerProvider.notifier).go(route: Routes.home);
+                  ref.read(routerProvider.notifier).showDialog(child: const ItemImportAlreadyOwnDialog());
+                  return;
+                }
+
                 await ref.read(itemListControllerProvider.notifier)
                   .importItem(
                     name: name,
@@ -67,10 +81,21 @@ class ItemImportScreen extends HookConsumerWidget {
                     resource: item.resource!,
                     resourceType: item.resourceType!,
                     userId: authUserStatus?.uid,
+                    rank: item.resource!.viewCount + 1,
+                  );
+                await ref.read(resourceControllerProvider)
+                  .updateResource(
+                    resource: item.resource!.copyWith(
+                      viewCount: item.resource!.viewCount + 1,
+                    ),
+                    resourceType: item.resourceType!
                   );
                 ref.read(appControllerProvider.notifier).setloading(value: false);
                 ref.read(dynamicLinksControllerProvider.notifier).clear();
                 await ref.read(routerProvider.notifier).go(route: Routes.home);
+                if (item.resource!.viewCount + 1 < 4) {
+                  ref.read(routerProvider.notifier).showDialog(child: ItemImportCelebrateDialog(rank: item.resource!.viewCount + 1));
+                }
               },
               child: Text(
                 'インポート',

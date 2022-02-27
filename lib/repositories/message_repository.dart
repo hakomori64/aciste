@@ -34,7 +34,7 @@ class MessageRepository implements BaseMessageRepository {
         .get();
       
       final message = Message.fromDocumentSnapshot(doc);
-      return _fillUser(message: message, userId: userId);
+      return _fillUser(message: message, userId: doc.data()!['createdById']);
     } on FirebaseException catch (e) {
       throw CustomException(message: e.message);
     }

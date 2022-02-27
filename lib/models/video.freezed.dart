@@ -28,7 +28,8 @@ class _$VideoTearOff {
       String description = "",
       User? createdBy,
       String? url,
-      @TimestampDateTimeConverter() DateTime? createdAt}) {
+      @TimestampDateTimeConverter() DateTime? createdAt,
+      int viewCount = 0}) {
     return _Video(
       id: id,
       name: name,
@@ -36,6 +37,7 @@ class _$VideoTearOff {
       createdBy: createdBy,
       url: url,
       createdAt: createdAt,
+      viewCount: viewCount,
     );
   }
 
@@ -56,6 +58,7 @@ mixin _$Video {
   String? get url => throw _privateConstructorUsedError;
   @TimestampDateTimeConverter()
   DateTime? get createdAt => throw _privateConstructorUsedError;
+  int get viewCount => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -72,7 +75,8 @@ abstract class $VideoCopyWith<$Res> {
       String description,
       User? createdBy,
       String? url,
-      @TimestampDateTimeConverter() DateTime? createdAt});
+      @TimestampDateTimeConverter() DateTime? createdAt,
+      int viewCount});
 
   $UserCopyWith<$Res>? get createdBy;
 }
@@ -93,6 +97,7 @@ class _$VideoCopyWithImpl<$Res> implements $VideoCopyWith<$Res> {
     Object? createdBy = freezed,
     Object? url = freezed,
     Object? createdAt = freezed,
+    Object? viewCount = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -119,6 +124,10 @@ class _$VideoCopyWithImpl<$Res> implements $VideoCopyWith<$Res> {
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      viewCount: viewCount == freezed
+          ? _value.viewCount
+          : viewCount // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 
@@ -145,7 +154,8 @@ abstract class _$VideoCopyWith<$Res> implements $VideoCopyWith<$Res> {
       String description,
       User? createdBy,
       String? url,
-      @TimestampDateTimeConverter() DateTime? createdAt});
+      @TimestampDateTimeConverter() DateTime? createdAt,
+      int viewCount});
 
   @override
   $UserCopyWith<$Res>? get createdBy;
@@ -168,6 +178,7 @@ class __$VideoCopyWithImpl<$Res> extends _$VideoCopyWithImpl<$Res>
     Object? createdBy = freezed,
     Object? url = freezed,
     Object? createdAt = freezed,
+    Object? viewCount = freezed,
   }) {
     return _then(_Video(
       id: id == freezed
@@ -194,6 +205,10 @@ class __$VideoCopyWithImpl<$Res> extends _$VideoCopyWithImpl<$Res>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      viewCount: viewCount == freezed
+          ? _value.viewCount
+          : viewCount // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -207,7 +222,8 @@ class _$_Video extends _Video {
       this.description = "",
       this.createdBy,
       this.url,
-      @TimestampDateTimeConverter() this.createdAt})
+      @TimestampDateTimeConverter() this.createdAt,
+      this.viewCount = 0})
       : super._();
 
   factory _$_Video.fromJson(Map<String, dynamic> json) =>
@@ -228,10 +244,13 @@ class _$_Video extends _Video {
   @override
   @TimestampDateTimeConverter()
   final DateTime? createdAt;
+  @JsonKey()
+  @override
+  final int viewCount;
 
   @override
   String toString() {
-    return 'Video(id: $id, name: $name, description: $description, createdBy: $createdBy, url: $url, createdAt: $createdAt)';
+    return 'Video(id: $id, name: $name, description: $description, createdBy: $createdBy, url: $url, createdAt: $createdAt, viewCount: $viewCount)';
   }
 
   @override
@@ -245,7 +264,8 @@ class _$_Video extends _Video {
                 .equals(other.description, description) &&
             const DeepCollectionEquality().equals(other.createdBy, createdBy) &&
             const DeepCollectionEquality().equals(other.url, url) &&
-            const DeepCollectionEquality().equals(other.createdAt, createdAt));
+            const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
+            const DeepCollectionEquality().equals(other.viewCount, viewCount));
   }
 
   @override
@@ -256,7 +276,8 @@ class _$_Video extends _Video {
       const DeepCollectionEquality().hash(description),
       const DeepCollectionEquality().hash(createdBy),
       const DeepCollectionEquality().hash(url),
-      const DeepCollectionEquality().hash(createdAt));
+      const DeepCollectionEquality().hash(createdAt),
+      const DeepCollectionEquality().hash(viewCount));
 
   @JsonKey(ignore: true)
   @override
@@ -276,7 +297,8 @@ abstract class _Video extends Video {
       String description,
       User? createdBy,
       String? url,
-      @TimestampDateTimeConverter() DateTime? createdAt}) = _$_Video;
+      @TimestampDateTimeConverter() DateTime? createdAt,
+      int viewCount}) = _$_Video;
   const _Video._() : super._();
 
   factory _Video.fromJson(Map<String, dynamic> json) = _$_Video.fromJson;
@@ -294,6 +316,8 @@ abstract class _Video extends Video {
   @override
   @TimestampDateTimeConverter()
   DateTime? get createdAt;
+  @override
+  int get viewCount;
   @override
   @JsonKey(ignore: true)
   _$VideoCopyWith<_Video> get copyWith => throw _privateConstructorUsedError;

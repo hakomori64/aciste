@@ -1,3 +1,4 @@
+import 'package:aciste/models/item.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -7,6 +8,7 @@ part 'qrcode_screen_controller.freezed.dart';
 class QRCodeScreenState with _$QRCodeScreenState {
   const factory QRCodeScreenState({
     String? url,
+    Item? item,
   }) = _QRCodeScreenState;
 }
 
@@ -21,5 +23,9 @@ class QRCodeScreenController extends StateNotifier<QRCodeScreenState> {
 
   void setUrl(String? url) {
     state = state.copyWith(url: url);
+  }
+
+  void setItem(Item? item) {
+    state = state.copyWith(item: item);
   }
 }

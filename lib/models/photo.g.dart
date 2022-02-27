@@ -16,6 +16,7 @@ _$_Photo _$$_PhotoFromJson(Map<String, dynamic> json) => _$_Photo(
       url: json['url'] as String?,
       createdAt: const TimestampDateTimeConverter()
           .fromJson(json['createdAt'] as Timestamp?),
+      viewCount: json['viewCount'] as int? ?? 0,
     );
 
 Map<String, dynamic> _$$_PhotoToJson(_$_Photo instance) => <String, dynamic>{
@@ -26,4 +27,5 @@ Map<String, dynamic> _$$_PhotoToJson(_$_Photo instance) => <String, dynamic>{
       'url': instance.url,
       'createdAt':
           const TimestampDateTimeConverter().toJson(instance.createdAt),
+      'viewCount': instance.viewCount,
     };

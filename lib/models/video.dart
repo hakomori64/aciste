@@ -17,6 +17,7 @@ abstract class Video with _$Video implements Resource {
     User? createdBy,
     String? url,
     @TimestampDateTimeConverter() DateTime? createdAt,
+    @Default(0) int viewCount,
   }) = _Video;
 
   factory Video.fromJson(Map<String, dynamic> json) => _$VideoFromJson(json);

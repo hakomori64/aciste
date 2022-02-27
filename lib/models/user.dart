@@ -30,8 +30,8 @@ abstract class User implements _$User {
     backgroundImageUrl: defaultUserBackgroundImageUrl,
     createdAt: DateTime.now(),
     updatedAt: DateTime.now(),
-    following: [""],
-    followedBy: [""]
+    following: [],
+    followedBy: []
   );
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

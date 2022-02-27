@@ -165,7 +165,7 @@ class ProfileScreen extends HookConsumerWidget {
                           height: 5
                         ),
                         Text(
-                          "${max(user.following.length-1, 0)} 人",
+                          "${user.following.length} 人",
                           style: const TextStyle(
                             color: Colors.black45,
                             fontSize: 18,
@@ -188,7 +188,7 @@ class ProfileScreen extends HookConsumerWidget {
                           height: 5
                         ),
                         Text(
-                          "${max(user.followedBy.length-1, 0)} 人",
+                          "${user.followedBy.length} 人",
                           style: const TextStyle(
                             color: Colors.black45,
                             fontSize: 18,

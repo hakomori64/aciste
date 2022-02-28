@@ -75,13 +75,13 @@ class ItemCreateScreen extends HookConsumerWidget {
             children: [
               TextField(
                 controller: nameController,
-                decoration: const InputDecoration(hintText: '名前'),
+                decoration: const InputDecoration(labelText: '名前'),
               ),
               const SizedBox(height: 12.0),
               TextField(
                 controller: descriptionController,
                 maxLines: null,
-                decoration: const InputDecoration(hintText: '説明'),
+                decoration: const InputDecoration(labelText: '説明'),
               ),
               const SizedBox(height: 30),
               ExpansionTile(

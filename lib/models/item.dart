@@ -20,7 +20,7 @@ abstract class Item implements _$Item {
     required String userId,
     @TimestampDateTimeConverter() DateTime? createdAt,
     @TimestampDateTimeConverter() DateTime? updatedAt,
-    @Default(-1) int rank,
+    @Default(0) int rank,
   }) = _Item;
 
   factory Item.empty() => Item(

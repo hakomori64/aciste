@@ -43,16 +43,16 @@ class ItemEditScreen extends HookConsumerWidget {
                           )
                         )
                       ),
-                      onPressed: (name.isNotEmpty && description.isNotEmpty) ? () async {
+                      onPressed: () async {
                         await ref.read(itemListControllerProvider.notifier)
                           .updateItem(updatedItem: item!.copyWith(
                             name: name,
                             description: description
                           ));
                         ref.read(routerProvider.notifier).closeDialog();
-                      } : null,
+                      },
                       child: const Text(
-                        '作成',
+                        '確定',
                         style: TextStyle(
                           fontSize: 18,
                           color: Colors.white,
@@ -62,33 +62,17 @@ class ItemEditScreen extends HookConsumerWidget {
                   ],
                 ),
               ),
-              const Text(
-                'タイトル',
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black54,
-                )
-              ),
               TextField(
                 controller: nameController,
                 onChanged: ref.read(itemEditScreenControllerProvider.notifier).setName,
-                decoration: const InputDecoration(hintText: 'タイトル')
+                decoration: const InputDecoration(labelText: 'タイトル')
               ),
               const SizedBox(height: 20),
-              const Text(
-                '説明',
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black54,
-                )
-              ),
               TextField(
                 controller: descriptionController,
                 maxLines: null,
                 onChanged: ref.read(itemEditScreenControllerProvider.notifier).setDescription,
-                decoration: const InputDecoration(hintText: '説明')
+                decoration: const InputDecoration(labelText: '説明')
               ),
             ],
           )

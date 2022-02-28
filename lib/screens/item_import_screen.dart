@@ -127,7 +127,7 @@ class ItemImportScreen extends HookConsumerWidget {
                   const SizedBox(height: 8.0,),
                   TextField(
                     controller: nameController,
-                    decoration: const InputDecoration(hintText: '名前'),
+                    decoration: const InputDecoration(labelText: '名前'),
                     onChanged: ref.read(itemImportScreenControllerProvider.notifier).setName,
                   ),
                   const SizedBox(height: 12.0,),
@@ -142,7 +142,7 @@ class ItemImportScreen extends HookConsumerWidget {
                   TextField(
                     controller: descriptionController,
                     maxLines: null,
-                    decoration: const InputDecoration(hintText: '説明'),
+                    decoration: const InputDecoration(labelText: '説明'),
                     onChanged: ref.read(itemImportScreenControllerProvider.notifier).setDescription,
                   ),
                 ],

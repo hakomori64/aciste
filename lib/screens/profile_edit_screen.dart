@@ -145,7 +145,7 @@ class ProfileEditScreen extends HookConsumerWidget {
                           )
                         )
                       ),
-                      onPressed: (displayName.isNotEmpty && bio.isNotEmpty) ? () async {
+                      onPressed: () async {
                         FocusManager.instance.primaryFocus?.unfocus();
                         ref.read(appControllerProvider.notifier).setloading(value: true);
                         await ref.read(userControllerProvider.notifier).updateUser(
@@ -159,7 +159,7 @@ class ProfileEditScreen extends HookConsumerWidget {
                         ref.read(profileScreenControllerProvider.notifier).setUser(userId: user.id!);
                         ref.read(appControllerProvider.notifier).setloading(value: false);
                         ref.read(routerProvider.notifier).pop();
-                      } : null,
+                      },
                     )
                   ],
                 ),
@@ -180,7 +180,7 @@ class ProfileEditScreen extends HookConsumerWidget {
                     TextField(
                       controller: displayNameController,
                       onChanged: ref.read(profileEditScreenControllerProvider.notifier).setDisplayName,
-                      decoration: const InputDecoration(hintText: '名前')
+                      decoration: const InputDecoration(labelText: '名前')
                     ),
 
                     const Padding(
@@ -199,7 +199,7 @@ class ProfileEditScreen extends HookConsumerWidget {
                       controller: bioController,
                       maxLines: null,
                       onChanged: ref.read(profileEditScreenControllerProvider.notifier).setBio,
-                      decoration: const InputDecoration(hintText: '説明')
+                      decoration: const InputDecoration(labelText: '説明')
                     ),
                   ],
                 ),

@@ -20,7 +20,7 @@ _$_Item _$$_ItemFromJson(Map<String, dynamic> json) => _$_Item(
           .fromJson(json['createdAt'] as Timestamp?),
       updatedAt: const TimestampDateTimeConverter()
           .fromJson(json['updatedAt'] as Timestamp?),
-      rank: json['rank'] as int? ?? -1,
+      rank: json['rank'] as int? ?? 0,
     );
 
 Map<String, dynamic> _$$_ItemToJson(_$_Item instance) => <String, dynamic>{

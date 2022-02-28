@@ -65,15 +65,3 @@ class AppColor {
     400: Color(0xfffaf0be),
   });
 }
-
-Color getRankColor(int rank) {
-  switch (rank) {
-    case 1:
-      return AppColor.gold;
-    case 2:
-      return AppColor.silver;
-    case 3:
-      return AppColor.blond;
-  }
-  return Colors.transparent;
-}

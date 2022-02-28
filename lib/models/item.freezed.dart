@@ -31,7 +31,7 @@ class _$ItemTearOff {
       required String userId,
       @TimestampDateTimeConverter() DateTime? createdAt,
       @TimestampDateTimeConverter() DateTime? updatedAt,
-      int rank = -1}) {
+      int rank = 0}) {
     return _Item(
       id: id,
       name: name,
@@ -240,7 +240,7 @@ class _$_Item extends _Item {
       required this.userId,
       @TimestampDateTimeConverter() this.createdAt,
       @TimestampDateTimeConverter() this.updatedAt,
-      this.rank = -1})
+      this.rank = 0})
       : super._();
 
   factory _$_Item.fromJson(Map<String, dynamic> json) => _$$_ItemFromJson(json);

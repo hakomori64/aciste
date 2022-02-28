@@ -49,7 +49,7 @@ class MessageScreen extends HookConsumerWidget {
             onChanged: ref.read(messageScreenControllerProvider.notifier).setText,
             maxLines: null,
             autofocus: true,
-            decoration: const InputDecoration(hintText: 'メッセージを入力してください'),
+            decoration: const InputDecoration(labelText: 'メッセージ'),
           ),
         )
       )

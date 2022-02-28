@@ -7,6 +7,7 @@ import 'package:aciste/models/item.dart';
 import 'package:aciste/router.dart';
 import 'package:aciste/screens/qrcode_screen.dart';
 import 'package:aciste/screens/qrcode_screen/qrcode_screen_controller.dart';
+import 'package:aciste/utils.dart';
 import 'package:aciste/widgets/resource_overview.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +37,14 @@ class ItemTile extends HookConsumerWidget {
               color: getRankColor(item.rank),
               size: 40,
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                item.rank <= 0
+                  ? const Text('') 
+                  : Text('${numWithSuffix(item.rank)} discoverer')
+              ],
+            ),
             ListTile(
               leading: SizedBox(
                 width: 40,
@@ -57,12 +66,18 @@ class ItemTile extends HookConsumerWidget {
                   ),
                 ),
               ),
-              title: Center(child: Text(item.name)),
-              subtitle: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
+              title: ExpansionTile(
+                title: Center(child: Text(item.name),),
                 children: [
-                  Text(item.description)
+                  ListTile(
+                    title: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(item.description)
+                      ],
+                    ),
+                  ),
                 ],
               ),
               trailing: IconButton(
@@ -134,7 +149,7 @@ class ItemTile extends HookConsumerWidget {
                           );
                         }
                       ),
-                      if (item.userId == item.resource!.createdBy!.id) ListTile(
+                      ListTile(
                         leading: const Icon(Icons.share),
                         title: const Text('共有'),
                         onTap: () async {
@@ -144,10 +159,10 @@ class ItemTile extends HookConsumerWidget {
                             resourceType: item.resourceType!,
                           );
                           final box = context.findRenderObject() as RenderBox?;
-                          await Share.share(url, subject: url, sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
+                          await Share.share('I am the ${item.rank <= 0 ? "owner!!" : numWithSuffix(item.rank) + ' discoverer!!'}\n $url', subject: url, sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
                         },
                       ),
-                      if (item.userId == item.resource!.createdBy!.id) ListTile(
+                      ListTile(
                         leading: const Icon(Icons.qr_code),
                         title: const Text('QRコードで共有'),
                         onTap: () async {
@@ -158,6 +173,7 @@ class ItemTile extends HookConsumerWidget {
                             resourceType: item.resourceType!,
                           );
                           ref.read(qrCodeScreenControllerProvider.notifier).setUrl(url);
+                          ref.read(qrCodeScreenControllerProvider.notifier).setItem(item);
                           ref.read(routerProvider.notifier).showDialog(
                             child: const QRCodeScreen(),
                           );

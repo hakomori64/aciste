@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:aciste/controllers/app_controller.dart';
 import 'package:aciste/controllers/user_controller.dart';
 import 'package:aciste/custom_exception.dart';
@@ -21,6 +23,11 @@ class ProfileEditScreen extends HookConsumerWidget {
     final bio = profileEditScreenState.bio;
     final displayNameController = useTextEditingController(text: displayName);
     final bioController = useTextEditingController(text: bio);
+
+    final boxSize = min(
+      MediaQuery.of(context).size.height,
+      MediaQuery.of(context).size.width
+    ) * 3 / 4;
 
 
     return Scaffold(
@@ -170,13 +177,6 @@ class ProfileEditScreen extends HookConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Text(
-                      '名前',
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.black45,
-                      )
-                    ),
                     TextField(
                       controller: displayNameController,
                       onChanged: ref.read(profileEditScreenControllerProvider.notifier).setDisplayName,
@@ -187,20 +187,18 @@ class ProfileEditScreen extends HookConsumerWidget {
                       padding: EdgeInsets.symmetric(vertical: 8.0),
                       child: Divider()
                     ),
-
-                    const Text(
-                      '説明',
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.black45,
-                      )
-                    ),
-                    TextField(
-                      controller: bioController,
-                      maxLines: null,
-                      onChanged: ref.read(profileEditScreenControllerProvider.notifier).setBio,
-                      decoration: const InputDecoration(labelText: '説明')
-                    ),
+                    ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxHeight: boxSize,
+                      ),
+                      child: TextField(
+                        controller: bioController,
+                        maxLines: null,
+                        maxLength: 600,
+                        onChanged: ref.read(profileEditScreenControllerProvider.notifier).setBio,
+                        decoration: const InputDecoration(labelText: '説明')
+                      ),
+                    )
                   ],
                 ),
               )

@@ -173,7 +173,6 @@ class ItemTile extends HookConsumerWidget {
                             resourceType: item.resourceType!,
                           );
                           ref.read(qrCodeScreenControllerProvider.notifier).setUrl(url);
-                          ref.read(qrCodeScreenControllerProvider.notifier).setItem(item);
                           ref.read(routerProvider.notifier).showDialog(
                             child: const QRCodeScreen(),
                           );

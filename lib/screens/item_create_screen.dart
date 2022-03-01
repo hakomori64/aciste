@@ -5,6 +5,7 @@ import 'package:aciste/router.dart';
 import 'package:aciste/screens/item_create_screen/item_create_screen_controller.dart';
 import 'package:aciste/widgets/create_resource_overview.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -22,12 +23,16 @@ class ItemCreateScreen extends HookConsumerWidget {
     final resourceType = itemCreateScreenState.resourceType;
     final params = itemCreateScreenState.params;
 
+    Future.delayed(const Duration(), () {
+      SystemChannels.textInput.invokeMethod('TextInput.hide');
+    });
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new),
           onPressed: () async {
-            await ref.read(routerProvider.notifier).go(route: Routes.home);
+            ref.read(routerProvider.notifier).pop();
           },
         ),
         actions: [
@@ -75,25 +80,16 @@ class ItemCreateScreen extends HookConsumerWidget {
             children: [
               TextField(
                 controller: nameController,
-                decoration: const InputDecoration(labelText: '名前'),
-              ),
-              const SizedBox(height: 12.0),
-              TextField(
-                controller: descriptionController,
-                maxLines: null,
-                decoration: const InputDecoration(labelText: '説明'),
+                autofocus: true,
+                decoration: const InputDecoration(
+                  labelText: '名前 (optional)',
+                ),
               ),
               const SizedBox(height: 30),
               ExpansionTile(
                 backgroundColor: Theme.of(context).primaryColorLight.withOpacity(0.2),
-                title: const Text(
-                  '内容',
-                  style: TextStyle(
-                    color: Colors.black45,
-                    fontSize: 20,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
+                title: Container(),
+                initiallyExpanded: true,
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),

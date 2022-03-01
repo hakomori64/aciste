@@ -68,12 +68,18 @@ class ItemEditScreen extends HookConsumerWidget {
                 decoration: const InputDecoration(labelText: 'タイトル')
               ),
               const SizedBox(height: 20),
-              TextField(
-                controller: descriptionController,
-                maxLines: null,
-                onChanged: ref.read(itemEditScreenControllerProvider.notifier).setDescription,
-                decoration: const InputDecoration(labelText: '説明')
-              ),
+              ConstrainedBox(
+                constraints: const BoxConstraints(
+                  maxHeight: 150,
+                ),
+                child: TextField(
+                  controller: descriptionController,
+                  maxLines: null,
+                  maxLength: 600,
+                  onChanged: ref.read(itemEditScreenControllerProvider.notifier).setDescription,
+                  decoration: const InputDecoration(labelText: '説明')
+                ),
+              )
             ],
           )
         )

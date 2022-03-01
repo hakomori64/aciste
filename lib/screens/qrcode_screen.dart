@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:aciste/constants.dart';
 import 'package:aciste/custom_exception.dart';
 import 'package:aciste/screens/qrcode_screen/qrcode_screen_controller.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +17,6 @@ class QRCodeScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final _key = useMemoized(() => GlobalKey());
-    final item = ref.watch(qrCodeScreenControllerProvider).item;
     final url = ref.watch(qrCodeScreenControllerProvider).url;
     final boxSize = min(
       MediaQuery.of(context).size.height,

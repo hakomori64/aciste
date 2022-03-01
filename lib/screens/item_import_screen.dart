@@ -116,14 +116,6 @@ class ItemImportScreen extends HookConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'タイトル',
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black54,
-                    )
-                  ),
                   const SizedBox(height: 8.0,),
                   TextField(
                     controller: nameController,
@@ -131,19 +123,17 @@ class ItemImportScreen extends HookConsumerWidget {
                     onChanged: ref.read(itemImportScreenControllerProvider.notifier).setName,
                   ),
                   const SizedBox(height: 12.0,),
-                  const Text(
-                    '説明',
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black54,
-                    )
-                  ),
-                  TextField(
-                    controller: descriptionController,
-                    maxLines: null,
-                    decoration: const InputDecoration(labelText: '説明'),
-                    onChanged: ref.read(itemImportScreenControllerProvider.notifier).setDescription,
+                  ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxHeight: boxSize,
+                    ),
+                    child: TextField(
+                      controller: descriptionController,
+                      maxLines: null,
+                      maxLength: 600,
+                      decoration: const InputDecoration(labelText: '説明'),
+                      onChanged: ref.read(itemImportScreenControllerProvider.notifier).setDescription,
+                    ),
                   ),
                 ],
               ),

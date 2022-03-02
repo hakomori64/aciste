@@ -19,6 +19,7 @@ class ItemImportCelebrateDialog extends HookConsumerWidget {
       if (controller != null) {
         controller.play();
       }
+      return;
     }, [controller]);
 
     if (controller == null) {

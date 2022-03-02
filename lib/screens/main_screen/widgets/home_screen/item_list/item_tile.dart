@@ -153,6 +153,7 @@ class ItemTile extends HookConsumerWidget {
                         leading: const Icon(Icons.share),
                         title: const Text('共有'),
                         onTap: () async {
+                          ref.read(routerProvider.notifier).closeBottomSheet();
                           final resourceId = item.resource!.id!;
                           final url = await ref.read(dynamicLinksControllerProvider.notifier).getItemImportUrl(
                             resourceId: resourceId,

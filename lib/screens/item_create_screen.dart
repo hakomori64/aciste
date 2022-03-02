@@ -1,6 +1,9 @@
+import 'package:aciste/controllers/announcement_controller.dart';
 import 'package:aciste/controllers/app_controller.dart';
 import 'package:aciste/controllers/auth_controller.dart';
 import 'package:aciste/controllers/item_controller.dart';
+import 'package:aciste/controllers/user_controller.dart';
+import 'package:aciste/models/announcement.dart';
 import 'package:aciste/router.dart';
 import 'package:aciste/screens/item_create_screen/item_create_screen_controller.dart';
 import 'package:aciste/widgets/create_resource_overview.dart';
@@ -18,6 +21,15 @@ class ItemCreateScreen extends HookConsumerWidget {
     final nameController = useTextEditingController();
     final descriptionController = useTextEditingController();
     final authUserState = ref.watch(authControllerProvider);
+    final userControllerState = ref.watch(userControllerProvider);
+    final user = userControllerState.asData?.value;
+    final notifyToFollowers = useState<bool>(user?.notifyToFollowersDefault ?? false);
+
+    if (user == null) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
 
     final itemCreateScreenState = ref.watch(itemCreateScreenControllerProvider);
     final resourceType = itemCreateScreenState.resourceType;
@@ -58,6 +70,14 @@ class ItemCreateScreen extends HookConsumerWidget {
                       resourceType: resourceType!,
                       content: params!
                   );
+                
+                // notify to followers
+                if (notifyToFollowers.value) {
+                  await ref.read(announcementControllerProvider.notifier).notifyToFollowers(
+                    announceType: AnnounceType.itemCreate
+                  );
+                }
+                
                 ref.read(appControllerProvider.notifier).setloading(value: false);
                 ref.read(routerProvider.notifier).go(route: Routes.main);
               },
@@ -84,6 +104,13 @@ class ItemCreateScreen extends HookConsumerWidget {
                 decoration: const InputDecoration(
                   labelText: '名前 (optional)',
                 ),
+              ),
+              SwitchListTile(
+                title: const Text('フォロワーに通知を送信する'),
+                value: notifyToFollowers.value,
+                onChanged: (value) {
+                  notifyToFollowers.value = value;
+                },
               ),
               const SizedBox(height: 30),
               ExpansionTile(

@@ -8,7 +8,7 @@ import 'package:aciste/models/photo.dart';
 import 'package:aciste/router.dart';
 import 'package:aciste/screens/main_screen/main_screen_controller.dart';
 import 'package:aciste/screens/main_screen/widgets/home_screen.dart';
-import 'package:aciste/screens/main_screen/widgets/notification_screen.dart';
+import 'package:aciste/screens/main_screen/widgets/announcement_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -96,7 +96,7 @@ class MainScreen extends HookConsumerWidget {
                     onPageChanged: ref.read(mainScreenControllerProvider.notifier).onPageChange,
                     children: const [
                       HomeScreen(),
-                      NotificationScreen(),
+                      AnnouncementScreen(),
                     ],
                   ),
                 ),

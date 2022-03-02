@@ -1,10 +1,19 @@
 import 'package:aciste/controllers/auth_controller.dart';
+import 'package:aciste/controllers/dynamic_links_controller.dart';
 import 'package:aciste/controllers/user_controller.dart';
 import 'package:aciste/router.dart';
+import 'package:aciste/screens/qrcode_screen.dart';
+import 'package:aciste/screens/qrcode_screen/qrcode_screen_controller.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:aciste/screens/profile_screen/profile_screen_controller.dart';
+import 'package:share/share.dart';
+
+enum PopupItems {
+  editProfile,
+  share,
+}
 
 class ProfileScreen extends HookConsumerWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -59,6 +68,71 @@ class ProfileScreen extends HookConsumerWidget {
                   if (user.id == me.uid) Align(
                     alignment: Alignment.topRight,
                     child: Padding(
+                      padding: EdgeInsets.only(
+                        top: MediaQuery.of(context).padding.top + 20,
+                        right: 20,
+                      ),
+                      child: PopupMenuButton(
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(5.0)
+                          )
+                        ),
+                        onSelected: (PopupItems item) async {
+                          switch (item) {
+                            case PopupItems.editProfile:
+                              ref.read(routerProvider.notifier).push(route: Routes.profileEdit);
+                              break;
+                            case PopupItems.share:
+                              ref.read(routerProvider.notifier).showBottomSheet(child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  ListTile(
+                                    leading: const Icon(Icons.share),
+                                    title: const Text('共有'),
+                                    onTap: () async {
+                                      ref.read(routerProvider.notifier).closeBottomSheet();
+                                      final userId = user.id!;
+                                      final url = await ref.read(dynamicLinksControllerProvider.notifier).getProfileUrl(userId: userId);
+                                      final box = context.findRenderObject() as RenderBox?;
+                                      final userName = user.displayName != '' ? user.displayName : 'ゲスト';
+                                      await Share.share("$userNameさんをチェックしよう\n$url", subject: url, sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
+                                    }
+                                  ),
+                                  ListTile(
+                                    leading: const Icon(Icons.qr_code),
+                                    title: const Text('QRコードで共有'),
+                                    onTap: () async {
+                                      ref.read(routerProvider.notifier).closeBottomSheet();
+                                      final userId = user.id!;
+                                      final url = await ref.read(dynamicLinksControllerProvider.notifier).getProfileUrl(userId: userId);
+                                      ref.read(qrCodeScreenControllerProvider.notifier).setUrl(url);
+                                      ref.read(routerProvider.notifier).showDialog(
+                                        child: const QRCodeScreen(),
+                                      );
+                                    },
+                                  )
+                                ],
+                              ));
+                              break;
+                          }
+                        },
+                        child: const Icon(Icons.more_vert),
+                        itemBuilder: (context) => <PopupMenuEntry<PopupItems>>[
+                          const PopupMenuItem(
+                            value: PopupItems.editProfile,
+                            child: Text('プロフィールを編集'),
+                          ),
+                          const PopupMenuDivider(),
+                          const PopupMenuItem(
+                            value: PopupItems.share,
+                            child: Text('共有')
+                          )
+                        ],
+                      )
+                    )
+                    /*
+                    child: Padding(
                       padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
                       child: TextButton(
                         style: ButtonStyle(
@@ -74,7 +148,7 @@ class ProfileScreen extends HookConsumerWidget {
                         },
                         child: const Text('プロフィールを編集'),
                       )
-                    )
+                    )*/
                   )
                 ],
               ),

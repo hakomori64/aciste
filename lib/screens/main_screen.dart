@@ -11,6 +11,7 @@ import 'package:aciste/screens/main_screen/widgets/home_screen.dart';
 import 'package:aciste/screens/main_screen/widgets/announcement_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class MainScreen extends HookConsumerWidget {
@@ -20,6 +21,8 @@ class MainScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final mainScreenControllerState = ref.watch(mainScreenControllerProvider);
     final userControllerState = ref.watch(userControllerProvider);
+
+    final pageController = usePageController();
 
     return WillPopScope(
       onWillPop: () async {
@@ -92,7 +95,7 @@ class MainScreen extends HookConsumerWidget {
                 ),
                 Expanded(
                   child: PageView(
-                    controller: ref.watch(mainScreenControllerProvider.notifier).pageController,
+                    controller: pageController,
                     onPageChanged: ref.read(mainScreenControllerProvider.notifier).onPageChange,
                     children: const [
                       HomeScreen(),
@@ -115,7 +118,7 @@ class MainScreen extends HookConsumerWidget {
                       )
                     ],
                     onTap: (int value) {
-                      ref.read(mainScreenControllerProvider.notifier).jumpToPage(BottomItem.values[value]);
+                      ref.read(mainScreenControllerProvider.notifier).jumpToPage(pageController, BottomItem.values[value]);
                     },
                     type: BottomNavigationBarType.fixed,
                     selectedItemColor: Theme.of(context).primaryColor,

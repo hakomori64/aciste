@@ -67,6 +67,13 @@ class DynamicLinksController extends StateNotifier<DynamicLinkState> {
     return url.toString();
   }
 
+  Future<String> getProfileUrl({required String userId}) async {
+    final url = await _read(dynamicLinksRepositoryProvider).createProfileDynamicLink(
+      userId: userId
+    );
+    return url.toString();
+  }
+
   void clear() {
     state = state.copyWith(
       path: null,

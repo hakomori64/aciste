@@ -4,6 +4,7 @@ import 'package:aciste/controllers/auth_controller.dart';
 import 'package:aciste/controllers/dynamic_links_controller.dart';
 import 'package:aciste/enums/resource_type.dart';
 import 'package:aciste/models/resource.dart';
+import 'package:aciste/repositories/resource_repository.dart';
 import 'package:aciste/screens/dialog_screen.dart';
 import 'package:aciste/screens/dialog_screen/dialog_screen_controller.dart';
 import 'package:aciste/screens/email_check_screen.dart';
@@ -27,6 +28,7 @@ import 'package:aciste/screens/profile_edit_screen.dart';
 import 'package:aciste/screens/profile_screen.dart';
 import 'package:aciste/screens/profile_screen/profile_screen_controller.dart';
 import 'package:aciste/screens/signup_screen.dart';
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
@@ -38,22 +40,22 @@ import 'models/item.dart';
 
 final routerProvider = StateNotifierProvider<RouterController, GoRouter?>((ref) => RouterController(
   ref.read,
+  ref.listen,
   ref.watch(authControllerProvider),
-  ref.watch(dynamicLinksControllerProvider).path,
 ));
 
 class RouterController extends StateNotifier<GoRouter?> {
   RouterController(
     this._read,
+    this._listen,
     this._user,
-    this._path,
   ) : super(null) {
     _init();
   }
 
   final Reader _read;
+  final void Function() Function<T>(AlwaysAliveProviderListenable<T>, void Function(T?, T))  _listen;
   final User? _user;
-  final String? _path;
 
   void _init() {
     state = GoRouter(
@@ -143,18 +145,41 @@ class RouterController extends StateNotifier<GoRouter?> {
           )
         ),
       ],
-      redirect: (state) {
-        switch (_path) {
-          case '/import':
-            if (state.location != Routes.itemImport.route) {
-              return Routes.itemImport.route;
-            }
-            return null;
-          default:
-            return null;
-        }
-      },
+      observers: [
+        GoRouterObserver(_read)
+      ]
     );
+
+    _listen(dynamicLinksControllerProvider, (DynamicLinkState? previous, DynamicLinkState current) async {
+      if (current.path != null && current.parameterMap != null && _user != null) {
+        final path = current.path;
+        final parameterMap = current.parameterMap;
+        switch (path) {
+          case '/import':
+            final resourceId = parameterMap!['resourceId'] as String;
+            final resourceType = EnumToString.fromString(ResourceType.values, parameterMap['resourceType']);
+            final resource = await _read(resourceRepositoryProvider).retrieveResource(
+              userId: _user!.uid,
+              resourceId: resourceId,
+              resourceType: resourceType!,
+            );
+            final item = Item.empty().copyWith(
+              resource: resource,
+              resourceType: resourceType,
+            );
+            await refresh();
+            await push(route: Routes.itemImport, extra: ItemImportRouteParams(item: item));
+            break;
+          case '/profile':
+            final userId = parameterMap!['userId'] as String;
+            await refresh();
+            await push(route: Routes.profile, extra: ProfileRouteParams(userId: userId));
+            break;
+          default:
+            break;
+        }
+      }
+    });
   }
 
   Future<void> showDialogRoute({required Routes route, Object? extra}) async {
@@ -243,23 +268,29 @@ class RouterController extends StateNotifier<GoRouter?> {
     return;
   }
 
-  Future<void> go({required Routes route, Object? extra}) async {
+  Future<void> go({required Routes route, Object? extra, bool refreshing = false}) async {
     await _handleParams(route: route, extra: extra);
     state!.go(route.route);
+    if (refreshing) {
+      _read(dynamicLinksControllerProvider.notifier).clear();
+    }
   }
 
-  Future<void> push({required Routes route, Object? extra}) async {
+  Future<void> push({required Routes route, Object? extra, bool refreshing = false}) async {
     await _handleParams(route: route, extra: extra);
     state!.push(route.route);
+    if (refreshing) {
+      _read(dynamicLinksControllerProvider.notifier).clear();
+    }
   }
 
   void pop() {
     state!.pop();
   }
 
-  void clear() {
-    state!.go(Routes.main.route);
-    _read(dynamicLinksControllerProvider.notifier).clear();
+  Future<void> refresh() async {
+    state!.refresh();
+    await push(route: Routes.logo);
   }
 
   Widget screen({required Routes route}) {
@@ -362,4 +393,15 @@ class ItemDetailRouteParams {
 class ItemImportRouteParams {
   final Item item;
   ItemImportRouteParams({required this.item});
+}
+
+class GoRouterObserver extends NavigatorObserver {
+  GoRouterObserver(this._read);
+  final Reader _read;
+
+  @override
+  void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    _read(dynamicLinksControllerProvider.notifier).clear();
+    super.didPop(route, previousRoute);
+  }
 }

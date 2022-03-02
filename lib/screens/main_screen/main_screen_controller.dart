@@ -21,16 +21,10 @@ final mainScreenControllerProvider = StateNotifierProvider.autoDispose<MainScree
 
 class MainScreenController extends StateNotifier<MainScreenState> {
   MainScreenController() : super(const MainScreenState()) {
-    initPageController();
     initScrollControllers();
   }
 
-  late PageController pageController;
   late List<ScrollController> scrollControllers;
-
-  void initPageController() {
-    pageController = PageController();
-  }
 
   void initScrollControllers() {
     scrollControllers = [
@@ -44,7 +38,7 @@ class MainScreenController extends StateNotifier<MainScreenState> {
     state = state.copyWith(page: BottomItem.values[page]);
   }
 
-  Future<void> jumpToPage(BottomItem item) async {
+  Future<void> jumpToPage(PageController pageController, BottomItem item) async {
     await pageController.animateToPage(
       item.index,
       duration: const Duration(milliseconds: 200),

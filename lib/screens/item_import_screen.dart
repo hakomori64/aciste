@@ -46,7 +46,7 @@ class ItemImportScreen extends HookConsumerWidget {
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_left),
-          onPressed: () => ref.read(routerProvider.notifier).clear(),
+          onPressed: () => ref.read(routerProvider.notifier).go(route: Routes.main),
         ),
         actions: [
           Padding(
@@ -67,7 +67,7 @@ class ItemImportScreen extends HookConsumerWidget {
                   .checkHasResource(resourceId: item.resource!.id!);
                 if (ownResource) {
                   ref.read(appControllerProvider.notifier).setloading(value: false);
-                  ref.read(routerProvider.notifier).clear();
+                  ref.read(routerProvider.notifier).go(route: Routes.main);
                   ref.read(routerProvider.notifier).showDialog(child: const ItemImportAlreadyOwnDialog());
                   return;
                 }
@@ -89,7 +89,7 @@ class ItemImportScreen extends HookConsumerWidget {
                     resourceType: item.resourceType!
                   );
                 ref.read(appControllerProvider.notifier).setloading(value: false);
-                ref.read(routerProvider.notifier).clear();
+                ref.read(routerProvider.notifier).go(route: Routes.main);
                 if (item.resource!.viewCount + 1 < 4) {
                   ref.read(routerProvider.notifier).showDialog(child: ItemImportCelebrateDialog(rank: item.resource!.viewCount + 1));
                 }

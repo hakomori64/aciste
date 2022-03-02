@@ -17,7 +17,7 @@ class MessageScreen extends HookConsumerWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new),
           onPressed: () async {
-            await ref.read(routerProvider.notifier).go(route: Routes.home);
+            await ref.read(routerProvider.notifier).go(route: Routes.main);
           },
         ),
         actions: [

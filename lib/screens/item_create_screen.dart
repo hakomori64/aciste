@@ -59,7 +59,7 @@ class ItemCreateScreen extends HookConsumerWidget {
                       content: params!
                   );
                 ref.read(appControllerProvider.notifier).setloading(value: false);
-                ref.read(routerProvider.notifier).go(route: Routes.home);
+                ref.read(routerProvider.notifier).go(route: Routes.main);
               },
               child: const Text(
                 '作成',

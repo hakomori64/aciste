@@ -18,10 +18,8 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$HomeScreenStateTearOff {
   const _$HomeScreenStateTearOff();
 
-  _HomeScreenState call({bool isSelecting = false}) {
-    return _HomeScreenState(
-      isSelecting: isSelecting,
-    );
+  _HomeScreenState call() {
+    return const _HomeScreenState();
   }
 }
 
@@ -29,20 +27,13 @@ class _$HomeScreenStateTearOff {
 const $HomeScreenState = _$HomeScreenStateTearOff();
 
 /// @nodoc
-mixin _$HomeScreenState {
-  bool get isSelecting => throw _privateConstructorUsedError;
-
-  @JsonKey(ignore: true)
-  $HomeScreenStateCopyWith<HomeScreenState> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+mixin _$HomeScreenState {}
 
 /// @nodoc
 abstract class $HomeScreenStateCopyWith<$Res> {
   factory $HomeScreenStateCopyWith(
           HomeScreenState value, $Res Function(HomeScreenState) then) =
       _$HomeScreenStateCopyWithImpl<$Res>;
-  $Res call({bool isSelecting});
 }
 
 /// @nodoc
@@ -53,28 +44,13 @@ class _$HomeScreenStateCopyWithImpl<$Res>
   final HomeScreenState _value;
   // ignore: unused_field
   final $Res Function(HomeScreenState) _then;
-
-  @override
-  $Res call({
-    Object? isSelecting = freezed,
-  }) {
-    return _then(_value.copyWith(
-      isSelecting: isSelecting == freezed
-          ? _value.isSelecting
-          : isSelecting // ignore: cast_nullable_to_non_nullable
-              as bool,
-    ));
-  }
 }
 
 /// @nodoc
-abstract class _$HomeScreenStateCopyWith<$Res>
-    implements $HomeScreenStateCopyWith<$Res> {
+abstract class _$HomeScreenStateCopyWith<$Res> {
   factory _$HomeScreenStateCopyWith(
           _HomeScreenState value, $Res Function(_HomeScreenState) then) =
       __$HomeScreenStateCopyWithImpl<$Res>;
-  @override
-  $Res call({bool isSelecting});
 }
 
 /// @nodoc
@@ -87,60 +63,28 @@ class __$HomeScreenStateCopyWithImpl<$Res>
 
   @override
   _HomeScreenState get _value => super._value as _HomeScreenState;
-
-  @override
-  $Res call({
-    Object? isSelecting = freezed,
-  }) {
-    return _then(_HomeScreenState(
-      isSelecting: isSelecting == freezed
-          ? _value.isSelecting
-          : isSelecting // ignore: cast_nullable_to_non_nullable
-              as bool,
-    ));
-  }
 }
 
 /// @nodoc
 
 class _$_HomeScreenState implements _HomeScreenState {
-  const _$_HomeScreenState({this.isSelecting = false});
-
-  @JsonKey()
-  @override
-  final bool isSelecting;
+  const _$_HomeScreenState();
 
   @override
   String toString() {
-    return 'HomeScreenState(isSelecting: $isSelecting)';
+    return 'HomeScreenState()';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _HomeScreenState &&
-            const DeepCollectionEquality()
-                .equals(other.isSelecting, isSelecting));
+        (other.runtimeType == runtimeType && other is _HomeScreenState);
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(isSelecting));
-
-  @JsonKey(ignore: true)
-  @override
-  _$HomeScreenStateCopyWith<_HomeScreenState> get copyWith =>
-      __$HomeScreenStateCopyWithImpl<_HomeScreenState>(this, _$identity);
+  int get hashCode => runtimeType.hashCode;
 }
 
 abstract class _HomeScreenState implements HomeScreenState {
-  const factory _HomeScreenState({bool isSelecting}) = _$_HomeScreenState;
-
-  @override
-  bool get isSelecting;
-  @override
-  @JsonKey(ignore: true)
-  _$HomeScreenStateCopyWith<_HomeScreenState> get copyWith =>
-      throw _privateConstructorUsedError;
+  const factory _HomeScreenState() = _$_HomeScreenState;
 }

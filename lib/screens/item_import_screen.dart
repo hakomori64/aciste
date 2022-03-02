@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:aciste/controllers/app_controller.dart';
 import 'package:aciste/controllers/auth_controller.dart';
-import 'package:aciste/controllers/dynamic_links_controller.dart';
 import 'package:aciste/controllers/item_controller.dart';
 import 'package:aciste/controllers/resource_controller.dart';
 import 'package:aciste/router.dart';
@@ -68,8 +67,7 @@ class ItemImportScreen extends HookConsumerWidget {
                   .checkHasResource(resourceId: item.resource!.id!);
                 if (ownResource) {
                   ref.read(appControllerProvider.notifier).setloading(value: false);
-                  ref.read(dynamicLinksControllerProvider.notifier).clear();
-                  await ref.read(routerProvider.notifier).go(route: Routes.home);
+                  ref.read(routerProvider.notifier).clear();
                   ref.read(routerProvider.notifier).showDialog(child: const ItemImportAlreadyOwnDialog());
                   return;
                 }
@@ -91,8 +89,7 @@ class ItemImportScreen extends HookConsumerWidget {
                     resourceType: item.resourceType!
                   );
                 ref.read(appControllerProvider.notifier).setloading(value: false);
-                ref.read(dynamicLinksControllerProvider.notifier).clear();
-                await ref.read(routerProvider.notifier).go(route: Routes.home);
+                ref.read(routerProvider.notifier).clear();
                 if (item.resource!.viewCount + 1 < 4) {
                   ref.read(routerProvider.notifier).showDialog(child: ItemImportCelebrateDialog(rank: item.resource!.viewCount + 1));
                 }

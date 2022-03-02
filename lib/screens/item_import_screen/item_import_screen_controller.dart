@@ -58,7 +58,6 @@ class ItemImportScreenController extends StateNotifier<ItemImportScreenState> {
     setItem(item);
     setName(resource.name ?? '');
     setDescription(resource.description ?? '');
-    //_read(dynamicLinksControllerProvider.notifier).clear();
   }
 
   void setItem(Item item) {

@@ -46,7 +46,7 @@ class EmailCheckScreenController extends StateNotifier<EmailCheckScreenState> {
     }
 
     if (user.emailVerified) {
-      await _read(routerProvider.notifier).go(route: Routes.home);
+      await _read(routerProvider.notifier).go(route: Routes.main);
     } else {
       await user.sendEmailVerification();
       await _read(routerProvider.notifier).go(route: Routes.emailCheck, extra: EmailCheckRouteParams(email: state.email, password: state.password, from: Routes.login));

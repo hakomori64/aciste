@@ -5,17 +5,11 @@ part 'home_screen_controller.freezed.dart';
 
 @freezed
 class HomeScreenState with _$HomeScreenState {
-  const factory HomeScreenState({
-    @Default(false) bool isSelecting,
-  }) = _HomeScreenState;
+  const factory HomeScreenState() = _HomeScreenState;
 }
 
 final homeScreenControllerProvider = StateNotifierProvider.autoDispose<HomeScreenController, HomeScreenState>((ref) => HomeScreenController());
 
 class HomeScreenController extends StateNotifier<HomeScreenState> {
   HomeScreenController() : super(const HomeScreenState());
-
-  Future<void> setIsSelecting({required bool value }) async {
-    state = state.copyWith(isSelecting: value);
-  }
 }

@@ -9,7 +9,6 @@ import 'package:aciste/screens/dialog_screen/dialog_screen_controller.dart';
 import 'package:aciste/screens/email_check_screen.dart';
 import 'package:aciste/screens/email_check_screen/email_check_screen_controller.dart';
 import 'package:aciste/screens/item_create_screen.dart';
-import 'package:aciste/screens/home_screen.dart';
 import 'package:aciste/screens/item_create_screen/item_create_screen_controller.dart';
 import 'package:aciste/screens/item_detail_screen.dart';
 import 'package:aciste/screens/item_detail_screen/item_detail_screen_controller.dart';
@@ -19,6 +18,7 @@ import 'package:aciste/screens/item_import_screen.dart';
 import 'package:aciste/screens/item_import_screen/item_import_screen_controller.dart';
 import 'package:aciste/screens/login_screen.dart';
 import 'package:aciste/screens/logo_screen.dart';
+import 'package:aciste/screens/main_screen.dart';
 import 'package:aciste/screens/media_screen.dart';
 import 'package:aciste/screens/media_screen/media_screen_controller.dart';
 import 'package:aciste/screens/message_screen.dart';
@@ -64,7 +64,7 @@ class RouterController extends StateNotifier<GoRouter?> {
           builder:(context, state) => screen(route: Routes.logo),
           redirect: (state) {
             if (_user?.uid != null && _user!.emailVerified) {
-              return Routes.home.route;
+              return Routes.main.route;
             } else {
               return Routes.login.route;
             }
@@ -83,8 +83,8 @@ class RouterController extends StateNotifier<GoRouter?> {
           builder: (context, state) => screen(route: Routes.emailCheck),
         ),
         GoRoute(
-          path: Routes.home.route,
-          builder: (context, state) => screen(route: Routes.home),
+          path: Routes.main.route,
+          builder: (context, state) => screen(route: Routes.main),
         ),
         GoRoute(
           path: Routes.media.route,
@@ -196,7 +196,7 @@ class RouterController extends StateNotifier<GoRouter?> {
     switch (route) {
       case Routes.login:
         break;
-      case Routes.home:
+      case Routes.main:
         break;
       case Routes.media:
         final params = extra! as MediaRouteParams;
@@ -258,7 +258,7 @@ class RouterController extends StateNotifier<GoRouter?> {
   }
 
   void clear() {
-    state!.go(Routes.home.route);
+    state!.go(Routes.main.route);
     _read(dynamicLinksControllerProvider.notifier).clear();
   }
 
@@ -272,8 +272,8 @@ class RouterController extends StateNotifier<GoRouter?> {
         return const SignupScreen();
       case Routes.emailCheck:
         return const EmailCheckScreen();
-      case Routes.home:
-        return const HomeScreen();
+      case Routes.main:
+        return const MainScreen();
       case Routes.media:
         return const MediaScreen();
       case Routes.message:
@@ -301,7 +301,7 @@ enum Routes {
   login,
   signup,
   emailCheck,
-  home,
+  main,
   profile,
   profileEdit,
   media,

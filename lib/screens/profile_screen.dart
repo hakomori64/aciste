@@ -131,24 +131,6 @@ class ProfileScreen extends HookConsumerWidget {
                         ],
                       )
                     )
-                    /*
-                    child: Padding(
-                      padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-                      child: TextButton(
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color?>(Colors.white),
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                            )
-                          )
-                        ),
-                        onPressed: () {
-                          ref.read(routerProvider.notifier).push(route: Routes.profileEdit);
-                        },
-                        child: const Text('プロフィールを編集'),
-                      )
-                    )*/
                   )
                 ],
               ),
@@ -225,49 +207,59 @@ class ProfileScreen extends HookConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Expanded(
-                    child: Column(
-                      children: [
-                        Text("フォロー数",
-                          style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-                          )),
-                        const SizedBox(
-                          height: 5
-                        ),
-                        Text(
-                          "${user.following.length} 人",
-                          style: const TextStyle(
-                            color: Colors.black45,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w300,
-                          )
-                        ),
-                      ],
+                    child: GestureDetector(
+                      onTap: () {
+                        ref.read(routerProvider.notifier).push(route: Routes.follows, extra: FollowsRouteParams(follows: user.following));
+                      },
+                      child: Column(
+                        children: [
+                          Text("フォロー数",
+                            style: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                            )),
+                          const SizedBox(
+                            height: 5
+                          ),
+                          Text(
+                            "${user.following.length} 人",
+                            style: const TextStyle(
+                              color: Colors.black45,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w300,
+                            )
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   Expanded(
-                    child: Column(
-                      children: [
-                        Text("フォロワー数",
-                          style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-                          )),
-                        const SizedBox(
-                          height: 5
-                        ),
-                        Text(
-                          "${user.followedBy.length} 人",
-                          style: const TextStyle(
-                            color: Colors.black45,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w300,
-                          )
-                        ),
-                      ],
+                    child: GestureDetector(
+                      onTap: () {
+                        ref.read(routerProvider.notifier).push(route: Routes.follows, extra: FollowsRouteParams(follows: user.following));
+                      },
+                      child: Column(
+                        children: [
+                          Text("フォロワー数",
+                            style: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                            )),
+                          const SizedBox(
+                            height: 5
+                          ),
+                          Text(
+                            "${user.followedBy.length} 人",
+                            style: const TextStyle(
+                              color: Colors.black45,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w300,
+                            )
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],

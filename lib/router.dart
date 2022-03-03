@@ -9,6 +9,8 @@ import 'package:aciste/screens/dialog_screen.dart';
 import 'package:aciste/screens/dialog_screen/dialog_screen_controller.dart';
 import 'package:aciste/screens/email_check_screen.dart';
 import 'package:aciste/screens/email_check_screen/email_check_screen_controller.dart';
+import 'package:aciste/screens/follows_screen.dart';
+import 'package:aciste/screens/follows_screen_controller.dart';
 import 'package:aciste/screens/item_create_screen.dart';
 import 'package:aciste/screens/item_create_screen/item_create_screen_controller.dart';
 import 'package:aciste/screens/item_detail_screen.dart';
@@ -114,6 +116,10 @@ class RouterController extends StateNotifier<GoRouter?> {
           ),
         ),
         GoRoute(
+          path: Routes.follows.route,
+          builder: (context, state) => screen(route: Routes.follows),
+        ),
+        GoRoute(
           path: Routes.profileEdit.route,
           builder: (context, state) => screen(route: Routes.profileEdit),
         ),
@@ -145,9 +151,6 @@ class RouterController extends StateNotifier<GoRouter?> {
           )
         ),
       ],
-      observers: [
-        GoRouterObserver(_read)
-      ]
     );
 
     _listen(dynamicLinksControllerProvider, (DynamicLinkState? previous, DynamicLinkState current) async {
@@ -178,6 +181,7 @@ class RouterController extends StateNotifier<GoRouter?> {
           default:
             break;
         }
+        _read(dynamicLinksControllerProvider.notifier).clear();
       }
     });
   }
@@ -243,6 +247,10 @@ class RouterController extends StateNotifier<GoRouter?> {
         final params = extra! as ProfileRouteParams;
         await _read(profileScreenControllerProvider.notifier).setUser(userId: params.userId);
         break;
+      case Routes.follows:
+        final params = extra! as FollowsRouteParams;
+        _read(followsScreenControllerProvider.notifier).setFollows(follows: params.follows);
+        break;
       case Routes.profileEdit:
         break;
       case Routes.itemCreate:
@@ -268,20 +276,14 @@ class RouterController extends StateNotifier<GoRouter?> {
     return;
   }
 
-  Future<void> go({required Routes route, Object? extra, bool refreshing = false}) async {
+  Future<void> go({required Routes route, Object? extra}) async {
     await _handleParams(route: route, extra: extra);
     state!.go(route.route);
-    if (refreshing) {
-      _read(dynamicLinksControllerProvider.notifier).clear();
-    }
   }
 
-  Future<void> push({required Routes route, Object? extra, bool refreshing = false}) async {
+  Future<void> push({required Routes route, Object? extra}) async {
     await _handleParams(route: route, extra: extra);
     state!.push(route.route);
-    if (refreshing) {
-      _read(dynamicLinksControllerProvider.notifier).clear();
-    }
   }
 
   void pop() {
@@ -311,6 +313,8 @@ class RouterController extends StateNotifier<GoRouter?> {
         return const MessageScreen();
       case Routes.profile:
         return const ProfileScreen();
+      case Routes.follows:
+        return const FollowsScreen();
       case Routes.profileEdit:
         return const ProfileEditScreen();
       case Routes.itemCreate:
@@ -334,6 +338,7 @@ enum Routes {
   emailCheck,
   main,
   profile,
+  follows,
   profileEdit,
   media,
   message,
@@ -374,6 +379,11 @@ class ProfileRouteParams {
   const ProfileRouteParams({required this.userId});
 }
 
+class FollowsRouteParams {
+  final List<String> follows;
+  const FollowsRouteParams({required this.follows});
+}
+
 class ItemCreateRouteParams {
   final ResourceType resourceType;
   final CreateResourceParams? params;
@@ -393,15 +403,4 @@ class ItemDetailRouteParams {
 class ItemImportRouteParams {
   final Item item;
   ItemImportRouteParams({required this.item});
-}
-
-class GoRouterObserver extends NavigatorObserver {
-  GoRouterObserver(this._read);
-  final Reader _read;
-
-  @override
-  void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
-    _read(dynamicLinksControllerProvider.notifier).clear();
-    super.didPop(route, previousRoute);
-  }
 }

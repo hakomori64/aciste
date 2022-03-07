@@ -171,7 +171,7 @@ class RouterController extends StateNotifier<GoRouter?> {
               resourceType: resourceType,
             );
             await refresh();
-            await push(route: Routes.itemImport, extra: ItemImportRouteParams(item: item));
+            await push(route: Routes.itemImport, extra: ItemImportRouteParams(item: item, resource: resource));
             break;
           case '/profile':
             final userId = parameterMap!['userId'] as String;
@@ -269,6 +269,8 @@ class RouterController extends StateNotifier<GoRouter?> {
       case Routes.itemImport:
         final params = extra! as ItemImportRouteParams;
         _read(itemImportScreenControllerProvider.notifier).setItem(params.item);
+        _read(itemImportScreenControllerProvider.notifier).setName(params.resource.name ?? '');
+        _read(itemImportScreenControllerProvider.notifier).setDescription(params.resource.description ?? '');
         break;
       default:
         return;
@@ -402,5 +404,6 @@ class ItemDetailRouteParams {
 
 class ItemImportRouteParams {
   final Item item;
-  ItemImportRouteParams({required this.item});
+  final Resource resource;
+  ItemImportRouteParams({required this.item, required this.resource});
 }

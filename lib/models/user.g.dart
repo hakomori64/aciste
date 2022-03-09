@@ -25,7 +25,8 @@ _$_User _$$_UserFromJson(Map<String, dynamic> json) => _$_User(
               ?.map((e) => e as String)
               .toList() ??
           const [],
-      notifyToFollowersDefault: json['notifyToFollowersDefault'] ?? false,
+      notifyToFollowersDefault:
+          json['notifyToFollowersDefault'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$_UserToJson(_$_User instance) => <String, dynamic>{

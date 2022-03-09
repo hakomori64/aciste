@@ -33,7 +33,7 @@ class _$UserTearOff {
       @TimestampDateTimeConverter() DateTime? updatedAt,
       List<String> following = const [],
       List<String> followedBy = const [],
-      dynamic notifyToFollowersDefault = false}) {
+      bool notifyToFollowersDefault = false}) {
     return _User(
       id: id,
       email: email,
@@ -71,7 +71,7 @@ mixin _$User {
   DateTime? get updatedAt => throw _privateConstructorUsedError;
   List<String> get following => throw _privateConstructorUsedError;
   List<String> get followedBy => throw _privateConstructorUsedError;
-  dynamic get notifyToFollowersDefault => throw _privateConstructorUsedError;
+  bool get notifyToFollowersDefault => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -93,7 +93,7 @@ abstract class $UserCopyWith<$Res> {
       @TimestampDateTimeConverter() DateTime? updatedAt,
       List<String> following,
       List<String> followedBy,
-      dynamic notifyToFollowersDefault});
+      bool notifyToFollowersDefault});
 }
 
 /// @nodoc
@@ -162,7 +162,7 @@ class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
       notifyToFollowersDefault: notifyToFollowersDefault == freezed
           ? _value.notifyToFollowersDefault
           : notifyToFollowersDefault // ignore: cast_nullable_to_non_nullable
-              as dynamic,
+              as bool,
     ));
   }
 }
@@ -183,7 +183,7 @@ abstract class _$UserCopyWith<$Res> implements $UserCopyWith<$Res> {
       @TimestampDateTimeConverter() DateTime? updatedAt,
       List<String> following,
       List<String> followedBy,
-      dynamic notifyToFollowersDefault});
+      bool notifyToFollowersDefault});
 }
 
 /// @nodoc
@@ -252,7 +252,8 @@ class __$UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
               as List<String>,
       notifyToFollowersDefault: notifyToFollowersDefault == freezed
           ? _value.notifyToFollowersDefault
-          : notifyToFollowersDefault,
+          : notifyToFollowersDefault // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -302,7 +303,7 @@ class _$_User extends _User {
   final List<String> followedBy;
   @JsonKey()
   @override
-  final dynamic notifyToFollowersDefault;
+  final bool notifyToFollowersDefault;
 
   @override
   String toString() {
@@ -369,7 +370,7 @@ abstract class _User extends User {
       @TimestampDateTimeConverter() DateTime? updatedAt,
       List<String> following,
       List<String> followedBy,
-      dynamic notifyToFollowersDefault}) = _$_User;
+      bool notifyToFollowersDefault}) = _$_User;
   const _User._() : super._();
 
   factory _User.fromJson(Map<String, dynamic> json) = _$_User.fromJson;
@@ -397,7 +398,7 @@ abstract class _User extends User {
   @override
   List<String> get followedBy;
   @override
-  dynamic get notifyToFollowersDefault;
+  bool get notifyToFollowersDefault;
   @override
   @JsonKey(ignore: true)
   _$UserCopyWith<_User> get copyWith => throw _privateConstructorUsedError;

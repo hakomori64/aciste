@@ -241,7 +241,7 @@ class ProfileScreen extends HookConsumerWidget {
                   Expanded(
                     child: GestureDetector(
                       onTap: () {
-                        ref.read(routerProvider.notifier).push(route: Routes.follows, extra: FollowsRouteParams(follows: user.following));
+                        ref.read(routerProvider.notifier).push(route: Routes.follows, extra: FollowsRouteParams(follows: user.followedBy));
                       },
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,

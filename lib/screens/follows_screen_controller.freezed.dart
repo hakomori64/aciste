@@ -19,7 +19,7 @@ class _$FollowsScreenStateTearOff {
   const _$FollowsScreenStateTearOff();
 
   _FollowsScreenState call(
-      {bool isLoading = false,
+      {bool isLoading = true,
       List<String> follows = const [],
       List<User> data = const []}) {
     return _FollowsScreenState(
@@ -132,7 +132,7 @@ class __$FollowsScreenStateCopyWithImpl<$Res>
 
 class _$_FollowsScreenState implements _FollowsScreenState {
   const _$_FollowsScreenState(
-      {this.isLoading = false, this.follows = const [], this.data = const []});
+      {this.isLoading = true, this.follows = const [], this.data = const []});
 
   @JsonKey()
   @override

@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:aciste/models/user.dart';
 import 'package:aciste/repositories/user_repository.dart';
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -10,7 +11,7 @@ part 'follows_screen_controller.freezed.dart';
 @freezed
 class FollowsScreenState with _$FollowsScreenState {
   const factory FollowsScreenState({
-    @Default(false) bool isLoading,
+    @Default(true) bool isLoading,
     @Default([]) List<String> follows,
     @Default([]) List<User> data,
   }) = _FollowsScreenState;
@@ -26,7 +27,6 @@ class FollowsScreenController extends StateNotifier<FollowsScreenState> {
 
   Future<void> loadMore() async {
     state = state.copyWith(isLoading: true);
-    await Future.delayed(const Duration(seconds: 2));
 
     final data = state.data;
     final start = data.length;
@@ -38,12 +38,22 @@ class FollowsScreenController extends StateNotifier<FollowsScreenState> {
     }
 
     state = state.copyWith(
-      data: data
+      data: data,
+      isLoading: false,
     );
   }
 
+  void onScroll(ScrollController controller) {
+    if (
+      controller.offset >= controller.position.maxScrollExtent &&
+      !controller.position.outOfRange) {
+      
+      loadMore();
+    }
+  }
 
   void setFollows({required List<String> follows}) {
+    print('follows : $follows');
     state = state.copyWith(follows: follows, data: []);
     loadMore();
   }

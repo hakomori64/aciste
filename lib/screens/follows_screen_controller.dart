@@ -53,7 +53,6 @@ class FollowsScreenController extends StateNotifier<FollowsScreenState> {
   }
 
   void setFollows({required List<String> follows}) {
-    print('follows : $follows');
     state = state.copyWith(follows: follows, data: []);
     loadMore();
   }

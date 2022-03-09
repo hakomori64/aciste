@@ -13,14 +13,13 @@ class FollowsScreen extends HookConsumerWidget {
     final followsScreenState = ref.watch(followsScreenControllerProvider);
     final isLoading = followsScreenState.isLoading;
     final data = followsScreenState.data;
-    print(data);
 
     final scrollController = useScrollController();
 
     useEffect(() {
       scrollController.addListener(() => ref.read(followsScreenControllerProvider.notifier).onScroll(scrollController));
 
-      //return scrollController.dispose;
+      return;
     }, []);
 
     return Scaffold(

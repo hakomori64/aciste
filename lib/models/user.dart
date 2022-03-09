@@ -20,7 +20,7 @@ abstract class User implements _$User {
     @TimestampDateTimeConverter() DateTime? updatedAt,
     @Default([]) List<String> following,
     @Default([]) List<String> followedBy,
-    @Default(false) notifyToFollowersDefault,
+    @Default(false) bool notifyToFollowersDefault,
   }) = _User;
 
   factory User.empty() => User(

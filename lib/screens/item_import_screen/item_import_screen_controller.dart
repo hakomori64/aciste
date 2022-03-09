@@ -1,9 +1,5 @@
 import 'package:aciste/controllers/auth_controller.dart';
-import 'package:aciste/enums/resource_type.dart';
 import 'package:aciste/models/item.dart';
-import 'package:aciste/controllers/dynamic_links_controller.dart';
-import 'package:aciste/repositories/resource_repository.dart';
-import 'package:enum_to_string/enum_to_string.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -20,14 +16,12 @@ class ItemImportScreenState with _$ItemImportScreenState {
 
 final itemImportScreenControllerProvider = StateNotifierProvider<ItemImportScreenController, ItemImportScreenState>((ref) {
   final uid = ref.watch(authControllerProvider)?.uid;
-  return ItemImportScreenController(ref.read, uid);
+  return ItemImportScreenController(uid);
 });
 
 class ItemImportScreenController extends StateNotifier<ItemImportScreenState> {
-  final Reader _read;
   final String? userId;
   ItemImportScreenController(
-    this._read,
     this.userId,
   ) : super(const ItemImportScreenState());
 

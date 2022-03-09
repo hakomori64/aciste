@@ -212,6 +212,7 @@ class ProfileScreen extends HookConsumerWidget {
                         ref.read(routerProvider.notifier).push(route: Routes.follows, extra: FollowsRouteParams(follows: user.following));
                       },
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           Text("フォロー数",
                             style: TextStyle(
@@ -222,13 +223,16 @@ class ProfileScreen extends HookConsumerWidget {
                           const SizedBox(
                             height: 5
                           ),
-                          Text(
-                            "${user.following.length} 人",
-                            style: const TextStyle(
-                              color: Colors.black45,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w300,
-                            )
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Text(
+                              "${user.following.length} 人",
+                              style: const TextStyle(
+                                color: Colors.black45,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w300,
+                              )
+                            ),
                           ),
                         ],
                       ),
@@ -240,6 +244,7 @@ class ProfileScreen extends HookConsumerWidget {
                         ref.read(routerProvider.notifier).push(route: Routes.follows, extra: FollowsRouteParams(follows: user.following));
                       },
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           Text("フォロワー数",
                             style: TextStyle(
@@ -250,13 +255,16 @@ class ProfileScreen extends HookConsumerWidget {
                           const SizedBox(
                             height: 5
                           ),
-                          Text(
-                            "${user.followedBy.length} 人",
-                            style: const TextStyle(
-                              color: Colors.black45,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w300,
-                            )
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Text(
+                              "${user.followedBy.length} 人",
+                              style: const TextStyle(
+                                color: Colors.black45,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w300,
+                              )
+                            ),
                           ),
                         ],
                       ),

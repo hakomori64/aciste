@@ -106,11 +106,13 @@ class ItemCreateScreen extends HookConsumerWidget {
                 ),
               ),
               SwitchListTile(
-                title: const Text('フォロワーに通知を送信する'),
+                title: const Text('フォロワーに通知する'),
+                secondary: Icon(Icons.notifications, color: Theme.of(context).primaryColor),
                 value: notifyToFollowers.value,
                 onChanged: (value) {
                   notifyToFollowers.value = value;
                 },
+                activeColor: Theme.of(context).primaryColor,
               ),
               const SizedBox(height: 30),
               ExpansionTile(

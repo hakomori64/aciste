@@ -201,10 +201,10 @@ class MediaScreenController extends StateNotifier<MediaScreenState> {
     switch (state.resourceType) {
       case ResourceType.photo:
         return RequestType.image;
-      case ResourceType.message:
-        throw const CustomException(message: 'メディアに変換できないタイプです');
       case ResourceType.none:
         return RequestType.common;
+      default:
+        throw const CustomException(message: 'メディアに変換できないタイプです');
     }
   }
 }

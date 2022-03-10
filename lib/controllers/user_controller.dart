@@ -106,16 +106,6 @@ class UserController extends StateNotifier<AsyncValue<User?>> {
     }
   }
 
-  void setNotifyToFollowersDefault({required bool value}) async {
-    final user = state.asData?.value;
-    if (user != null) {
-      await updateUser(userId: user.id!, user: user.copyWith(
-        notifyToFollowersDefault: value
-      ));
-      state = AsyncValue.data(user.copyWith(notifyToFollowersDefault: value));
-    }
-  }
-
   Future<void> deleteUser({required String userId}) async {
     try {
       await _read(userRepositoryProvider).deleteUser(userId: userId);

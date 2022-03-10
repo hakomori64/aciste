@@ -5,6 +5,7 @@ import 'package:aciste/models/item.dart';
 import 'package:aciste/models/resource.dart';
 import 'package:aciste/repositories/item_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:uuid/uuid.dart';
 
 import 'auth_controller.dart';
 
@@ -45,6 +46,20 @@ class ItemListController extends StateNotifier<AsyncValue<List<Item>>> {
     required CreateResourceParams content,
   }) async {
     try {
+      final uuid = Uuid();
+      final tmpId = uuid.v4();
+      final tmpItem = Item.empty().copyWith(
+        id: tmpId,
+        name: name,
+        description: description,
+        resource: null,
+        resourceType: ResourceType.loading,
+        userId: _userId!,
+      );
+      state.whenData((items) {
+        items.insert(0, tmpItem);
+        state = AsyncValue.data(items);
+      });
       final resource = await _read(resourceControllerProvider).createResource(
         resourceType: resourceType,
         content: content
@@ -53,7 +68,7 @@ class ItemListController extends StateNotifier<AsyncValue<List<Item>>> {
       if (_userId == null || resource.id == null) {
         throw const CustomException(message: 'resourceId or userId is null');
       }
-      final item = Item.empty().copyWith(
+      final newItem = Item.empty().copyWith(
           name: name,
           description: description,
           resource: resource,
@@ -62,9 +77,15 @@ class ItemListController extends StateNotifier<AsyncValue<List<Item>>> {
         );
       final itemId = await _read(itemRepositoryProvider).createItem(
         userId: _userId!,
-        item: item
+        item: newItem
       );
-      state.whenData((items) => state = AsyncValue.data(items..add(item.copyWith(id: itemId))));
+      state.whenData((items) {
+        state = AsyncValue.data([
+          for (final item in items)
+            if (item.id == tmpId)
+              newItem.copyWith(id: itemId) else item
+        ]);
+      });
     } on CustomException catch (e) {
       state = AsyncValue.error(e);
     }

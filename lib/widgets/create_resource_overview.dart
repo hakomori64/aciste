@@ -38,6 +38,10 @@ class CreateResourceOverView extends StatelessWidget {
             ),
           ),
         );
+      case ResourceType.loading:
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
       case ResourceType.none:
         return const Center(child: Text("Unknown type"));
     }

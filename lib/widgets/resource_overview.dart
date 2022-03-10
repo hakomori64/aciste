@@ -15,7 +15,7 @@ class ResourceOverView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (item.resource == null) {
+    if (item.resourceType != ResourceType.loading && item.resource == null) {
       return const Text("リソースが見つかりませんでした");
     }
     switch (item.resourceType!) {
@@ -38,6 +38,10 @@ class ResourceOverView extends StatelessWidget {
               fontSize: 24,
             ),
           )
+        );
+      case ResourceType.loading:
+        return const Center(
+          child: CircularProgressIndicator(),
         );
       case ResourceType.none:
         return const Center(child: Text("Unknown type"));

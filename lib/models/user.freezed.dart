@@ -32,8 +32,7 @@ class _$UserTearOff {
       @TimestampDateTimeConverter() DateTime? createdAt,
       @TimestampDateTimeConverter() DateTime? updatedAt,
       List<String> following = const [],
-      List<String> followedBy = const [],
-      bool notifyToFollowersDefault = false}) {
+      List<String> followedBy = const []}) {
     return _User(
       id: id,
       email: email,
@@ -45,7 +44,6 @@ class _$UserTearOff {
       updatedAt: updatedAt,
       following: following,
       followedBy: followedBy,
-      notifyToFollowersDefault: notifyToFollowersDefault,
     );
   }
 
@@ -71,7 +69,6 @@ mixin _$User {
   DateTime? get updatedAt => throw _privateConstructorUsedError;
   List<String> get following => throw _privateConstructorUsedError;
   List<String> get followedBy => throw _privateConstructorUsedError;
-  bool get notifyToFollowersDefault => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -92,8 +89,7 @@ abstract class $UserCopyWith<$Res> {
       @TimestampDateTimeConverter() DateTime? createdAt,
       @TimestampDateTimeConverter() DateTime? updatedAt,
       List<String> following,
-      List<String> followedBy,
-      bool notifyToFollowersDefault});
+      List<String> followedBy});
 }
 
 /// @nodoc
@@ -116,7 +112,6 @@ class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
     Object? updatedAt = freezed,
     Object? following = freezed,
     Object? followedBy = freezed,
-    Object? notifyToFollowersDefault = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -159,10 +154,6 @@ class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
           ? _value.followedBy
           : followedBy // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      notifyToFollowersDefault: notifyToFollowersDefault == freezed
-          ? _value.notifyToFollowersDefault
-          : notifyToFollowersDefault // ignore: cast_nullable_to_non_nullable
-              as bool,
     ));
   }
 }
@@ -182,8 +173,7 @@ abstract class _$UserCopyWith<$Res> implements $UserCopyWith<$Res> {
       @TimestampDateTimeConverter() DateTime? createdAt,
       @TimestampDateTimeConverter() DateTime? updatedAt,
       List<String> following,
-      List<String> followedBy,
-      bool notifyToFollowersDefault});
+      List<String> followedBy});
 }
 
 /// @nodoc
@@ -207,7 +197,6 @@ class __$UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
     Object? updatedAt = freezed,
     Object? following = freezed,
     Object? followedBy = freezed,
-    Object? notifyToFollowersDefault = freezed,
   }) {
     return _then(_User(
       id: id == freezed
@@ -250,10 +239,6 @@ class __$UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
           ? _value.followedBy
           : followedBy // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      notifyToFollowersDefault: notifyToFollowersDefault == freezed
-          ? _value.notifyToFollowersDefault
-          : notifyToFollowersDefault // ignore: cast_nullable_to_non_nullable
-              as bool,
     ));
   }
 }
@@ -271,8 +256,7 @@ class _$_User extends _User {
       @TimestampDateTimeConverter() this.createdAt,
       @TimestampDateTimeConverter() this.updatedAt,
       this.following = const [],
-      this.followedBy = const [],
-      this.notifyToFollowersDefault = false})
+      this.followedBy = const []})
       : super._();
 
   factory _$_User.fromJson(Map<String, dynamic> json) => _$$_UserFromJson(json);
@@ -301,13 +285,10 @@ class _$_User extends _User {
   @JsonKey()
   @override
   final List<String> followedBy;
-  @JsonKey()
-  @override
-  final bool notifyToFollowersDefault;
 
   @override
   String toString() {
-    return 'User(id: $id, email: $email, displayName: $displayName, bio: $bio, photoUrl: $photoUrl, backgroundImageUrl: $backgroundImageUrl, createdAt: $createdAt, updatedAt: $updatedAt, following: $following, followedBy: $followedBy, notifyToFollowersDefault: $notifyToFollowersDefault)';
+    return 'User(id: $id, email: $email, displayName: $displayName, bio: $bio, photoUrl: $photoUrl, backgroundImageUrl: $backgroundImageUrl, createdAt: $createdAt, updatedAt: $updatedAt, following: $following, followedBy: $followedBy)';
   }
 
   @override
@@ -327,9 +308,7 @@ class _$_User extends _User {
             const DeepCollectionEquality().equals(other.updatedAt, updatedAt) &&
             const DeepCollectionEquality().equals(other.following, following) &&
             const DeepCollectionEquality()
-                .equals(other.followedBy, followedBy) &&
-            const DeepCollectionEquality().equals(
-                other.notifyToFollowersDefault, notifyToFollowersDefault));
+                .equals(other.followedBy, followedBy));
   }
 
   @override
@@ -344,8 +323,7 @@ class _$_User extends _User {
       const DeepCollectionEquality().hash(createdAt),
       const DeepCollectionEquality().hash(updatedAt),
       const DeepCollectionEquality().hash(following),
-      const DeepCollectionEquality().hash(followedBy),
-      const DeepCollectionEquality().hash(notifyToFollowersDefault));
+      const DeepCollectionEquality().hash(followedBy));
 
   @JsonKey(ignore: true)
   @override
@@ -369,8 +347,7 @@ abstract class _User extends User {
       @TimestampDateTimeConverter() DateTime? createdAt,
       @TimestampDateTimeConverter() DateTime? updatedAt,
       List<String> following,
-      List<String> followedBy,
-      bool notifyToFollowersDefault}) = _$_User;
+      List<String> followedBy}) = _$_User;
   const _User._() : super._();
 
   factory _User.fromJson(Map<String, dynamic> json) = _$_User.fromJson;
@@ -397,8 +374,6 @@ abstract class _User extends User {
   List<String> get following;
   @override
   List<String> get followedBy;
-  @override
-  bool get notifyToFollowersDefault;
   @override
   @JsonKey(ignore: true)
   _$UserCopyWith<_User> get copyWith => throw _privateConstructorUsedError;

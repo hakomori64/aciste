@@ -25,8 +25,6 @@ _$_User _$$_UserFromJson(Map<String, dynamic> json) => _$_User(
               ?.map((e) => e as String)
               .toList() ??
           const [],
-      notifyToFollowersDefault:
-          json['notifyToFollowersDefault'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$_UserToJson(_$_User instance) => <String, dynamic>{
@@ -42,5 +40,4 @@ Map<String, dynamic> _$$_UserToJson(_$_User instance) => <String, dynamic>{
           const TimestampDateTimeConverter().toJson(instance.updatedAt),
       'following': instance.following,
       'followedBy': instance.followedBy,
-      'notifyToFollowersDefault': instance.notifyToFollowersDefault,
     };

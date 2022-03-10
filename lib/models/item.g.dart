@@ -41,4 +41,5 @@ const _$ResourceTypeEnumMap = {
   ResourceType.photo: 'photo',
   ResourceType.message: 'message',
   ResourceType.none: 'none',
+  ResourceType.loading: 'loading',
 };

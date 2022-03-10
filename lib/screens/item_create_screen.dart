@@ -1,9 +1,6 @@
-import 'package:aciste/controllers/announcement_controller.dart';
-import 'package:aciste/controllers/app_controller.dart';
 import 'package:aciste/controllers/auth_controller.dart';
 import 'package:aciste/controllers/item_controller.dart';
 import 'package:aciste/controllers/user_controller.dart';
-import 'package:aciste/models/announcement.dart';
 import 'package:aciste/router.dart';
 import 'package:aciste/screens/item_create_screen/item_create_screen_controller.dart';
 import 'package:aciste/widgets/create_resource_overview.dart';
@@ -23,7 +20,6 @@ class ItemCreateScreen extends HookConsumerWidget {
     final authUserState = ref.watch(authControllerProvider);
     final userControllerState = ref.watch(userControllerProvider);
     final user = userControllerState.asData?.value;
-    final notifyToFollowers = useState<bool>(user?.notifyToFollowersDefault ?? false);
 
     if (user == null) {
       return const Scaffold(
@@ -61,7 +57,7 @@ class ItemCreateScreen extends HookConsumerWidget {
               ),
               onPressed: () async {
                 FocusManager.instance.primaryFocus?.unfocus();
-                ref.read(appControllerProvider.notifier).setloading(value: true);
+                ref.read(routerProvider.notifier).go(route: Routes.main);
                 await ref.read(itemListControllerProvider.notifier)
                   .addItem(
                       name: nameController.text,
@@ -70,16 +66,6 @@ class ItemCreateScreen extends HookConsumerWidget {
                       resourceType: resourceType!,
                       content: params!
                   );
-                
-                // notify to followers
-                if (notifyToFollowers.value) {
-                  await ref.read(announcementControllerProvider.notifier).notifyToFollowers(
-                    announceType: AnnounceType.itemCreate
-                  );
-                }
-                
-                ref.read(appControllerProvider.notifier).setloading(value: false);
-                ref.read(routerProvider.notifier).go(route: Routes.main);
               },
               child: const Text(
                 '作成',
@@ -104,15 +90,6 @@ class ItemCreateScreen extends HookConsumerWidget {
                 decoration: const InputDecoration(
                   labelText: '名前 (optional)',
                 ),
-              ),
-              SwitchListTile(
-                title: const Text('フォロワーに通知する'),
-                secondary: Icon(Icons.notifications, color: Theme.of(context).primaryColor),
-                value: notifyToFollowers.value,
-                onChanged: (value) {
-                  notifyToFollowers.value = value;
-                },
-                activeColor: Theme.of(context).primaryColor,
               ),
               const SizedBox(height: 30),
               ExpansionTile(

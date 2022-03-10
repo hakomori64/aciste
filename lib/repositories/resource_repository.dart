@@ -27,8 +27,9 @@ class ResourceRepository implements BaseResourceRepository {
         return _read(photoRepositoryProvider).retrievePhoto(userId: userId, photoId: resourceId);
       case ResourceType.message:
         return _read(messageRepositoryProvider).retrieveMessage(userId: userId, messageId: resourceId);
-      case ResourceType.none:
+      default:
         throw const CustomException(message: '不明なリソースタイプです');
+
     }
   }
 
@@ -39,7 +40,7 @@ class ResourceRepository implements BaseResourceRepository {
         return _read(photoRepositoryProvider).createPhoto(userId: userId, createPhotoParams: createResourceParams as CreatePhotoParams);
       case ResourceType.message:
         return _read(messageRepositoryProvider).createMessage(userId: userId, createMessageParams: createResourceParams as CreateMessageParams);
-      case ResourceType.none:
+      default:
         throw const CustomException(message: '不明なリソースタイプです');
     }
   }
@@ -51,7 +52,7 @@ class ResourceRepository implements BaseResourceRepository {
         return _read(photoRepositoryProvider).updatePhoto(userId: userId, photo: resource as Photo);
       case ResourceType.message:
         return _read(messageRepositoryProvider).updateMessage(userId: userId, message: resource as Message);
-      case ResourceType.none:
+      default:
         throw const CustomException(message: '不明なリソースタイプです');
     }
   }

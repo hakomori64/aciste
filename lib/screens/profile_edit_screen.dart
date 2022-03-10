@@ -199,19 +199,6 @@ class ProfileEditScreen extends HookConsumerWidget {
                         decoration: const InputDecoration(labelText: '説明')
                       ),
                     ),
-                    SwitchListTile(
-                      title: const Text('アイテムの作成をフォロワーに通知'),
-                      //secondary: Icon(Icons.notifications, color: Theme.of(context).primaryColor),
-                      subtitle: const Text('アイテムの作成画面からも変更できます。'),
-                      onChanged: (value) => ref.read(userControllerProvider.notifier).updateUser(
-                        userId: user.id!,
-                        user: user.copyWith(
-                          notifyToFollowersDefault: value
-                        )
-                      ),
-                      value: user.notifyToFollowersDefault,
-                      activeColor: Theme.of(context).primaryColor,
-                    )
                   ],
                 ),
               )

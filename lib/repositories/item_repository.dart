@@ -41,6 +41,7 @@ class ItemRepository implements BaseItemRepository {
     try {
       final snapshot = await _read(firebaseFirestoreProvider)
         .userItemsRef(userId)
+        .orderBy('createdAt', descending: true)
         .get();
       
       return Future.wait(snapshot.docs.map((doc) => _getItem(

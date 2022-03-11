@@ -1,4 +1,3 @@
-import 'package:aciste/controllers/announcement_controller.dart';
 import 'package:aciste/custom_exception.dart';
 import 'package:aciste/screens/profile_screen/widgets/profile_tabbar/widgets/profile_announce_list/profile_announce_list_controller.dart';
 import 'package:aciste/screens/profile_screen/widgets/profile_tabbar/widgets/profile_announce_list/widgets/profile_announce_list_error.dart';

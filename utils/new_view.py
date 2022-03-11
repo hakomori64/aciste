@@ -28,6 +28,7 @@ env = Environment(
 )
 
 view_name = input('viewの名前をスネークケースで入力してください')
+output_dir = input('出力先ディレクトリのパスを入力してください')
 
 folder_name = view_name
 view_name_without_extension = view_name
@@ -46,6 +47,7 @@ print('view_name', view_name)
 print('state_name', state_name)
 print('controller_name', controller_name)
 print('controller_provider_name', controller_provider_name)
+print('output_dir', output_dir)
 
 confirmed = yes_no_input()
 
@@ -55,7 +57,6 @@ if not confirmed:
 
 widget_dir_name = 'widgets'
 controller_dir_name = 'controllers'
-output_dir = 'outputs'
 
 '''
 ### folder structure

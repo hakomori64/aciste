@@ -3,8 +3,11 @@ import 'dart:io';
 import 'package:aciste/controllers/auth_controller.dart';
 import 'package:aciste/controllers/dynamic_links_controller.dart';
 import 'package:aciste/enums/resource_type.dart';
+import 'package:aciste/models/announcement.dart';
 import 'package:aciste/models/resource.dart';
 import 'package:aciste/repositories/resource_repository.dart';
+import 'package:aciste/screens/announce_create_screen.dart';
+import 'package:aciste/screens/announce_create_screen/announce_create_screen_controller.dart';
 import 'package:aciste/screens/dialog_screen.dart';
 import 'package:aciste/screens/dialog_screen/dialog_screen_controller.dart';
 import 'package:aciste/screens/email_check_screen.dart';
@@ -137,6 +140,10 @@ class RouterController extends StateNotifier<GoRouter?> {
           path: Routes.itemImport.route,
           //builder:(context, state) => ItemImportScreen(item: state.extra! as Item),
           builder: (context, state) => screen(route: Routes.itemImport),
+        ),
+        GoRoute(
+          path: Routes.announceCreate.route,
+          builder: (context, state) => screen(route: Routes.announceCreate),
         ),
         GoRoute(
           path: Routes.dialog.route,
@@ -272,6 +279,10 @@ class RouterController extends StateNotifier<GoRouter?> {
         _read(itemImportScreenControllerProvider.notifier).setName(params.resource.name ?? '');
         _read(itemImportScreenControllerProvider.notifier).setDescription(params.resource.description ?? '');
         break;
+      case Routes.announceCreate:
+        final params = extra! as AnnounceCreateRouteParams;
+        _read(announceCreateScreenControllerProvider.notifier).setAnnounceType(params.announceType);
+        break;
       default:
         return;
     }
@@ -327,6 +338,8 @@ class RouterController extends StateNotifier<GoRouter?> {
         return const ItemDetailScreen();
       case Routes.itemImport:
         return const ItemImportScreen();
+      case Routes.announceCreate:
+        return const AnnounceCreateScreen();
       case Routes.dialog:
         return const DialogScreen();
     }
@@ -348,6 +361,7 @@ enum Routes {
   itemEdit,
   itemDetail,
   itemImport,
+  announceCreate,
   dialog,
 }
 
@@ -406,4 +420,9 @@ class ItemImportRouteParams {
   final Item item;
   final Resource resource;
   ItemImportRouteParams({required this.item, required this.resource});
+}
+
+class AnnounceCreateRouteParams {
+  final AnnounceType announceType;
+  AnnounceCreateRouteParams({required this.announceType});
 }

@@ -12,6 +12,9 @@ extension FirebaseFirestoreX on FirebaseFirestore {
 
   CollectionReference<Map<String, dynamic>> messagesRef() =>
     collection('messages');
+  
+  CollectionReference<Map<String, dynamic>> announcementsRef() =>
+    collection('announcements');
 
   CollectionReference<Map<String, dynamic>> usersRef() =>
     collection('users');
@@ -22,6 +25,4 @@ extension FirebaseFirestoreX on FirebaseFirestore {
   CollectionReference<Map<String, dynamic>> userItemsRef(String userId) =>
     collection('users').doc(userId).collection('items');
   
-  CollectionReference<Map<String, dynamic>> userAnnouncementsRef(String userId) =>
-    collection('users').doc(userId).collection('announcements');
 }

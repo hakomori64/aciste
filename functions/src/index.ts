@@ -4,5 +4,4 @@ admin.initializeApp();
 
 export {
   notifyToFollowers,
-  notifyToFollowersPubSub,
 } from "./modules/announcement";

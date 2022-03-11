@@ -16,10 +16,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class ItemTile extends HookConsumerWidget {
+class ProfileItemTile extends HookConsumerWidget {
   final Item item;
 
-  const ItemTile({Key? key, required this.item}) : super(key: key);
+  const ProfileItemTile({Key? key, required this.item}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -42,11 +42,12 @@ class AnnouncementController extends StateNotifier<AsyncValue<List<Announcement>
     super.dispose();
   }
 
-  Future<void> notifyToFollowers({required AnnounceType announceType}) async {
+  Future<void> notifyToFollowers({required String message, required AnnounceType announceType}) async {
     if (_userId == null) return;
 
     await _read(announcementRepositoryProvider).notifyToFollowers(
       userId: _userId!,
+      message: message,
       announceType: announceType,
     );
   }

@@ -1,8 +1,6 @@
 import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
-import {PubSub} from "@google-cloud/pubsub";
-import {generateMessage, AnnouncementEvent} from "./event";
-import {User} from "../../type";
+import {AnnouncementEvent} from "./event";
 
 type ResultType = {
   status: boolean;
@@ -21,8 +19,9 @@ export const notifyToFollowers = functions.https.onCall(
 
         const userId: string = data.userId;
         const _event = data.announcementEvent;
+        const message: string = data.message;
 
-        if (userId == null || _event == null) {
+        if (userId == null || _event == null || message == null) {
           return {
             status: false,
             error: "parameters required",
@@ -40,8 +39,6 @@ export const notifyToFollowers = functions.https.onCall(
         }
 
         const db = admin.firestore();
-        const pubsub = new PubSub();
-        const notifyToFollowersTopic = pubsub.topic("notify-to-followers");
         const doc = await db.collection("users")
             .doc(userId)
             .get();
@@ -54,15 +51,16 @@ export const notifyToFollowers = functions.https.onCall(
           };
         }
 
-        for (const followerId of user.followedBy) {
-          const json = {
-            userId: userId,
-            user: user,
-            followerId: followerId,
-            announcementEvent: announcementEvent,
-          };
-          await notifyToFollowersTopic.publishMessage({json});
-        }
+        await db.collection("announcements")
+            .add({
+              message: message,
+              userId: userId,
+              announceEvent: announcementEvent,
+              createdAt: admin.firestore.FieldValue.serverTimestamp(),
+            });
+
+        // TODO(hakomori64)
+        // followedByに通知を送る
 
         return {
           status: true,
@@ -76,31 +74,3 @@ export const notifyToFollowers = functions.https.onCall(
         };
       }
     });
-
-export const notifyToFollowersPubSub = functions.pubsub
-    .topic("notify-to-followers").onPublish(
-        async (message) => {
-          try {
-            const userId: string = message.json["userId"];
-            const user: User = message.json["user"];
-            const followerId: string = message.json["followerId"];
-            const announcementEvent: AnnouncementEvent =
-      message.json["announcementEvent"];
-
-            const announcementMessage =
-                generateMessage(user, announcementEvent);
-
-            const db = admin.firestore();
-            await db.collection("users")
-                .doc(followerId)
-                .collection("announcements")
-                .add({
-                  message: announcementMessage,
-                  userId: userId,
-                  announceEvent: announcementEvent,
-                  createdAt: admin.firestore.FieldValue.serverTimestamp(),
-                });
-          } catch (e) {
-            functions.logger.error(e);
-          }
-        });

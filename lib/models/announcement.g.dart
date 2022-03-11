@@ -31,4 +31,5 @@ Map<String, dynamic> _$$_AnnouncementToJson(_$_Announcement instance) =>
 
 const _$AnnounceTypeEnumMap = {
   AnnounceType.itemCreate: 'itemCreate',
+  AnnounceType.other: 'other',
 };

@@ -7,11 +7,13 @@ part 'announcement.g.dart';
 
 enum AnnounceType {
   itemCreate,
+  other,
 }
 
 extension AnnouceTypeExtension on AnnounceType {
   String get name => toString().split('.')[1];
 }
+
 
 @freezed
 abstract class Announcement implements _$Announcement {

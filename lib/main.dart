@@ -2,6 +2,7 @@ import 'package:aciste/router.dart';
 import 'package:aciste/widgets/overlay_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -62,6 +63,9 @@ class MyApp extends HookConsumerWidget {
         ),
         appBarTheme: const AppBarTheme(
           color: primaryColor,
+          systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarColor: Colors.white,
+          )
         ),
         inputDecorationTheme: const InputDecorationTheme(
           labelStyle: TextStyle(color: Color(0xffea9215)),

@@ -2,10 +2,12 @@ import 'package:aciste/controllers/auth_controller.dart';
 import 'package:aciste/controllers/dynamic_links_controller.dart';
 import 'package:aciste/controllers/user_controller.dart';
 import 'package:aciste/router.dart';
+import 'package:aciste/screens/profile_screen/widgets/profile_tabbar.dart';
 import 'package:aciste/screens/qrcode_screen.dart';
 import 'package:aciste/screens/qrcode_screen/qrcode_screen_controller.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:aciste/screens/profile_screen/profile_screen_controller.dart';
 import 'package:share/share.dart';
@@ -29,9 +31,11 @@ class ProfileScreen extends HookConsumerWidget {
         )
       );
     }
+    final scrollController = useScrollController();
     
     return Scaffold(
       body: SingleChildScrollView(
+        controller: scrollController,
         child: Column(
           children: [
             CachedNetworkImage(
@@ -65,7 +69,7 @@ class ProfileScreen extends HookConsumerWidget {
                       )
                     ),
                   ),
-                  if (user.id == me.uid) Align(
+                  Align(
                     alignment: Alignment.topRight,
                     child: Padding(
                       padding: EdgeInsets.only(
@@ -119,11 +123,13 @@ class ProfileScreen extends HookConsumerWidget {
                         },
                         child: const Icon(Icons.more_vert),
                         itemBuilder: (context) => <PopupMenuEntry<PopupItems>>[
-                          const PopupMenuItem(
-                            value: PopupItems.editProfile,
-                            child: Text('プロフィールを編集'),
-                          ),
-                          const PopupMenuDivider(),
+                          if (user.id == me.uid) ...[
+                              const PopupMenuItem(
+                              value: PopupItems.editProfile,
+                              child: Text('プロフィールを編集'),
+                            ),
+                            const PopupMenuDivider(),
+                          ],
                           const PopupMenuItem(
                             value: PopupItems.share,
                             child: Text('共有')
@@ -295,7 +301,8 @@ class ProfileScreen extends HookConsumerWidget {
                   )
                 ],
               ),
-            )
+            ),
+            const ProfileTabBar(),
           ],
         ),
       )

@@ -15,7 +15,7 @@ class ItemList extends HookConsumerWidget {
 
     return itemListState.when(
       data: (items) => items.isEmpty ? const Center(
-        child: Text('Tap + to add an item', style: TextStyle(fontSize: 20.0))
+        child: Text('まだアイテムはありません！', style: TextStyle(fontSize: 20.0))
       ) : ListView.builder(
         itemCount: items.length,
         itemBuilder: (context, index) {

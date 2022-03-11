@@ -14,7 +14,7 @@ class AnnouncementList extends HookConsumerWidget {
 
     return announcementListState.when(
       data: (announcements) => announcements.isEmpty ? const Center(
-        child: Text('最近の通知はありません'),
+        child: Text('おしらせはありません。\nユーザーをフォローしましょう！'),
       ): ListView.builder(
         padding: const EdgeInsets.all(0),
         itemCount: announcements.length,

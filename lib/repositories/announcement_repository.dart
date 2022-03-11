@@ -9,7 +9,8 @@ import 'package:aciste/extensions/firebase_firestore_extension.dart';
 
 abstract class BaseAnnouncementRepository {
   Future<Stream<List<Announcement>>> streamAnnouncement({required String userId});
-  Future<void> notifyToFollowers({required String userId, required AnnounceType announceType});
+  Future<List<Announcement>> retrieveAnnouncements({required String userId});
+  Future<void> notifyToFollowers({required String userId, required String message, required AnnounceType announceType});
 }
 
 final announcementRepositoryProvider = Provider<AnnouncementRepository>((ref) => AnnouncementRepository(ref.read));
@@ -33,13 +34,15 @@ class AnnouncementRepository implements BaseAnnouncementRepository {
   @override
   Future<Stream<List<Announcement>>> streamAnnouncement({required String userId}) async {
     try {
+      final user = await _read(userRepositoryProvider).getUser(userId: userId);
       return _read(firebaseFirestoreProvider)
-        .userAnnouncementsRef(userId)
+        .announcementsRef()
+        .where('userId', whereIn: [user!.id!, ...user.following])
         .where('createdAt', isGreaterThan: Timestamp.fromDate(DateTime.now().add(const Duration(days: -30))))
         .orderBy('createdAt', descending: true)
         .snapshots()
         .asyncMap((snapshot) async {
-          return Future.wait(snapshot.docs.map((doc) => _getAnnouncement(
+          return Future.wait<Announcement>(snapshot.docs.map((doc) => _getAnnouncement(
             doc: doc,
           )));
         });
@@ -49,11 +52,27 @@ class AnnouncementRepository implements BaseAnnouncementRepository {
   }
 
   @override
-  Future<void> notifyToFollowers({required userId, required announceType}) async {
+  Future<List<Announcement>> retrieveAnnouncements({required String userId}) async {
+    try {
+      final snapshot = await _read(firebaseFirestoreProvider)
+        .announcementsRef()
+        .where('userId', isEqualTo: userId)
+        .orderBy('createdAt', descending: true)
+        .get();
+      
+      return Future.wait(snapshot.docs.map((doc) => _getAnnouncement(doc: doc)));
+    } on FirebaseException catch (e) {
+      throw CustomException(message: e.message);
+    }
+  }
+
+  @override
+  Future<void> notifyToFollowers({required userId, required message, required announceType}) async {
     final result = await _read(firebaseFunctionsProvider)
       .httpsCallable('notifyToFollowers')
       .call({
         'userId': userId,
+        'message': message,
         'announcementEvent': announceType.name,
       });
     if (result.data['status']) {

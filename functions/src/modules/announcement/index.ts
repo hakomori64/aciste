@@ -1,1 +1,1 @@
-export {notifyToFollowers, notifyToFollowersPubSub} from "./notifyToFollowers";
+export {notifyToFollowers} from "./notifyToFollowers";

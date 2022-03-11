@@ -8,10 +8,10 @@ import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class AnnouncementTile extends HookConsumerWidget {
+class ProfileAnnounceTile extends HookConsumerWidget {
   final Announcement announcement;
 
-  const AnnouncementTile({Key? key, required this.announcement}) : super(key: key);
+  const ProfileAnnounceTile({Key? key, required this.announcement}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

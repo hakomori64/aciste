@@ -46,7 +46,7 @@ class ItemListController extends StateNotifier<AsyncValue<List<Item>>> {
     required CreateResourceParams content,
   }) async {
     try {
-      final uuid = Uuid();
+      const uuid = Uuid();
       final tmpId = uuid.v4();
       final tmpItem = Item.empty().copyWith(
         id: tmpId,

@@ -1,5 +1,5 @@
 import 'package:aciste/router.dart';
-import 'package:aciste/widgets/overlay_loading.dart';
+import 'package:aciste/widgets/overlay_loading/overlay_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
@@ -65,6 +65,8 @@ class MyApp extends HookConsumerWidget {
           color: primaryColor,
           systemOverlayStyle: SystemUiOverlayStyle(
             statusBarColor: Colors.white,
+            statusBarBrightness: Brightness.dark,
+            statusBarIconBrightness: Brightness.dark,
           )
         ),
         inputDecorationTheme: const InputDecorationTheme(

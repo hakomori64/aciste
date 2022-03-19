@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class ProfileItemListError extends HookConsumerWidget {
+class SomethingWentWrong extends HookConsumerWidget {
   final String message;
 
-  const ProfileItemListError({
+  const SomethingWentWrong({
     Key? key,
     required this.message,
   }) : super(key: key);
@@ -19,6 +19,7 @@ class ProfileItemListError extends HookConsumerWidget {
             message,
             style: const TextStyle(fontSize: 20.0)
           ),
+          const SizedBox(height: 20.0),
         ],
       ),
     );

@@ -7,7 +7,7 @@ import 'package:aciste/controllers/resource_controller.dart';
 import 'package:aciste/router.dart';
 import 'package:aciste/screens/item_import_screen/controllers/item_import_screen_controller.dart';
 import 'package:aciste/screens/item_import_screen/widgets/item_import_celebrate_dialog/item_import_celebrate_dialog.dart';
-import 'package:aciste/widgets/resource_overview.dart';
+import 'package:aciste/widgets/resource_overview/resource_overview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';

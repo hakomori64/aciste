@@ -1,6 +1,6 @@
 import 'package:aciste/router.dart';
 import 'package:aciste/screens/item_detail_screen/controllers/item_detail_screen_controller.dart';
-import 'package:aciste/widgets/resource_view.dart';
+import 'package:aciste/widgets/resource_view/resource_view.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 

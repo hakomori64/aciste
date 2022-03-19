@@ -1,10 +1,10 @@
 import 'package:aciste/controllers/item_controller.dart';
 import 'package:aciste/custom_exception.dart';
+import 'package:aciste/widgets/something_went_wrong/something_went_wrong.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'widgets/item_tile/item_tile.dart';
-import 'widgets/item_list_error/item_list_error.dart';
 
 class ItemList extends HookConsumerWidget {
   const ItemList ({Key? key}) : super(key: key);
@@ -24,7 +24,7 @@ class ItemList extends HookConsumerWidget {
         },
       ),
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, _) => ItemListError(
+      error: (error, _) => SomethingWentWrong(
         message: error is CustomException ? error.message! : 'Something went wrong'
       )
     );

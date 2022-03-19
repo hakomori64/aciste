@@ -9,8 +9,8 @@ import 'package:aciste/router.dart';
 import 'package:aciste/screens/qrcode_screen/qrcode_screen.dart';
 import 'package:aciste/screens/qrcode_screen/controllers/qrcode_screen_controller.dart';
 import 'package:aciste/utils.dart';
-import 'package:aciste/widgets/resource_overview.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:aciste/widgets/resource_overview/resource_overview.dart';
+import 'package:aciste/widgets/user_icon/user_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:share_plus/share_plus.dart';
@@ -47,25 +47,12 @@ class ItemTile extends HookConsumerWidget {
               ],
             ),
             ListTile(
-              leading: SizedBox(
-                width: 40,
-                height: 40,
-                child: ClipOval(
-                  child: GestureDetector(
-                    onTap:() {
-                      ref.read(routerProvider.notifier).push(route: Routes.profile, extra: ProfileRouteParams(userId: item.resource!.createdBy!.id!));
-                    },
-                    child: Container(
-                      height: 40,
-                      width: 40,
-                      color: Colors.grey[50],
-                      child: CachedNetworkImage(
-                        imageUrl: item.resource?.createdBy?.photoUrl ?? defaultUserPhotoUrl,
-                        fit: BoxFit.cover,
-                      ),
-                    )
-                  ),
-                ),
+              leading: UserIcon(
+                size: 40,
+                imageUrl: item.resource?.createdBy?.photoUrl ?? defaultUserPhotoUrl,
+                onTap: () async {
+                  await ref.read(routerProvider.notifier).push(route: Routes.profile, extra: ProfileRouteParams(userId: item.resource!.createdBy!.id!));
+                },
               ),
               title: ExpansionTile(
                 title: Center(child: Text(item.name),),

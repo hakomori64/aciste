@@ -3,7 +3,7 @@ import 'package:aciste/controllers/item_controller.dart';
 import 'package:aciste/controllers/user_controller.dart';
 import 'package:aciste/router.dart';
 import 'package:aciste/screens/item_create_screen/controllers/item_create_screen_controller.dart';
-import 'package:aciste/widgets/create_resource_overview.dart';
+import 'package:aciste/widgets/create_resource_overview/create_resource_overview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';

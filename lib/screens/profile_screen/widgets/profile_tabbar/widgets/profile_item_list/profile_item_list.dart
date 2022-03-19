@@ -1,8 +1,8 @@
 import 'package:aciste/controllers/item_controller.dart';
 import 'package:aciste/custom_exception.dart';
 import 'package:aciste/screens/profile_screen/controllers/profile_screen_controller.dart';
-import 'package:aciste/screens/profile_screen/widgets/profile_tabbar/widgets/profile_item_list/widgets/profile_item_list_error/profile_item_list_error.dart';
 import 'package:aciste/screens/profile_screen/widgets/profile_tabbar/widgets/profile_item_list/widgets/profile_item_tile/profile_item_tile.dart';
+import 'package:aciste/widgets/something_went_wrong/something_went_wrong.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -25,7 +25,7 @@ class ProfileItemList extends HookConsumerWidget {
           }).toList());
       },
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, _) => ProfileItemListError(
+      error: (error, _) => SomethingWentWrong(
         message: error is CustomException ? error.message! : 'ユーザーのアイテムの取得に失敗しました',
       )
     );

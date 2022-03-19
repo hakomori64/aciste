@@ -5,6 +5,7 @@ import 'package:aciste/router.dart';
 import 'package:aciste/screens/profile_screen/widgets/profile_tabbar/profile_tabbar.dart';
 import 'package:aciste/screens/qrcode_screen/qrcode_screen.dart';
 import 'package:aciste/screens/qrcode_screen/controllers/qrcode_screen_controller.dart';
+import 'package:aciste/widgets/user_icon/user_icon.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -55,17 +56,10 @@ class ProfileScreen extends HookConsumerWidget {
                       height: 200,
                       child: Container(
                         alignment: const Alignment(0, 2.5),
-                        child: ClipOval(
-                          child: Container(
-                            color: Theme.of(context).primaryColorLight,
-                            child: CachedNetworkImage(
-                              imageUrl: user.photoUrl,
-                              width: 120,
-                              height: 120,
-                              fit: BoxFit.cover,
-                            )
-                          )
-                        )
+                        child: UserIcon(
+                          size: 120,
+                          imageUrl: user.photoUrl,
+                        ),
                       )
                     ),
                   ),

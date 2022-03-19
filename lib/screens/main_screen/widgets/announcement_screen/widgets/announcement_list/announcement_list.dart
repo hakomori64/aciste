@@ -1,7 +1,7 @@
 import 'package:aciste/controllers/announcement_controller.dart';
 import 'package:aciste/custom_exception.dart';
-import 'package:aciste/screens/main_screen/widgets/announcement_screen/widgets/announcement_list/widgets/announcement_list_error/announcement_list_error.dart';
 import 'package:aciste/screens/main_screen/widgets/announcement_screen/widgets/announcement_list/widgets/announcement_tile/announcement_tile.dart';
+import 'package:aciste/widgets/something_went_wrong/something_went_wrong.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -24,7 +24,7 @@ class AnnouncementList extends HookConsumerWidget {
         },
       ),
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, _) => AnnouncementListError(
+      error: (error, _) => SomethingWentWrong(
         message: error is CustomException ? error.message! : 'Something went wrong',
       )
     );

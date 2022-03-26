@@ -172,6 +172,12 @@ class ProfileItemTile extends HookConsumerWidget {
                   attachments: item.resource!.attachments.map((attachment) => AsyncValue.data(attachment)).toList(),
                   height: 200,
                   width: MediaQuery.of(context).size.width,
+                  onTap: (attachment) async {
+                    await ref.read(routerProvider.notifier).push(
+                      route: Routes.attachmentDetail,
+                      extra: AttachmentDetailRouteParams(attachment: attachment)
+                    );
+                  },
                 )
               ),
             )

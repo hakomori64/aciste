@@ -10,7 +10,8 @@ class AttachmentsCarousel extends StatefulWidget {
   final double width;
   final Color selectedIndicatorColor;
   final Color indicatorColor;
-  final BoxFit fit;
+  final Future<void> Function(Attachment)? onTap;
+  final Future<void> Function(Attachment)? onLongPress;
 
   const AttachmentsCarousel({
     Key? key,
@@ -19,7 +20,8 @@ class AttachmentsCarousel extends StatefulWidget {
     required this.width,
     this.selectedIndicatorColor = Colors.black,
     this.indicatorColor = Colors.black26,
-    this.fit = BoxFit.fitHeight,
+    this.onTap,
+    this.onLongPress,
   }) : super(key: key);
 
   @override
@@ -53,7 +55,7 @@ class _AttachmentsCarouselState extends State<AttachmentsCarousel> {
             },
             itemBuilder: (context, pagePosition) {
               bool active = pagePosition == activePage;
-              return slider(widget.attachments, pagePosition, active, widget.fit);
+              return slider(widget.attachments, pagePosition, active);
             }
           ),
         ),
@@ -80,13 +82,13 @@ class _AttachmentsCarouselState extends State<AttachmentsCarousel> {
     });
   }
 
-  AnimatedContainer slider(List<AsyncValue<Attachment>> attachments, pagePosition, active, fit) {
+  AnimatedContainer slider(List<AsyncValue<Attachment>> attachments, pagePosition, active) {
     double margin = active ? 10 : 20;
     return AnimatedContainer(
       duration: const Duration(milliseconds: 500),
       curve: Curves.easeInOutCubic,
       margin: EdgeInsets.all(margin),
-      child: AttachmentOverview(attachment: attachments[pagePosition], fit: fit)
+      child: AttachmentOverview(attachment: attachments[pagePosition], onTap: widget.onTap, onLongPress: widget.onLongPress )
     );
   }
 }

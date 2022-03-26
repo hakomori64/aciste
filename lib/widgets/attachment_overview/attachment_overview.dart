@@ -6,9 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class AttachmentOverview extends HookConsumerWidget {
-  const AttachmentOverview({ Key? key, required this.attachment, required this.fit }) : super(key: key);
+  const AttachmentOverview({ Key? key, required this.attachment, this.onTap, this.onLongPress }) : super(key: key);
   final AsyncValue<Attachment> attachment;
-  final BoxFit fit;
+  final Future<void> Function(Attachment)? onTap;
+  final Future<void> Function(Attachment)? onLongPress;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -24,7 +25,12 @@ class AttachmentOverview extends HookConsumerWidget {
                 return const Text('unrecognized type');
             }
           })(),
-          onTap: () {},
+          onTap: () async {
+            (onTap ?? (_) async {})(data);
+          },
+          onLongPress: () async {
+            (onLongPress ?? (_) async {})(data);
+          },
         );
       },
       error: (_, __) {

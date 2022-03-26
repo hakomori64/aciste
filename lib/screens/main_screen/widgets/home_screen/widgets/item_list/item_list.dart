@@ -20,6 +20,12 @@ class ItemList extends HookConsumerWidget {
         itemCount: items.length,
         itemBuilder: (context, index) {
           final item = items[index];
+          if (index == items.length - 1) {
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 100),
+              child: ItemTile(item: item)
+            );
+          }
           return ItemTile(item: item);
         },
       ),

@@ -1,25 +1,20 @@
 import 'dart:io';
 
 import 'package:aciste/converters/timestamp_converter.dart';
-import 'package:aciste/models/resource.dart';
-import 'package:aciste/models/user.dart';
+import 'package:aciste/models/attachment_data.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'photo.freezed.dart';
 part 'photo.g.dart';
 
 @freezed
-abstract class Photo with _$Photo implements Resource {
+abstract class Photo with _$Photo implements AttachmentData {
   const Photo._();
 
   const factory Photo({
     String? id,
-    @Default("") String name,
-    @Default("") String description,
-    User? createdBy,
     String? url,
     @TimestampDateTimeConverter() DateTime? createdAt,
-    @Default(0) int viewCount,
   }) = _Photo;
 
   factory Photo.empty() => Photo(
@@ -35,16 +30,13 @@ abstract class Photo with _$Photo implements Resource {
 
   Map<String, dynamic> toDocument() {
     final data = toJson()
-      ..remove('id')
-      ..remove('createdBy');
-    
-    data['createdById'] = createdBy?.id ?? '';
+      ..remove('id');
 
     return data;
   }
 }
 
-class CreatePhotoParams extends CreateResourceParams {
+class CreatePhotoParams extends CreateAttachmentDataParams {
   final File file;
   CreatePhotoParams({required this.file });
 }

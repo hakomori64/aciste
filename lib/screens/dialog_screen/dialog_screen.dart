@@ -17,6 +17,7 @@ class DialogScreen extends HookConsumerWidget {
       },
       child: Scaffold(
         backgroundColor: Colors.transparent.withOpacity(0.55),
+        resizeToAvoidBottomInset: true,
         body: SizedBox(
           width: double.infinity,
           height: double.infinity,
@@ -24,21 +25,29 @@ class DialogScreen extends HookConsumerWidget {
             child: GestureDetector(
               onTap: () {},
               child: Container(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height / 3 * 2,
+                ),
                 decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.all(Radius.circular(12))
                 ),
                 width: double.infinity,
-                margin: const EdgeInsets.symmetric(
-                  horizontal: 24,
+                margin: EdgeInsets.only(
+                  top: 15 + MediaQuery.of(context).padding.top,
+                  bottom: 15,
+                  left: 24,
+                  right: 24,
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: child!
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: child!
+                      ),
                     )
                   ],
                 )

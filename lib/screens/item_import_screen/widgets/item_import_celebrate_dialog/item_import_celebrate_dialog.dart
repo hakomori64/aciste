@@ -45,37 +45,43 @@ class ItemImportCelebrateDialog extends HookConsumerWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                FaIcon(
-                  FontAwesomeIcons.trophy,
-                  color: getRankColor(rank),
-                  size: 60,
-                ),
-                const SizedBox(height: 10,),
-                const Text(
-                  'おめでとうございます！',
-                  style: TextStyle(
-                    fontSize: 16,
-                  ),
-                ),
-                Text(
-                  'あなたは$rank番目の発見者です',
-                  style: const TextStyle(
-                    fontSize: 16,
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      FaIcon(
+                        FontAwesomeIcons.trophy,
+                        color: getRankColor(rank),
+                        size: 60,
+                      ),
+                      const SizedBox(height: 10,),
+                      const Text(
+                        'おめでとうございます！',
+                        style: TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                      Text(
+                        'あなたは$rank番目の発見者です',
+                        style: const TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(height: 10),
-                RawMaterialButton(
+                TextButton(
                   onPressed: () {
                     ref.read(routerProvider.notifier).closeDialog();
                   },
-                  elevation: 2.0,
-                  fillColor: Colors.white,
-                  child: const Icon(
-                    Icons.close,
-                    size: 30.0,
-                  ),
-                  padding: const EdgeInsets.all(15.0),
-                  shape: const CircleBorder(),
+                  child: Text(
+                    '閉じる',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Theme.of(context).primaryColor,
+                    )
+                  )
                 )
               ],
             )

@@ -9,8 +9,6 @@ part 'item_import_screen_controller.freezed.dart';
 class ItemImportScreenState with _$ItemImportScreenState {
   const factory ItemImportScreenState({
     Item? item,
-    @Default("") String name,
-    @Default("") String description,
   }) = _ItemImportScreenState;
 }
 
@@ -27,13 +25,5 @@ class ItemImportScreenController extends StateNotifier<ItemImportScreenState> {
 
   void setItem(Item item) {
     state = state.copyWith(item: item);
-  }
-
-  void setName(String name) {
-    state = state.copyWith(name: name);
-  }
-
-  void setDescription(String description) {
-    state = state.copyWith(description: description);
   }
 }

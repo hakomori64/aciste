@@ -1,7 +1,7 @@
 import 'package:aciste/controllers/auth_controller.dart';
 import 'package:aciste/custom_exception.dart';
-import 'package:aciste/enums/resource_type.dart';
 import 'package:aciste/models/resource.dart';
+import 'package:aciste/repositories/attachment_repository.dart';
 import 'package:aciste/repositories/resource_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -16,25 +16,42 @@ class ResourceController {
 
   ResourceController(this._read, this._userId);
 
-  Future<Resource> createResource({required ResourceType resourceType, required CreateResourceParams content}) async {
+  Future<Resource> createResource({required Resource resource}) async {
     if (_userId == null) {
       throw const CustomException(message: 'user not authenticated');
     }
-    return _read(resourceRepositoryProvider).createResource(
-      userId: _userId!,
-      resourceType: resourceType,
-      createResourceParams: content
+
+    final created = await _read(resourceRepositoryProvider).createResource(
+      resource: resource 
     );
+
+    for (final attachment in resource.attachments) {
+      await _read(attachmentRepositoryProvider)
+        .saveAttachmentToResource(
+          resourceId: created.id!,
+          attachment: attachment
+        );
+    }
+
+    return created;
   }
 
-  Future<Resource> updateResource({required ResourceType resourceType, required Resource resource}) async {
+  Future<Resource> updateResource({required Resource resource}) async {
     if (_userId == null) {
       throw const CustomException(message: 'user not authenticated');
     }
-    return _read(resourceRepositoryProvider).updateResource(
+    await _read(resourceRepositoryProvider).updateResource(
       resource: resource,
-      resourceType: resourceType,
-      userId: _userId!,
     );
+
+    for (final attachment in resource.attachments) {
+      await _read(attachmentRepositoryProvider)
+        .saveAttachmentToResource(
+          resourceId: resource.id!,
+          attachment: attachment
+        );
+    }
+
+    return resource;
   }
 }

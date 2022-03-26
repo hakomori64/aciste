@@ -4,14 +4,17 @@ extension FirebaseFirestoreX on FirebaseFirestore {
   CollectionReference<Map<String, dynamic>> resourcesRef() =>
     collection('resources');
   
+  CollectionReference<Map<String, dynamic>> resourceAttachmentsRef(String resourceId) =>
+    collection('resources')
+    .doc(resourceId)
+    .collection('attachments');
+  
   CollectionReference<Map<String, dynamic>> photosRef() =>
     collection('photos');
 
   CollectionReference<Map<String, dynamic>> videosRef() =>
     collection('videos');
 
-  CollectionReference<Map<String, dynamic>> messagesRef() =>
-    collection('messages');
   
   CollectionReference<Map<String, dynamic>> announcementsRef() =>
     collection('announcements');

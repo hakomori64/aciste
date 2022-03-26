@@ -8,13 +8,10 @@ part of 'item.dart';
 
 _$_Item _$$_ItemFromJson(Map<String, dynamic> json) => _$_Item(
       id: json['id'] as String?,
-      name: json['name'] as String,
       description: json['description'] as String,
       resource: json['resource'] == null
           ? null
           : Resource.fromJson(json['resource'] as Map<String, dynamic>),
-      resourceType:
-          $enumDecodeNullable(_$ResourceTypeEnumMap, json['resourceType']),
       userId: json['userId'] as String,
       createdAt: const TimestampDateTimeConverter()
           .fromJson(json['createdAt'] as Timestamp?),
@@ -25,10 +22,8 @@ _$_Item _$$_ItemFromJson(Map<String, dynamic> json) => _$_Item(
 
 Map<String, dynamic> _$$_ItemToJson(_$_Item instance) => <String, dynamic>{
       'id': instance.id,
-      'name': instance.name,
       'description': instance.description,
       'resource': instance.resource,
-      'resourceType': _$ResourceTypeEnumMap[instance.resourceType],
       'userId': instance.userId,
       'createdAt':
           const TimestampDateTimeConverter().toJson(instance.createdAt),
@@ -36,10 +31,3 @@ Map<String, dynamic> _$$_ItemToJson(_$_Item instance) => <String, dynamic>{
           const TimestampDateTimeConverter().toJson(instance.updatedAt),
       'rank': instance.rank,
     };
-
-const _$ResourceTypeEnumMap = {
-  ResourceType.photo: 'photo',
-  ResourceType.message: 'message',
-  ResourceType.none: 'none',
-  ResourceType.loading: 'loading',
-};

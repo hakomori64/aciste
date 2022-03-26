@@ -22,13 +22,11 @@ class _$ItemEditScreenStateTearOff {
       {Item? item,
       bool isNameEditing = false,
       bool isDescriptionEditing = false,
-      String name = "",
       String description = ""}) {
     return _ItemEditScreenState(
       item: item,
       isNameEditing: isNameEditing,
       isDescriptionEditing: isDescriptionEditing,
-      name: name,
       description: description,
     );
   }
@@ -42,7 +40,6 @@ mixin _$ItemEditScreenState {
   Item? get item => throw _privateConstructorUsedError;
   bool get isNameEditing => throw _privateConstructorUsedError;
   bool get isDescriptionEditing => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -59,7 +56,6 @@ abstract class $ItemEditScreenStateCopyWith<$Res> {
       {Item? item,
       bool isNameEditing,
       bool isDescriptionEditing,
-      String name,
       String description});
 
   $ItemCopyWith<$Res>? get item;
@@ -79,7 +75,6 @@ class _$ItemEditScreenStateCopyWithImpl<$Res>
     Object? item = freezed,
     Object? isNameEditing = freezed,
     Object? isDescriptionEditing = freezed,
-    Object? name = freezed,
     Object? description = freezed,
   }) {
     return _then(_value.copyWith(
@@ -95,10 +90,6 @@ class _$ItemEditScreenStateCopyWithImpl<$Res>
           ? _value.isDescriptionEditing
           : isDescriptionEditing // ignore: cast_nullable_to_non_nullable
               as bool,
-      name: name == freezed
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
       description: description == freezed
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -129,7 +120,6 @@ abstract class _$ItemEditScreenStateCopyWith<$Res>
       {Item? item,
       bool isNameEditing,
       bool isDescriptionEditing,
-      String name,
       String description});
 
   @override
@@ -152,7 +142,6 @@ class __$ItemEditScreenStateCopyWithImpl<$Res>
     Object? item = freezed,
     Object? isNameEditing = freezed,
     Object? isDescriptionEditing = freezed,
-    Object? name = freezed,
     Object? description = freezed,
   }) {
     return _then(_ItemEditScreenState(
@@ -168,10 +157,6 @@ class __$ItemEditScreenStateCopyWithImpl<$Res>
           ? _value.isDescriptionEditing
           : isDescriptionEditing // ignore: cast_nullable_to_non_nullable
               as bool,
-      name: name == freezed
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
       description: description == freezed
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -187,7 +172,6 @@ class _$_ItemEditScreenState implements _ItemEditScreenState {
       {this.item,
       this.isNameEditing = false,
       this.isDescriptionEditing = false,
-      this.name = "",
       this.description = ""});
 
   @override
@@ -200,14 +184,11 @@ class _$_ItemEditScreenState implements _ItemEditScreenState {
   final bool isDescriptionEditing;
   @JsonKey()
   @override
-  final String name;
-  @JsonKey()
-  @override
   final String description;
 
   @override
   String toString() {
-    return 'ItemEditScreenState(item: $item, isNameEditing: $isNameEditing, isDescriptionEditing: $isDescriptionEditing, name: $name, description: $description)';
+    return 'ItemEditScreenState(item: $item, isNameEditing: $isNameEditing, isDescriptionEditing: $isDescriptionEditing, description: $description)';
   }
 
   @override
@@ -220,7 +201,6 @@ class _$_ItemEditScreenState implements _ItemEditScreenState {
                 .equals(other.isNameEditing, isNameEditing) &&
             const DeepCollectionEquality()
                 .equals(other.isDescriptionEditing, isDescriptionEditing) &&
-            const DeepCollectionEquality().equals(other.name, name) &&
             const DeepCollectionEquality()
                 .equals(other.description, description));
   }
@@ -231,7 +211,6 @@ class _$_ItemEditScreenState implements _ItemEditScreenState {
       const DeepCollectionEquality().hash(item),
       const DeepCollectionEquality().hash(isNameEditing),
       const DeepCollectionEquality().hash(isDescriptionEditing),
-      const DeepCollectionEquality().hash(name),
       const DeepCollectionEquality().hash(description));
 
   @JsonKey(ignore: true)
@@ -246,7 +225,6 @@ abstract class _ItemEditScreenState implements ItemEditScreenState {
       {Item? item,
       bool isNameEditing,
       bool isDescriptionEditing,
-      String name,
       String description}) = _$_ItemEditScreenState;
 
   @override
@@ -255,8 +233,6 @@ abstract class _ItemEditScreenState implements ItemEditScreenState {
   bool get isNameEditing;
   @override
   bool get isDescriptionEditing;
-  @override
-  String get name;
   @override
   String get description;
   @override

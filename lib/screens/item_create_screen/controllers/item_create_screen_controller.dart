@@ -1,28 +1,84 @@
-import 'package:aciste/enums/resource_type.dart';
-import 'package:aciste/models/resource.dart';
+import 'package:aciste/enums/attachment_type.dart';
+import 'package:aciste/models/attachment.dart';
+import 'package:aciste/models/attachment_data.dart';
+import 'package:aciste/repositories/attachment_repository.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:uuid/uuid.dart';
 
 part 'item_create_screen_controller.freezed.dart';
 
 @freezed
 class ItemCreateScreenState with _$ItemCreateScreenState {
   const factory ItemCreateScreenState({
-    ResourceType? resourceType,
-    CreateResourceParams? params,
+    @Default("") String title,
+    @Default("") String body,
+    @Default([]) List<AsyncValue<Attachment>> attachments,
   }) = _ItemCreateScreenState;
 }
 
-final itemCreateScreenControllerProvider = StateNotifierProvider<ItemCreateScreenController, ItemCreateScreenState>((ref) => ItemCreateScreenController());
+final itemCreateScreenControllerProvider = StateNotifierProvider<ItemCreateScreenController, ItemCreateScreenState>((ref) => ItemCreateScreenController(ref.read));
 
 class ItemCreateScreenController extends StateNotifier<ItemCreateScreenState> {
-  ItemCreateScreenController() : super(const ItemCreateScreenState());
+  ItemCreateScreenController(this._read) : super(const ItemCreateScreenState());
 
-  void setResourceType(ResourceType resourceType) {
-    state = state.copyWith(resourceType: resourceType);
+  final Reader _read;
+
+  void setTitle(String title) {
+    state = state.copyWith(title: title);
   }
 
-  void setCreateResourceParams(CreateResourceParams? params) {
-    state = state.copyWith(params: params);
+  void setBody(String body) {
+    state = state.copyWith(body: body);
+  }
+
+  void setAttachments(List<Attachment> attachments) {
+    state = state.copyWith(
+      attachments: attachments.map((attachment) => AsyncValue.data(attachment)).toList()
+    );
+  }
+
+  Future<void> addAttachment({
+    required AttachmentType attachmentType,
+    required CreateAttachmentDataParams data,
+  }) async {
+    final oldAttachments = state.attachments;
+    state = state.copyWith(
+      attachments: [...state.attachments, const AsyncValue.loading()],
+    );
+    final attachment = await _read(attachmentRepositoryProvider)
+      .craftAttachment(attachmentType: attachmentType, createAttachmentDataParams: data);
+    
+    final uid = const Uuid().v4();
+    
+    state = state.copyWith(
+      attachments: [...oldAttachments, AsyncValue.data(attachment.copyWith(id: uid))]
+    );
+  }
+
+  Future<void> updateAttachment({
+    required String oldAttachmentId,
+    required AttachmentType attachmentType,
+    required CreateAttachmentDataParams data,
+  }) async {
+    final newAttachment = await _read(attachmentRepositoryProvider)
+      .craftAttachment(attachmentType: attachmentType, createAttachmentDataParams: data);
+    
+    final uid = const Uuid().v4();
+
+    state = state.copyWith(
+      attachments: [
+        for (final attachment in state.attachments)
+          if (attachment.asData?.value.id == oldAttachmentId) AsyncValue.data(newAttachment.copyWith(id: uid)) else attachment
+      ]
+    );
+  }
+
+  Future<void> deleteAttachment({
+    required String attachmentId,
+  }) async {
+    state = state.copyWith(
+      attachments: state.attachments..removeWhere((attachment) => attachment.asData?.value.id == attachmentId)
+    );
   }
 }

@@ -1,9 +1,10 @@
 import 'package:aciste/controllers/resource_controller.dart';
 import 'package:aciste/custom_exception.dart';
-import 'package:aciste/enums/resource_type.dart';
+import 'package:aciste/models/attachment.dart';
 import 'package:aciste/models/item.dart';
 import 'package:aciste/models/resource.dart';
 import 'package:aciste/repositories/item_repository.dart';
+import 'package:aciste/repositories/user_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
@@ -39,51 +40,51 @@ class ItemListController extends StateNotifier<AsyncValue<List<Item>>> {
   }
 
   Future<void> addItem({
-    required String name,
-    required String description,
+    required String title,
+    required String body,
     required String createdBy,
-    required ResourceType resourceType,
-    required CreateResourceParams content,
+    required List<Attachment> attachments,
   }) async {
     try {
       const uuid = Uuid();
       final tmpId = uuid.v4();
       final tmpItem = Item.empty().copyWith(
         id: tmpId,
-        name: name,
-        description: description,
-        resource: null,
-        resourceType: ResourceType.loading,
+        description: '',
+        resource: Resource.empty().copyWith(
+          title: '読み込み中...'
+        ),
         userId: _userId!,
       );
       state.whenData((items) {
         items.insert(0, tmpItem);
         state = AsyncValue.data(items);
       });
+      final user = await _read(userRepositoryProvider).getUser(userId: createdBy);
       final resource = await _read(resourceControllerProvider).createResource(
-        resourceType: resourceType,
-        content: content
+        resource: Resource.empty().copyWith(
+          title: title,
+          body: body,
+          createdBy: user,
+          attachments: attachments,
+        )
       );
 
       if (_userId == null || resource.id == null) {
         throw const CustomException(message: 'resourceId or userId is null');
       }
       final newItem = Item.empty().copyWith(
-          name: name,
-          description: description,
           resource: resource,
-          resourceType: resourceType,
           userId: _userId!,
         );
-      final itemId = await _read(itemRepositoryProvider).createItem(
-        userId: _userId!,
+      final created = await _read(itemRepositoryProvider).createItem(
         item: newItem
       );
       state.whenData((items) {
         state = AsyncValue.data([
           for (final item in items)
             if (item.id == tmpId)
-              newItem.copyWith(id: itemId) else item
+              created else item
         ]);
       });
     } on CustomException catch (e) {
@@ -92,10 +93,8 @@ class ItemListController extends StateNotifier<AsyncValue<List<Item>>> {
   }
 
   Future<void> importItem({
-    required String name,
     required String description,
     required Resource resource,
-    required ResourceType resourceType,
     required String? userId,
     required int rank,
   }) async {
@@ -106,18 +105,15 @@ class ItemListController extends StateNotifier<AsyncValue<List<Item>>> {
 
     try {
       final item = Item.empty().copyWith(
-        name: name,
         description: description,
         resource: resource,
-        resourceType: resourceType,
         userId: userId,
         rank: rank
       );
-      final itemId = await _read(itemRepositoryProvider).createItem(
-        userId: userId,
+      final created = await _read(itemRepositoryProvider).createItem(
         item: item
       );
-      state.whenData((items) => state = AsyncValue.data(items..add(item.copyWith(id: itemId))));
+      state.whenData((items) => state = AsyncValue.data([created, ...items]));
     } on CustomException catch (e) {
       state = AsyncValue.error(e);
     }
@@ -125,7 +121,7 @@ class ItemListController extends StateNotifier<AsyncValue<List<Item>>> {
 
   Future<void> updateItem({required Item updatedItem}) async {
     try {
-      await _read(itemRepositoryProvider).updateItem(userId: _userId!, item: updatedItem);
+      await _read(itemRepositoryProvider).updateItem(item: updatedItem);
       state.whenData((items) {
         state = AsyncValue.data([
           for (final item in items)

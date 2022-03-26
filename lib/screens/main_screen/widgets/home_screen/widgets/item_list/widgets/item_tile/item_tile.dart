@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:aciste/constants.dart';
+import 'package:aciste/controllers/auth_controller.dart';
 import 'package:aciste/controllers/dynamic_links_controller.dart';
 import 'package:aciste/controllers/item_controller.dart';
 import 'package:aciste/models/announcement.dart';
@@ -9,7 +10,8 @@ import 'package:aciste/router.dart';
 import 'package:aciste/screens/qrcode_screen/qrcode_screen.dart';
 import 'package:aciste/screens/qrcode_screen/controllers/qrcode_screen_controller.dart';
 import 'package:aciste/utils.dart';
-import 'package:aciste/widgets/resource_overview/resource_overview.dart';
+import 'package:aciste/widgets/attachments_carousel/attachments_carousel.dart';
+import 'package:aciste/widgets/expandable_text/expandable_text.dart';
 import 'package:aciste/widgets/user_icon/user_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -27,23 +29,27 @@ class ItemTile extends HookConsumerWidget {
       MediaQuery.of(context).size.height,
       MediaQuery.of(context).size.width,
     ) * 3 / 4;
+    final me = ref.watch(authControllerProvider);
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (item.rank <= 3) FaIcon(
-              FontAwesomeIcons.trophy,
-              color: getRankColor(item.rank),
-              size: 40,
-            ),
-            Row(
+            if (item.rank <= 3) Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                item.rank <= 0
-                  ? const Text('') 
-                  : Text('${numWithSuffix(item.rank)} discoverer')
+                Tooltip(
+                  message: item.rank <= 0
+                    ? '' 
+                    : '${numWithSuffix(item.rank)} discoverer',
+                  child: FaIcon(
+                    FontAwesomeIcons.trophy,
+                    color: getRankColor(item.rank),
+                    size: 40,
+                  ),
+                ),
               ],
             ),
             ListTile(
@@ -54,20 +60,7 @@ class ItemTile extends HookConsumerWidget {
                   await ref.read(routerProvider.notifier).push(route: Routes.profile, extra: ProfileRouteParams(userId: item.resource!.createdBy!.id!));
                 },
               ),
-              title: ExpansionTile(
-                title: Center(child: Text(item.name),),
-                children: [
-                  ListTile(
-                    title: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(item.description)
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+              title: Center(child: Text(item.resource!.title),),
               trailing: IconButton(
                 icon: const Icon(Icons.more_vert),
                 onPressed: () async {
@@ -75,8 +68,8 @@ class ItemTile extends HookConsumerWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       ListTile(
-                        leading: const Icon(Icons.edit),
-                        title: const Text('編集'),
+                        leading: const Icon(Icons.description),
+                        title: const Text('説明'),
                         onTap: () {
                           ref.read(routerProvider.notifier).closeBottomSheet();
                           ref.read(routerProvider.notifier).showDialogRoute(
@@ -99,7 +92,7 @@ class ItemTile extends HookConsumerWidget {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(
-                                    '${item.name}の削除',
+                                    '${item.resource!.title}の削除',
                                     style: const TextStyle(
                                       fontSize: 20,
                                     )
@@ -137,7 +130,7 @@ class ItemTile extends HookConsumerWidget {
                           );
                         }
                       ),
-                      ListTile(
+                      if (me?.uid != null && item.resource!.createdBy?.id == me?.uid) ListTile(
                         leading: const FaIcon(FontAwesomeIcons.commentMedical),
                         title: const Text('アイテムの作成をおしらせ'),
                         onTap: () async {
@@ -153,7 +146,6 @@ class ItemTile extends HookConsumerWidget {
                           final resourceId = item.resource!.id!;
                           final url = await ref.read(dynamicLinksControllerProvider.notifier).getItemImportUrl(
                             resourceId: resourceId,
-                            resourceType: item.resourceType!,
                           );
                           final box = context.findRenderObject() as RenderBox?;
                           await Share.share('I am the ${item.rank <= 0 ? "owner!!" : numWithSuffix(item.rank) + ' discoverer!!'}\n $url', subject: url, sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
@@ -167,7 +159,6 @@ class ItemTile extends HookConsumerWidget {
                           final resourceId = item.resource!.id!;
                           final url = await ref.read(dynamicLinksControllerProvider.notifier).getItemImportUrl(
                             resourceId: resourceId,
-                            resourceType: item.resourceType!,
                           );
                           ref.read(qrCodeScreenControllerProvider.notifier).setUrl(url);
                           ref.read(routerProvider.notifier).showDialog(
@@ -181,16 +172,17 @@ class ItemTile extends HookConsumerWidget {
               ),
             ),
             Container(
-              width: boxSize,
-              height: boxSize,
+              padding: const EdgeInsets.only(left: 80, top: 20),
+              child: ExpandableText(text: item.resource!.body),
+            ),
+            if (item.resource!.attachments.isNotEmpty) Container(
               padding: const EdgeInsets.symmetric(vertical: 20),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: GestureDetector(
-                  onTap: () {
-                    ref.read(routerProvider.notifier).push(route: Routes.itemDetail, extra: ItemDetailRouteParams(item: item));
-                  },
-                  child: ResourceOverView(item: item),
+                child: AttachmentsCarousel(
+                  attachments: item.resource!.attachments.map((attachment) => AsyncValue.data(attachment)).toList(),
+                  height: boxSize,
+                  width: MediaQuery.of(context).size.width,
                 )
               ),
             )

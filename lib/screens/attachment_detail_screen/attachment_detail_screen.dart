@@ -1,17 +1,17 @@
 import 'package:aciste/router.dart';
-import 'package:aciste/screens/item_detail_screen/controllers/item_detail_screen_controller.dart';
-import 'package:aciste/widgets/resource_view/resource_view.dart';
+import 'package:aciste/screens/attachment_detail_screen/controllers/attachment_detail_screen_controller.dart';
+import 'package:aciste/widgets/attachment_view/attachment_view.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class ItemDetailScreen extends HookConsumerWidget {
+class AttachmentDetailScreen extends HookConsumerWidget {
 
-  const ItemDetailScreen({Key? key}) : super(key: key);
+  const AttachmentDetailScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final itemDetailScreenState = ref.watch(itemDetailScreenControllerProvider);
-    if (itemDetailScreenState.item == null) {
+    final attachmentDetailScreenState = ref.watch(attachmentDetailScreenControllerProvider);
+    if (attachmentDetailScreenState.attachment == null) {
       return const Scaffold(
         body: Center(
           child: CircularProgressIndicator()
@@ -21,14 +21,13 @@ class ItemDetailScreen extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
-        title: Text(itemDetailScreenState.item!.name),
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_left),
           onPressed: () => ref.read(routerProvider.notifier).pop(),
         ),
       ),
-      body: ResourceView(item: itemDetailScreenState.item!),
+      body: AttachmentView(attachment: attachmentDetailScreenState.attachment!,)
     );
   }
 }

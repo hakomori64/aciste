@@ -1,32 +1,35 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'message.dart';
+part of 'resource.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_Message _$$_MessageFromJson(Map<String, dynamic> json) => _$_Message(
+_$_Resource _$$_ResourceFromJson(Map<String, dynamic> json) => _$_Resource(
       id: json['id'] as String?,
-      name: json['name'] as String? ?? "",
-      description: json['description'] as String? ?? "",
+      title: json['title'] as String,
+      body: json['body'] as String,
+      viewCount: json['viewCount'] as int? ?? 0,
       createdBy: json['createdBy'] == null
           ? null
           : User.fromJson(json['createdBy'] as Map<String, dynamic>),
-      text: json['text'] as String?,
       createdAt: const TimestampDateTimeConverter()
           .fromJson(json['createdAt'] as Timestamp?),
-      viewCount: json['viewCount'] as int? ?? 0,
+      attachments: (json['attachments'] as List<dynamic>?)
+              ?.map((e) => Attachment.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
     );
 
-Map<String, dynamic> _$$_MessageToJson(_$_Message instance) =>
+Map<String, dynamic> _$$_ResourceToJson(_$_Resource instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'name': instance.name,
-      'description': instance.description,
+      'title': instance.title,
+      'body': instance.body,
+      'viewCount': instance.viewCount,
       'createdBy': instance.createdBy,
-      'text': instance.text,
       'createdAt':
           const TimestampDateTimeConverter().toJson(instance.createdAt),
-      'viewCount': instance.viewCount,
+      'attachments': instance.attachments,
     };

@@ -1,7 +1,4 @@
-import 'package:aciste/enums/resource_type.dart';
 import 'package:aciste/models/announcement.dart';
-import 'package:aciste/models/message.dart';
-import 'package:aciste/models/photo.dart';
 import 'package:aciste/router.dart';
 import 'package:aciste/screens/main_screen/controllers/main_screen_controller.dart';
 import 'package:flutter/material.dart';
@@ -25,9 +22,6 @@ class MainFloatingActionButton extends HookConsumerWidget {
               child: RawMaterialButton(
                 onPressed: () async {
                   ref.read(mainScreenControllerProvider.notifier).setIsSelecting(value: false);
-                  await ref.read(routerProvider.notifier).push(route: Routes.media, extra: MediaRouteParams(resourceType: ResourceType.photo, onTapFunc: (file) async {
-                    ref.read(routerProvider.notifier).push(route: Routes.itemCreate, extra: ItemCreateRouteParams(resourceType: ResourceType.photo, params: CreatePhotoParams(file: file)));
-                  }));
                 },
                 elevation: 2.0,
                 fillColor: Theme.of(context).primaryColor,
@@ -35,27 +29,7 @@ class MainFloatingActionButton extends HookConsumerWidget {
                   width: 50,
                   height: 50,
                   padding: const EdgeInsets.all(5.0),
-                  child: const Center(child: Icon(Icons.photo, size: 40.0, color: Colors.white)),
-                ),
-                shape: const CircleBorder(),
-              )
-            ),
-            Container(
-              margin: const EdgeInsets.only(bottom: 16.0),
-              child: RawMaterialButton(
-                onPressed: () async {
-                  ref.read(mainScreenControllerProvider.notifier).setIsSelecting(value: false);
-                  await ref.read(routerProvider.notifier).push(route: Routes.message, extra: MessageRouteParams(resourceType: ResourceType.message, onTapFunc: (message) async {
-                    ref.read(routerProvider.notifier).push(route: Routes.itemCreate, extra: ItemCreateRouteParams(resourceType: ResourceType.message, params: CreateMessageParams(message: message)));
-                  }));
-                },
-                elevation: 2.0,
-                fillColor: Theme.of(context).primaryColor,
-                child: Container(
-                  width: 50,
-                  height: 50,
-                  padding: const EdgeInsets.all(5.0),
-                  child: const Center(child: Icon(Icons.message, size: 40.0, color: Colors.white)),
+                  child: const Center(child: Icon(Icons.arrow_back_ios, size: 40.0, color: Colors.white)),
                 ),
                 shape: const CircleBorder(),
               )
@@ -68,8 +42,8 @@ class MainFloatingActionButton extends HookConsumerWidget {
             Container(
               margin: const EdgeInsets.only(bottom: 16.0),
               child: RawMaterialButton(
-                onPressed: () {
-                  ref.read(mainScreenControllerProvider.notifier).setIsSelecting(value: true);
+                onPressed: () async {
+                  await ref.read(routerProvider.notifier).push(route: Routes.itemCreate);
                 },
                 elevation: 2.0,
                 fillColor: Theme.of(context).primaryColor,

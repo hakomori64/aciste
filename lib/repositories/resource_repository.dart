@@ -1,16 +1,16 @@
+import 'package:aciste/converters/timestamp_converter.dart';
 import 'package:aciste/custom_exception.dart';
-import 'package:aciste/enums/resource_type.dart';
-import 'package:aciste/models/message.dart';
-import 'package:aciste/models/photo.dart';
 import 'package:aciste/models/resource.dart';
-import 'package:aciste/repositories/message_repository.dart';
-import 'package:aciste/repositories/photo_repository.dart';
+import 'package:aciste/providers.dart';
+import 'package:aciste/repositories/attachment_repository.dart';
+import 'package:aciste/repositories/user_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:aciste/extensions/firebase_firestore_extension.dart';
 
 abstract class BaseResourceRepository {
-  Future<Resource> retrieveResource({required String userId, required ResourceType resourceType, required String resourceId});
-  Future<Resource> createResource({required String userId, required ResourceType resourceType, required CreateResourceParams createResourceParams});
-  Future<Resource> updateResource({required String userId, required ResourceType resourceType, required Resource resource});
+  Future<Resource> retrieveResource({required String resourceId});
+  Future<Resource> createResource({required Resource resource});
+  Future<void> updateResource({required Resource resource});
 }
 
 final resourceRepositoryProvider = Provider<ResourceRepository>((ref) => ResourceRepository(ref.read));
@@ -20,40 +20,58 @@ class ResourceRepository implements BaseResourceRepository {
 
   const ResourceRepository(this._read);
 
-  @override
-  Future<Resource> retrieveResource({required String userId, required ResourceType resourceType, required String resourceId}) async {
-    switch (resourceType) {
-      case ResourceType.photo:
-        return _read(photoRepositoryProvider).retrievePhoto(userId: userId, photoId: resourceId);
-      case ResourceType.message:
-        return _read(messageRepositoryProvider).retrieveMessage(userId: userId, messageId: resourceId);
-      default:
-        throw const CustomException(message: '不明なリソースタイプです');
+  Future<Resource> _getResource({
+    required DocumentSnapshot<Map<String, dynamic>> doc,
+  }) async {
+    final resource = Resource.fromDocumentSnapshot(doc);
+    final createdBy = await _read(userRepositoryProvider).getUser(userId: doc.data()!['createdById']);
 
+    final attachments = await _read(attachmentRepositoryProvider).retrieveResourceAttachments(resourceId: resource.id!);
+
+    return resource.copyWith(
+      createdBy: createdBy,
+      attachments: attachments,
+    );
+  }
+
+  @override
+  Future<Resource> retrieveResource({required String resourceId}) async {
+    try {
+      final snapshot = await _read(firebaseFirestoreProvider)
+        .resourcesRef()
+        .doc(resourceId)
+        .get();
+      
+      return _getResource(doc: snapshot);
+    } on FirebaseException catch (e) {
+      throw CustomException(message: e.message);
     }
   }
 
   @override
-  Future<Resource> createResource({required String userId, required ResourceType resourceType, required CreateResourceParams createResourceParams}) async {
-    switch (resourceType) {
-      case ResourceType.photo:
-        return _read(photoRepositoryProvider).createPhoto(userId: userId, createPhotoParams: createResourceParams as CreatePhotoParams);
-      case ResourceType.message:
-        return _read(messageRepositoryProvider).createMessage(userId: userId, createMessageParams: createResourceParams as CreateMessageParams);
-      default:
-        throw const CustomException(message: '不明なリソースタイプです');
+  Future<Resource> createResource({required Resource resource}) async {
+    try {
+      final docRef = await _read(firebaseFirestoreProvider)
+        .resourcesRef()
+        .add(resource.toDocument());
+
+      return resource.copyWith(
+        id: docRef.id
+      );
+    } on FirebaseException catch (e) {
+      throw CustomException(message: e.message);
     }
   }
 
   @override
-  Future<Resource> updateResource({required String userId, required ResourceType resourceType, required Resource resource}) async {
-    switch (resourceType) {
-      case ResourceType.photo:
-        return _read(photoRepositoryProvider).updatePhoto(userId: userId, photo: resource as Photo);
-      case ResourceType.message:
-        return _read(messageRepositoryProvider).updateMessage(userId: userId, message: resource as Message);
-      default:
-        throw const CustomException(message: '不明なリソースタイプです');
+  Future<void> updateResource({required Resource resource}) async {
+    try {
+      await _read(firebaseFirestoreProvider)
+        .resourcesRef()
+        .doc(resource.id!)
+        .update(resource.toDocument());
+    } on FirebaseException catch (e) {
+      throw CustomException(message: e.message);
     }
   }
 }

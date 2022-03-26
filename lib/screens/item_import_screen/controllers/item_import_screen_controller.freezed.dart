@@ -18,12 +18,9 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$ItemImportScreenStateTearOff {
   const _$ItemImportScreenStateTearOff();
 
-  _ItemImportScreenState call(
-      {Item? item, String name = "", String description = ""}) {
+  _ItemImportScreenState call({Item? item}) {
     return _ItemImportScreenState(
       item: item,
-      name: name,
-      description: description,
     );
   }
 }
@@ -34,8 +31,6 @@ const $ItemImportScreenState = _$ItemImportScreenStateTearOff();
 /// @nodoc
 mixin _$ItemImportScreenState {
   Item? get item => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
-  String get description => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ItemImportScreenStateCopyWith<ItemImportScreenState> get copyWith =>
@@ -47,7 +42,7 @@ abstract class $ItemImportScreenStateCopyWith<$Res> {
   factory $ItemImportScreenStateCopyWith(ItemImportScreenState value,
           $Res Function(ItemImportScreenState) then) =
       _$ItemImportScreenStateCopyWithImpl<$Res>;
-  $Res call({Item? item, String name, String description});
+  $Res call({Item? item});
 
   $ItemCopyWith<$Res>? get item;
 }
@@ -64,22 +59,12 @@ class _$ItemImportScreenStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? item = freezed,
-    Object? name = freezed,
-    Object? description = freezed,
   }) {
     return _then(_value.copyWith(
       item: item == freezed
           ? _value.item
           : item // ignore: cast_nullable_to_non_nullable
               as Item?,
-      name: name == freezed
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      description: description == freezed
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String,
     ));
   }
 
@@ -102,7 +87,7 @@ abstract class _$ItemImportScreenStateCopyWith<$Res>
           $Res Function(_ItemImportScreenState) then) =
       __$ItemImportScreenStateCopyWithImpl<$Res>;
   @override
-  $Res call({Item? item, String name, String description});
+  $Res call({Item? item});
 
   @override
   $ItemCopyWith<$Res>? get item;
@@ -122,22 +107,12 @@ class __$ItemImportScreenStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? item = freezed,
-    Object? name = freezed,
-    Object? description = freezed,
   }) {
     return _then(_ItemImportScreenState(
       item: item == freezed
           ? _value.item
           : item // ignore: cast_nullable_to_non_nullable
               as Item?,
-      name: name == freezed
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      description: description == freezed
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String,
     ));
   }
 }
@@ -145,21 +120,14 @@ class __$ItemImportScreenStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_ItemImportScreenState implements _ItemImportScreenState {
-  const _$_ItemImportScreenState(
-      {this.item, this.name = "", this.description = ""});
+  const _$_ItemImportScreenState({this.item});
 
   @override
   final Item? item;
-  @JsonKey()
-  @override
-  final String name;
-  @JsonKey()
-  @override
-  final String description;
 
   @override
   String toString() {
-    return 'ItemImportScreenState(item: $item, name: $name, description: $description)';
+    return 'ItemImportScreenState(item: $item)';
   }
 
   @override
@@ -167,18 +135,12 @@ class _$_ItemImportScreenState implements _ItemImportScreenState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _ItemImportScreenState &&
-            const DeepCollectionEquality().equals(other.item, item) &&
-            const DeepCollectionEquality().equals(other.name, name) &&
-            const DeepCollectionEquality()
-                .equals(other.description, description));
+            const DeepCollectionEquality().equals(other.item, item));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(item),
-      const DeepCollectionEquality().hash(name),
-      const DeepCollectionEquality().hash(description));
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(item));
 
   @JsonKey(ignore: true)
   @override
@@ -188,15 +150,10 @@ class _$_ItemImportScreenState implements _ItemImportScreenState {
 }
 
 abstract class _ItemImportScreenState implements ItemImportScreenState {
-  const factory _ItemImportScreenState(
-      {Item? item, String name, String description}) = _$_ItemImportScreenState;
+  const factory _ItemImportScreenState({Item? item}) = _$_ItemImportScreenState;
 
   @override
   Item? get item;
-  @override
-  String get name;
-  @override
-  String get description;
   @override
   @JsonKey(ignore: true)
   _$ItemImportScreenStateCopyWith<_ItemImportScreenState> get copyWith =>

@@ -19,10 +19,13 @@ class _$ItemCreateScreenStateTearOff {
   const _$ItemCreateScreenStateTearOff();
 
   _ItemCreateScreenState call(
-      {ResourceType? resourceType, CreateResourceParams? params}) {
+      {String title = "",
+      String body = "",
+      List<AsyncValue<Attachment>> attachments = const []}) {
     return _ItemCreateScreenState(
-      resourceType: resourceType,
-      params: params,
+      title: title,
+      body: body,
+      attachments: attachments,
     );
   }
 }
@@ -32,8 +35,10 @@ const $ItemCreateScreenState = _$ItemCreateScreenStateTearOff();
 
 /// @nodoc
 mixin _$ItemCreateScreenState {
-  ResourceType? get resourceType => throw _privateConstructorUsedError;
-  CreateResourceParams? get params => throw _privateConstructorUsedError;
+  String get title => throw _privateConstructorUsedError;
+  String get body => throw _privateConstructorUsedError;
+  List<AsyncValue<Attachment>> get attachments =>
+      throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ItemCreateScreenStateCopyWith<ItemCreateScreenState> get copyWith =>
@@ -45,7 +50,8 @@ abstract class $ItemCreateScreenStateCopyWith<$Res> {
   factory $ItemCreateScreenStateCopyWith(ItemCreateScreenState value,
           $Res Function(ItemCreateScreenState) then) =
       _$ItemCreateScreenStateCopyWithImpl<$Res>;
-  $Res call({ResourceType? resourceType, CreateResourceParams? params});
+  $Res call(
+      {String title, String body, List<AsyncValue<Attachment>> attachments});
 }
 
 /// @nodoc
@@ -59,18 +65,23 @@ class _$ItemCreateScreenStateCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? resourceType = freezed,
-    Object? params = freezed,
+    Object? title = freezed,
+    Object? body = freezed,
+    Object? attachments = freezed,
   }) {
     return _then(_value.copyWith(
-      resourceType: resourceType == freezed
-          ? _value.resourceType
-          : resourceType // ignore: cast_nullable_to_non_nullable
-              as ResourceType?,
-      params: params == freezed
-          ? _value.params
-          : params // ignore: cast_nullable_to_non_nullable
-              as CreateResourceParams?,
+      title: title == freezed
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      body: body == freezed
+          ? _value.body
+          : body // ignore: cast_nullable_to_non_nullable
+              as String,
+      attachments: attachments == freezed
+          ? _value.attachments
+          : attachments // ignore: cast_nullable_to_non_nullable
+              as List<AsyncValue<Attachment>>,
     ));
   }
 }
@@ -82,7 +93,8 @@ abstract class _$ItemCreateScreenStateCopyWith<$Res>
           $Res Function(_ItemCreateScreenState) then) =
       __$ItemCreateScreenStateCopyWithImpl<$Res>;
   @override
-  $Res call({ResourceType? resourceType, CreateResourceParams? params});
+  $Res call(
+      {String title, String body, List<AsyncValue<Attachment>> attachments});
 }
 
 /// @nodoc
@@ -98,18 +110,23 @@ class __$ItemCreateScreenStateCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? resourceType = freezed,
-    Object? params = freezed,
+    Object? title = freezed,
+    Object? body = freezed,
+    Object? attachments = freezed,
   }) {
     return _then(_ItemCreateScreenState(
-      resourceType: resourceType == freezed
-          ? _value.resourceType
-          : resourceType // ignore: cast_nullable_to_non_nullable
-              as ResourceType?,
-      params: params == freezed
-          ? _value.params
-          : params // ignore: cast_nullable_to_non_nullable
-              as CreateResourceParams?,
+      title: title == freezed
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      body: body == freezed
+          ? _value.body
+          : body // ignore: cast_nullable_to_non_nullable
+              as String,
+      attachments: attachments == freezed
+          ? _value.attachments
+          : attachments // ignore: cast_nullable_to_non_nullable
+              as List<AsyncValue<Attachment>>,
     ));
   }
 }
@@ -117,16 +134,22 @@ class __$ItemCreateScreenStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_ItemCreateScreenState implements _ItemCreateScreenState {
-  const _$_ItemCreateScreenState({this.resourceType, this.params});
+  const _$_ItemCreateScreenState(
+      {this.title = "", this.body = "", this.attachments = const []});
 
+  @JsonKey()
   @override
-  final ResourceType? resourceType;
+  final String title;
+  @JsonKey()
   @override
-  final CreateResourceParams? params;
+  final String body;
+  @JsonKey()
+  @override
+  final List<AsyncValue<Attachment>> attachments;
 
   @override
   String toString() {
-    return 'ItemCreateScreenState(resourceType: $resourceType, params: $params)';
+    return 'ItemCreateScreenState(title: $title, body: $body, attachments: $attachments)';
   }
 
   @override
@@ -134,16 +157,18 @@ class _$_ItemCreateScreenState implements _ItemCreateScreenState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _ItemCreateScreenState &&
+            const DeepCollectionEquality().equals(other.title, title) &&
+            const DeepCollectionEquality().equals(other.body, body) &&
             const DeepCollectionEquality()
-                .equals(other.resourceType, resourceType) &&
-            const DeepCollectionEquality().equals(other.params, params));
+                .equals(other.attachments, attachments));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(resourceType),
-      const DeepCollectionEquality().hash(params));
+      const DeepCollectionEquality().hash(title),
+      const DeepCollectionEquality().hash(body),
+      const DeepCollectionEquality().hash(attachments));
 
   @JsonKey(ignore: true)
   @override
@@ -154,13 +179,16 @@ class _$_ItemCreateScreenState implements _ItemCreateScreenState {
 
 abstract class _ItemCreateScreenState implements ItemCreateScreenState {
   const factory _ItemCreateScreenState(
-      {ResourceType? resourceType,
-      CreateResourceParams? params}) = _$_ItemCreateScreenState;
+      {String title,
+      String body,
+      List<AsyncValue<Attachment>> attachments}) = _$_ItemCreateScreenState;
 
   @override
-  ResourceType? get resourceType;
+  String get title;
   @override
-  CreateResourceParams? get params;
+  String get body;
+  @override
+  List<AsyncValue<Attachment>> get attachments;
   @override
   @JsonKey(ignore: true)
   _$ItemCreateScreenStateCopyWith<_ItemCreateScreenState> get copyWith =>

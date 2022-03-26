@@ -24,20 +24,16 @@ class _$ItemTearOff {
 
   _Item call(
       {String? id,
-      required String name,
       required String description,
       Resource? resource,
-      ResourceType? resourceType,
       required String userId,
       @TimestampDateTimeConverter() DateTime? createdAt,
       @TimestampDateTimeConverter() DateTime? updatedAt,
       int rank = 0}) {
     return _Item(
       id: id,
-      name: name,
       description: description,
       resource: resource,
-      resourceType: resourceType,
       userId: userId,
       createdAt: createdAt,
       updatedAt: updatedAt,
@@ -56,10 +52,8 @@ const $Item = _$ItemTearOff();
 /// @nodoc
 mixin _$Item {
   String? get id => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
   Resource? get resource => throw _privateConstructorUsedError;
-  ResourceType? get resourceType => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
   @TimestampDateTimeConverter()
   DateTime? get createdAt => throw _privateConstructorUsedError;
@@ -78,14 +72,14 @@ abstract class $ItemCopyWith<$Res> {
       _$ItemCopyWithImpl<$Res>;
   $Res call(
       {String? id,
-      String name,
       String description,
       Resource? resource,
-      ResourceType? resourceType,
       String userId,
       @TimestampDateTimeConverter() DateTime? createdAt,
       @TimestampDateTimeConverter() DateTime? updatedAt,
       int rank});
+
+  $ResourceCopyWith<$Res>? get resource;
 }
 
 /// @nodoc
@@ -99,10 +93,8 @@ class _$ItemCopyWithImpl<$Res> implements $ItemCopyWith<$Res> {
   @override
   $Res call({
     Object? id = freezed,
-    Object? name = freezed,
     Object? description = freezed,
     Object? resource = freezed,
-    Object? resourceType = freezed,
     Object? userId = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
@@ -113,10 +105,6 @@ class _$ItemCopyWithImpl<$Res> implements $ItemCopyWith<$Res> {
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
-      name: name == freezed
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
       description: description == freezed
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -125,10 +113,6 @@ class _$ItemCopyWithImpl<$Res> implements $ItemCopyWith<$Res> {
           ? _value.resource
           : resource // ignore: cast_nullable_to_non_nullable
               as Resource?,
-      resourceType: resourceType == freezed
-          ? _value.resourceType
-          : resourceType // ignore: cast_nullable_to_non_nullable
-              as ResourceType?,
       userId: userId == freezed
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
@@ -147,6 +131,17 @@ class _$ItemCopyWithImpl<$Res> implements $ItemCopyWith<$Res> {
               as int,
     ));
   }
+
+  @override
+  $ResourceCopyWith<$Res>? get resource {
+    if (_value.resource == null) {
+      return null;
+    }
+
+    return $ResourceCopyWith<$Res>(_value.resource!, (value) {
+      return _then(_value.copyWith(resource: value));
+    });
+  }
 }
 
 /// @nodoc
@@ -156,14 +151,15 @@ abstract class _$ItemCopyWith<$Res> implements $ItemCopyWith<$Res> {
   @override
   $Res call(
       {String? id,
-      String name,
       String description,
       Resource? resource,
-      ResourceType? resourceType,
       String userId,
       @TimestampDateTimeConverter() DateTime? createdAt,
       @TimestampDateTimeConverter() DateTime? updatedAt,
       int rank});
+
+  @override
+  $ResourceCopyWith<$Res>? get resource;
 }
 
 /// @nodoc
@@ -178,10 +174,8 @@ class __$ItemCopyWithImpl<$Res> extends _$ItemCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
-    Object? name = freezed,
     Object? description = freezed,
     Object? resource = freezed,
-    Object? resourceType = freezed,
     Object? userId = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
@@ -192,10 +186,6 @@ class __$ItemCopyWithImpl<$Res> extends _$ItemCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
-      name: name == freezed
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
       description: description == freezed
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -204,10 +194,6 @@ class __$ItemCopyWithImpl<$Res> extends _$ItemCopyWithImpl<$Res>
           ? _value.resource
           : resource // ignore: cast_nullable_to_non_nullable
               as Resource?,
-      resourceType: resourceType == freezed
-          ? _value.resourceType
-          : resourceType // ignore: cast_nullable_to_non_nullable
-              as ResourceType?,
       userId: userId == freezed
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
@@ -233,10 +219,8 @@ class __$ItemCopyWithImpl<$Res> extends _$ItemCopyWithImpl<$Res>
 class _$_Item extends _Item {
   const _$_Item(
       {this.id,
-      required this.name,
       required this.description,
       this.resource,
-      this.resourceType,
       required this.userId,
       @TimestampDateTimeConverter() this.createdAt,
       @TimestampDateTimeConverter() this.updatedAt,
@@ -248,13 +232,9 @@ class _$_Item extends _Item {
   @override
   final String? id;
   @override
-  final String name;
-  @override
   final String description;
   @override
   final Resource? resource;
-  @override
-  final ResourceType? resourceType;
   @override
   final String userId;
   @override
@@ -269,7 +249,7 @@ class _$_Item extends _Item {
 
   @override
   String toString() {
-    return 'Item(id: $id, name: $name, description: $description, resource: $resource, resourceType: $resourceType, userId: $userId, createdAt: $createdAt, updatedAt: $updatedAt, rank: $rank)';
+    return 'Item(id: $id, description: $description, resource: $resource, userId: $userId, createdAt: $createdAt, updatedAt: $updatedAt, rank: $rank)';
   }
 
   @override
@@ -278,12 +258,9 @@ class _$_Item extends _Item {
         (other.runtimeType == runtimeType &&
             other is _Item &&
             const DeepCollectionEquality().equals(other.id, id) &&
-            const DeepCollectionEquality().equals(other.name, name) &&
             const DeepCollectionEquality()
                 .equals(other.description, description) &&
             const DeepCollectionEquality().equals(other.resource, resource) &&
-            const DeepCollectionEquality()
-                .equals(other.resourceType, resourceType) &&
             const DeepCollectionEquality().equals(other.userId, userId) &&
             const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
             const DeepCollectionEquality().equals(other.updatedAt, updatedAt) &&
@@ -294,10 +271,8 @@ class _$_Item extends _Item {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(id),
-      const DeepCollectionEquality().hash(name),
       const DeepCollectionEquality().hash(description),
       const DeepCollectionEquality().hash(resource),
-      const DeepCollectionEquality().hash(resourceType),
       const DeepCollectionEquality().hash(userId),
       const DeepCollectionEquality().hash(createdAt),
       const DeepCollectionEquality().hash(updatedAt),
@@ -317,10 +292,8 @@ class _$_Item extends _Item {
 abstract class _Item extends Item {
   const factory _Item(
       {String? id,
-      required String name,
       required String description,
       Resource? resource,
-      ResourceType? resourceType,
       required String userId,
       @TimestampDateTimeConverter() DateTime? createdAt,
       @TimestampDateTimeConverter() DateTime? updatedAt,
@@ -332,13 +305,9 @@ abstract class _Item extends Item {
   @override
   String? get id;
   @override
-  String get name;
-  @override
   String get description;
   @override
   Resource? get resource;
-  @override
-  ResourceType? get resourceType;
   @override
   String get userId;
   @override

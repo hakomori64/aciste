@@ -10,7 +10,6 @@ class ItemEditScreenState with _$ItemEditScreenState {
     Item? item,
     @Default(false) bool isNameEditing,
     @Default(false) bool isDescriptionEditing,
-    @Default("") String name,
     @Default("") String description,
   }) = _ItemEditScreenState;
 }
@@ -23,14 +22,9 @@ class ItemEditScreenController extends StateNotifier<ItemEditScreenState> {
 
   void setItem(Item item) {
     state = state.copyWith(item: item);
-    setName(item.name);
     setDescription(item.description);
   }
   
-  void setName(String name) {
-    state = state.copyWith(name: name);
-  }
-
   void setDescription(String description) {
     state = state.copyWith(description: description);
   }

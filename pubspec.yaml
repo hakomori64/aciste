@@ -64,6 +64,7 @@ dependencies:
   url_launcher: ^6.0.20
   bubble: ^1.2.1
   autoscale_tabbarview: ^1.0.2
+  json_annotation: ^4.4.0
 
 dev_dependencies:
   build_runner: ^2.1.7

@@ -2,22 +2,22 @@ import 'dart:io';
 
 import 'package:aciste/controllers/auth_controller.dart';
 import 'package:aciste/controllers/dynamic_links_controller.dart';
-import 'package:aciste/enums/resource_type.dart';
+import 'package:aciste/enums/attachment_type.dart';
 import 'package:aciste/models/announcement.dart';
+import 'package:aciste/models/attachment.dart';
 import 'package:aciste/models/resource.dart';
 import 'package:aciste/repositories/resource_repository.dart';
 import 'package:aciste/screens/announce_create_screen/announce_create_screen.dart';
 import 'package:aciste/screens/announce_create_screen/controllers/announce_create_screen_controller.dart';
+import 'package:aciste/screens/attachment_detail_screen/controllers/attachment_detail_screen_controller.dart';
 import 'package:aciste/screens/dialog_screen/dialog_screen.dart';
 import 'package:aciste/screens/dialog_screen/controllers/dialog_screen_controller.dart';
 import 'package:aciste/screens/email_check_screen/email_check_screen.dart';
 import 'package:aciste/screens/email_check_screen/controllers/email_check_screen_controller.dart';
 import 'package:aciste/screens/follows_screen/follows_screen.dart';
 import 'package:aciste/screens/follows_screen/controllers/follows_screen_controller.dart';
-import 'package:aciste/screens/item_create_screen/item_create_screen.dart';
 import 'package:aciste/screens/item_create_screen/controllers/item_create_screen_controller.dart';
-import 'package:aciste/screens/item_detail_screen/item_detail_screen.dart';
-import 'package:aciste/screens/item_detail_screen/controllers/item_detail_screen_controller.dart';
+import 'package:aciste/screens/item_create_screen/item_create_screen.dart';
 import 'package:aciste/screens/item_edit_screen/item_edit_screen.dart';
 import 'package:aciste/screens/item_edit_screen/controllers/item_edit_screen_controller.dart';
 import 'package:aciste/screens/item_import_screen/item_import_screen.dart';
@@ -27,13 +27,10 @@ import 'package:aciste/screens/logo_screen/logo_screen.dart';
 import 'package:aciste/screens/main_screen/main_screen.dart';
 import 'package:aciste/screens/media_screen/media_screen.dart';
 import 'package:aciste/screens/media_screen/controllers/media_screen_controller.dart';
-import 'package:aciste/screens/message_screen/message_screen.dart';
-import 'package:aciste/screens/message_screen/controllers/message_screen_controller.dart';
 import 'package:aciste/screens/profile_edit_screen/profile_edit_screen.dart';
 import 'package:aciste/screens/profile_screen/profile_screen.dart';
 import 'package:aciste/screens/profile_screen/controllers/profile_screen_controller.dart';
 import 'package:aciste/screens/signup_screen/signup_screen.dart';
-import 'package:enum_to_string/enum_to_string.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
@@ -41,6 +38,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'models/item.dart';
+import 'screens/attachment_detail_screen/attachment_detail_screen.dart';
 
 
 final routerProvider = StateNotifierProvider<RouterController, GoRouter?>((ref) => RouterController(
@@ -98,10 +96,6 @@ class RouterController extends StateNotifier<GoRouter?> {
           builder: (context, state) => screen(route: Routes.media),
         ),
         GoRoute(
-          path: Routes.message.route,
-          builder: (context, state) => screen(route: Routes.message),
-        ),
-        GoRoute(
           path: Routes.profile.route,
           pageBuilder:(context, state) => CustomTransitionPage(
             key: state.pageKey,
@@ -128,17 +122,14 @@ class RouterController extends StateNotifier<GoRouter?> {
         ),
         GoRoute(
           path: Routes.itemCreate.route,
-          //builder: (context, state) => ItemCreateScreen(resourceType: state.extra! as ResourceType),
           builder: (context, state) => screen(route: Routes.itemCreate),
         ),
         GoRoute(
-          path: Routes.itemDetail.route,
-          //builder: (context, state) => ItemDetailScreen(item: state.extra! as Item),
-          builder: (context, state) => screen(route: Routes.itemDetail),
+          path: Routes.attachmentDetail.route,
+          builder: (context, state) => screen(route: Routes.attachmentDetail),
         ),
         GoRoute(
           path: Routes.itemImport.route,
-          //builder:(context, state) => ItemImportScreen(item: state.extra! as Item),
           builder: (context, state) => screen(route: Routes.itemImport),
         ),
         GoRoute(
@@ -167,15 +158,12 @@ class RouterController extends StateNotifier<GoRouter?> {
         switch (path) {
           case '/import':
             final resourceId = parameterMap!['resourceId'] as String;
-            final resourceType = EnumToString.fromString(ResourceType.values, parameterMap['resourceType']);
             final resource = await _read(resourceRepositoryProvider).retrieveResource(
-              userId: _user!.uid,
               resourceId: resourceId,
-              resourceType: resourceType!,
             );
             final item = Item.empty().copyWith(
               resource: resource,
-              resourceType: resourceType,
+              userId: _user!.uid,
             );
             await refresh();
             await push(route: Routes.itemImport, extra: ItemImportRouteParams(item: item, resource: resource));
@@ -193,7 +181,13 @@ class RouterController extends StateNotifier<GoRouter?> {
     });
   }
 
-  Future<void> showDialogRoute({required Routes route, Object? extra}) async {
+  Future<void> showDialogRoute({required Routes route, Object? extra, Routes? baseScreenRoute, Object? baseScreenExtra}) async {
+    if (baseScreenRoute != null) {
+      await _handleParams(route: baseScreenRoute, extra: baseScreenExtra);
+      if (state!.location != Routes.dialog.route) {
+        state!.push(baseScreenRoute.route);
+      }
+    }
     await _handleParams(route: route, extra: extra);
     _read(dialogScreenControllerProvider.notifier).setChild(screen(route: route));
     if (state!.location != Routes.dialog.route) {
@@ -201,7 +195,13 @@ class RouterController extends StateNotifier<GoRouter?> {
     }
   }
 
-  void showDialog({required Widget child}) {
+  Future<void> showDialog({required Widget child, Routes? baseScreenRoute, Object? baseScreenExtra}) async {
+    if (baseScreenRoute != null) {
+      await _handleParams(route: baseScreenRoute, extra: baseScreenExtra);
+      if (state!.location != Routes.dialog.route) {
+        state!.push(baseScreenRoute.route);
+      }
+    }
     _read(dialogScreenControllerProvider.notifier).setChild(child);
     if (state!.location != Routes.dialog.route) {
       state!.push(Routes.dialog.route);
@@ -236,7 +236,7 @@ class RouterController extends StateNotifier<GoRouter?> {
         break;
       case Routes.media:
         final params = extra! as MediaRouteParams;
-        await _read(mediaScreenControllerProvider.notifier).setResourceType(resourceType: params.resourceType);
+        await _read(mediaScreenControllerProvider.notifier).setAttachmentType(attachmentType: params.attachmentType);
         await _read(mediaScreenControllerProvider.notifier).setOnTapFunc(onTapFunc: params.onTapFunc);
         break;
       case Routes.emailCheck:
@@ -244,11 +244,6 @@ class RouterController extends StateNotifier<GoRouter?> {
         _read(emailCheckScreenControllerProvider.notifier).setEmail(email: params.email);
         _read(emailCheckScreenControllerProvider.notifier).setPassword(password: params.password);
         _read(emailCheckScreenControllerProvider.notifier).setFrom(from: params.from);
-        break;
-      case Routes.message:
-        final params = extra! as MessageRouteParams;
-        _read(messageScreenControllerProvider.notifier).setResourceType(resourceType: params.resourceType);
-        _read(messageScreenControllerProvider.notifier).setOnTapFunc(onTapFunc: params.onTapFunc);
         break;
       case Routes.profile:
         final params = extra! as ProfileRouteParams;
@@ -261,23 +256,19 @@ class RouterController extends StateNotifier<GoRouter?> {
       case Routes.profileEdit:
         break;
       case Routes.itemCreate:
-        final params = extra! as ItemCreateRouteParams;
-        _read(itemCreateScreenControllerProvider.notifier).setResourceType(params.resourceType);
-        _read(itemCreateScreenControllerProvider.notifier).setCreateResourceParams(params.params);
+        _read(itemCreateScreenControllerProvider.notifier).setAttachments([]);
         break;
       case Routes.itemEdit:
         final params = extra! as ItemEditRouteParams;
         _read(itemEditScreenControllerProvider.notifier).setItem(params.item);
         break;
-      case Routes.itemDetail:
-        final params = extra! as ItemDetailRouteParams;
-        _read(itemDetailScreenControllerProvider.notifier).setItem(params.item);
+      case Routes.attachmentDetail:
+        final params = extra! as AttachmentDetailRouteParams;
+        _read(attachmentDetailScreenControllerProvider.notifier).setAttachment(params.attachment);
         break;
       case Routes.itemImport:
         final params = extra! as ItemImportRouteParams;
         _read(itemImportScreenControllerProvider.notifier).setItem(params.item);
-        _read(itemImportScreenControllerProvider.notifier).setName(params.resource.name ?? '');
-        _read(itemImportScreenControllerProvider.notifier).setDescription(params.resource.description ?? '');
         break;
       case Routes.announceCreate:
         final params = extra! as AnnounceCreateRouteParams;
@@ -322,8 +313,6 @@ class RouterController extends StateNotifier<GoRouter?> {
         return const MainScreen();
       case Routes.media:
         return const MediaScreen();
-      case Routes.message:
-        return const MessageScreen();
       case Routes.profile:
         return const ProfileScreen();
       case Routes.follows:
@@ -334,8 +323,8 @@ class RouterController extends StateNotifier<GoRouter?> {
         return const ItemCreateScreen();
       case Routes.itemEdit:
         return const ItemEditScreen();
-      case Routes.itemDetail:
-        return const ItemDetailScreen();
+      case Routes.attachmentDetail:
+        return const AttachmentDetailScreen();
       case Routes.itemImport:
         return const ItemImportScreen();
       case Routes.announceCreate:
@@ -356,10 +345,9 @@ enum Routes {
   follows,
   profileEdit,
   media,
-  message,
   itemCreate,
   itemEdit,
-  itemDetail,
+  attachmentDetail,
   itemImport,
   announceCreate,
   dialog,
@@ -370,10 +358,10 @@ extension RoutesExtension on Routes {
 }
 
 class MediaRouteParams {
-  final ResourceType resourceType;
+  final AttachmentType attachmentType;
   final Future<void> Function(File file) onTapFunc;
 
-  const MediaRouteParams({required this.resourceType, required this.onTapFunc});
+  const MediaRouteParams({required this.attachmentType, required this.onTapFunc});
 }
 
 class EmailCheckRouteParams {
@@ -381,13 +369,6 @@ class EmailCheckRouteParams {
   final String password;
   final Routes from;
   const EmailCheckRouteParams({required this.email, required this.password, required this.from});
-}
-
-class MessageRouteParams {
-  final ResourceType resourceType;
-  final Future<void> Function(String) onTapFunc;
-
-  const MessageRouteParams({required this.resourceType, required this.onTapFunc});
 }
 
 class ProfileRouteParams {
@@ -400,20 +381,14 @@ class FollowsRouteParams {
   const FollowsRouteParams({required this.follows});
 }
 
-class ItemCreateRouteParams {
-  final ResourceType resourceType;
-  final CreateResourceParams? params;
-  ItemCreateRouteParams({required this.resourceType, required this.params});
-}
-
 class ItemEditRouteParams {
   final Item item;
   ItemEditRouteParams({required this.item});
 }
 
-class ItemDetailRouteParams {
-  final Item item;
-  ItemDetailRouteParams({required this.item});
+class AttachmentDetailRouteParams {
+  final Attachment attachment;
+  AttachmentDetailRouteParams({required this.attachment});
 }
 
 class ItemImportRouteParams {

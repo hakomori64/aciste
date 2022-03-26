@@ -22,18 +22,22 @@ class _$MediaScreenStateTearOff {
       {int currentPage = 0,
       int? lastPage,
       int albumIndex = -1,
-      ResourceType resourceType = ResourceType.none,
+      AttachmentType attachmentType = AttachmentType.none,
       AsyncValue<List<AssetPathEntity>>? albums,
       AsyncValue<List<Widget>>? photos,
-      Future<void> Function(File)? onTapFunc}) {
+      Future<void> Function(File)? onTapFunc,
+      bool permissionLock = false,
+      PermissionState permissionState = PermissionState.notDetermined}) {
     return _MediaScreenState(
       currentPage: currentPage,
       lastPage: lastPage,
       albumIndex: albumIndex,
-      resourceType: resourceType,
+      attachmentType: attachmentType,
       albums: albums,
       photos: photos,
       onTapFunc: onTapFunc,
+      permissionLock: permissionLock,
+      permissionState: permissionState,
     );
   }
 }
@@ -46,12 +50,14 @@ mixin _$MediaScreenState {
   int get currentPage => throw _privateConstructorUsedError;
   int? get lastPage => throw _privateConstructorUsedError;
   int get albumIndex => throw _privateConstructorUsedError;
-  ResourceType get resourceType => throw _privateConstructorUsedError;
+  AttachmentType get attachmentType => throw _privateConstructorUsedError;
   AsyncValue<List<AssetPathEntity>>? get albums =>
       throw _privateConstructorUsedError;
   AsyncValue<List<Widget>>? get photos => throw _privateConstructorUsedError;
   Future<void> Function(File)? get onTapFunc =>
       throw _privateConstructorUsedError;
+  bool get permissionLock => throw _privateConstructorUsedError;
+  PermissionState get permissionState => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $MediaScreenStateCopyWith<MediaScreenState> get copyWith =>
@@ -67,10 +73,12 @@ abstract class $MediaScreenStateCopyWith<$Res> {
       {int currentPage,
       int? lastPage,
       int albumIndex,
-      ResourceType resourceType,
+      AttachmentType attachmentType,
       AsyncValue<List<AssetPathEntity>>? albums,
       AsyncValue<List<Widget>>? photos,
-      Future<void> Function(File)? onTapFunc});
+      Future<void> Function(File)? onTapFunc,
+      bool permissionLock,
+      PermissionState permissionState});
 }
 
 /// @nodoc
@@ -87,10 +95,12 @@ class _$MediaScreenStateCopyWithImpl<$Res>
     Object? currentPage = freezed,
     Object? lastPage = freezed,
     Object? albumIndex = freezed,
-    Object? resourceType = freezed,
+    Object? attachmentType = freezed,
     Object? albums = freezed,
     Object? photos = freezed,
     Object? onTapFunc = freezed,
+    Object? permissionLock = freezed,
+    Object? permissionState = freezed,
   }) {
     return _then(_value.copyWith(
       currentPage: currentPage == freezed
@@ -105,10 +115,10 @@ class _$MediaScreenStateCopyWithImpl<$Res>
           ? _value.albumIndex
           : albumIndex // ignore: cast_nullable_to_non_nullable
               as int,
-      resourceType: resourceType == freezed
-          ? _value.resourceType
-          : resourceType // ignore: cast_nullable_to_non_nullable
-              as ResourceType,
+      attachmentType: attachmentType == freezed
+          ? _value.attachmentType
+          : attachmentType // ignore: cast_nullable_to_non_nullable
+              as AttachmentType,
       albums: albums == freezed
           ? _value.albums
           : albums // ignore: cast_nullable_to_non_nullable
@@ -121,6 +131,14 @@ class _$MediaScreenStateCopyWithImpl<$Res>
           ? _value.onTapFunc
           : onTapFunc // ignore: cast_nullable_to_non_nullable
               as Future<void> Function(File)?,
+      permissionLock: permissionLock == freezed
+          ? _value.permissionLock
+          : permissionLock // ignore: cast_nullable_to_non_nullable
+              as bool,
+      permissionState: permissionState == freezed
+          ? _value.permissionState
+          : permissionState // ignore: cast_nullable_to_non_nullable
+              as PermissionState,
     ));
   }
 }
@@ -136,10 +154,12 @@ abstract class _$MediaScreenStateCopyWith<$Res>
       {int currentPage,
       int? lastPage,
       int albumIndex,
-      ResourceType resourceType,
+      AttachmentType attachmentType,
       AsyncValue<List<AssetPathEntity>>? albums,
       AsyncValue<List<Widget>>? photos,
-      Future<void> Function(File)? onTapFunc});
+      Future<void> Function(File)? onTapFunc,
+      bool permissionLock,
+      PermissionState permissionState});
 }
 
 /// @nodoc
@@ -158,10 +178,12 @@ class __$MediaScreenStateCopyWithImpl<$Res>
     Object? currentPage = freezed,
     Object? lastPage = freezed,
     Object? albumIndex = freezed,
-    Object? resourceType = freezed,
+    Object? attachmentType = freezed,
     Object? albums = freezed,
     Object? photos = freezed,
     Object? onTapFunc = freezed,
+    Object? permissionLock = freezed,
+    Object? permissionState = freezed,
   }) {
     return _then(_MediaScreenState(
       currentPage: currentPage == freezed
@@ -176,10 +198,10 @@ class __$MediaScreenStateCopyWithImpl<$Res>
           ? _value.albumIndex
           : albumIndex // ignore: cast_nullable_to_non_nullable
               as int,
-      resourceType: resourceType == freezed
-          ? _value.resourceType
-          : resourceType // ignore: cast_nullable_to_non_nullable
-              as ResourceType,
+      attachmentType: attachmentType == freezed
+          ? _value.attachmentType
+          : attachmentType // ignore: cast_nullable_to_non_nullable
+              as AttachmentType,
       albums: albums == freezed
           ? _value.albums
           : albums // ignore: cast_nullable_to_non_nullable
@@ -192,6 +214,14 @@ class __$MediaScreenStateCopyWithImpl<$Res>
           ? _value.onTapFunc
           : onTapFunc // ignore: cast_nullable_to_non_nullable
               as Future<void> Function(File)?,
+      permissionLock: permissionLock == freezed
+          ? _value.permissionLock
+          : permissionLock // ignore: cast_nullable_to_non_nullable
+              as bool,
+      permissionState: permissionState == freezed
+          ? _value.permissionState
+          : permissionState // ignore: cast_nullable_to_non_nullable
+              as PermissionState,
     ));
   }
 }
@@ -203,10 +233,12 @@ class _$_MediaScreenState implements _MediaScreenState {
       {this.currentPage = 0,
       this.lastPage,
       this.albumIndex = -1,
-      this.resourceType = ResourceType.none,
+      this.attachmentType = AttachmentType.none,
       this.albums,
       this.photos,
-      this.onTapFunc});
+      this.onTapFunc,
+      this.permissionLock = false,
+      this.permissionState = PermissionState.notDetermined});
 
   @JsonKey()
   @override
@@ -218,17 +250,23 @@ class _$_MediaScreenState implements _MediaScreenState {
   final int albumIndex;
   @JsonKey()
   @override
-  final ResourceType resourceType;
+  final AttachmentType attachmentType;
   @override
   final AsyncValue<List<AssetPathEntity>>? albums;
   @override
   final AsyncValue<List<Widget>>? photos;
   @override
   final Future<void> Function(File)? onTapFunc;
+  @JsonKey()
+  @override
+  final bool permissionLock;
+  @JsonKey()
+  @override
+  final PermissionState permissionState;
 
   @override
   String toString() {
-    return 'MediaScreenState(currentPage: $currentPage, lastPage: $lastPage, albumIndex: $albumIndex, resourceType: $resourceType, albums: $albums, photos: $photos, onTapFunc: $onTapFunc)';
+    return 'MediaScreenState(currentPage: $currentPage, lastPage: $lastPage, albumIndex: $albumIndex, attachmentType: $attachmentType, albums: $albums, photos: $photos, onTapFunc: $onTapFunc, permissionLock: $permissionLock, permissionState: $permissionState)';
   }
 
   @override
@@ -242,11 +280,15 @@ class _$_MediaScreenState implements _MediaScreenState {
             const DeepCollectionEquality()
                 .equals(other.albumIndex, albumIndex) &&
             const DeepCollectionEquality()
-                .equals(other.resourceType, resourceType) &&
+                .equals(other.attachmentType, attachmentType) &&
             const DeepCollectionEquality().equals(other.albums, albums) &&
             const DeepCollectionEquality().equals(other.photos, photos) &&
             (identical(other.onTapFunc, onTapFunc) ||
-                other.onTapFunc == onTapFunc));
+                other.onTapFunc == onTapFunc) &&
+            const DeepCollectionEquality()
+                .equals(other.permissionLock, permissionLock) &&
+            const DeepCollectionEquality()
+                .equals(other.permissionState, permissionState));
   }
 
   @override
@@ -255,10 +297,12 @@ class _$_MediaScreenState implements _MediaScreenState {
       const DeepCollectionEquality().hash(currentPage),
       const DeepCollectionEquality().hash(lastPage),
       const DeepCollectionEquality().hash(albumIndex),
-      const DeepCollectionEquality().hash(resourceType),
+      const DeepCollectionEquality().hash(attachmentType),
       const DeepCollectionEquality().hash(albums),
       const DeepCollectionEquality().hash(photos),
-      onTapFunc);
+      onTapFunc,
+      const DeepCollectionEquality().hash(permissionLock),
+      const DeepCollectionEquality().hash(permissionState));
 
   @JsonKey(ignore: true)
   @override
@@ -271,10 +315,12 @@ abstract class _MediaScreenState implements MediaScreenState {
       {int currentPage,
       int? lastPage,
       int albumIndex,
-      ResourceType resourceType,
+      AttachmentType attachmentType,
       AsyncValue<List<AssetPathEntity>>? albums,
       AsyncValue<List<Widget>>? photos,
-      Future<void> Function(File)? onTapFunc}) = _$_MediaScreenState;
+      Future<void> Function(File)? onTapFunc,
+      bool permissionLock,
+      PermissionState permissionState}) = _$_MediaScreenState;
 
   @override
   int get currentPage;
@@ -283,13 +329,17 @@ abstract class _MediaScreenState implements MediaScreenState {
   @override
   int get albumIndex;
   @override
-  ResourceType get resourceType;
+  AttachmentType get attachmentType;
   @override
   AsyncValue<List<AssetPathEntity>>? get albums;
   @override
   AsyncValue<List<Widget>>? get photos;
   @override
   Future<void> Function(File)? get onTapFunc;
+  @override
+  bool get permissionLock;
+  @override
+  PermissionState get permissionState;
   @override
   @JsonKey(ignore: true)
   _$MediaScreenStateCopyWith<_MediaScreenState> get copyWith =>

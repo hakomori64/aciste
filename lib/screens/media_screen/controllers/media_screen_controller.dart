@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 import 'dart:io';
 import 'package:aciste/custom_exception.dart';
-import 'package:aciste/enums/resource_type.dart';
+import 'package:aciste/enums/attachment_type.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -16,10 +16,12 @@ class MediaScreenState with _$MediaScreenState {
     @Default(0) int currentPage,
     int? lastPage,
     @Default(-1) int albumIndex,
-    @Default(ResourceType.none) ResourceType resourceType, 
+    @Default(AttachmentType.none) AttachmentType attachmentType, 
     AsyncValue<List<AssetPathEntity>>? albums,
     AsyncValue<List<Widget>>? photos,
     Future<void> Function(File file)? onTapFunc,
+    @Default(false) bool permissionLock,
+    @Default(PermissionState.notDetermined) PermissionState permissionState,
   }) = _MediaScreenState;
 }
 
@@ -31,22 +33,30 @@ class MediaScreenController extends StateNotifier<MediaScreenState> {
     albums: AsyncValue.loading(),
     photos: AsyncValue.loading(),
   )) {
-    _fetchMedia();
+    fetchMedia();
   }
 
   Future<void> handleScrollEvent(ScrollNotification scroll) async {
     if (scroll.metrics.pixels / scroll.metrics.maxScrollExtent > 0.33) {
       if (state.currentPage != state.lastPage) {
-        _fetchMedia();
+        fetchMedia();
       }
     }
   }
 
-  Future<void> _fetchMedia() async {
+  Future<void> fetchMedia() async {
     state = state.copyWith(
       lastPage: state.currentPage
     );
-    final result = await PhotoManager.requestPermissionExtend();
+    var result = PermissionState.notDetermined;
+    if (!state.permissionLock) {
+      state = state.copyWith(permissionLock: true);
+      result = await PhotoManager.requestPermissionExtend();
+      state = state.copyWith(
+        permissionState: result,
+        permissionLock: false
+      );
+    }
     if (result.isAuth) {
       final albums = await PhotoManager.getAssetPathList(
         hasAll: true,
@@ -164,7 +174,10 @@ class MediaScreenController extends StateNotifier<MediaScreenState> {
         );
       }
     } else {
-      PhotoManager.openSetting();
+      //PhotoManager.openSetting();
+      state = state.copyWith(
+        photos: const AsyncValue.error(CustomException(message: 'Permission Error'))
+      );
     }
   }
 
@@ -176,19 +189,19 @@ class MediaScreenController extends StateNotifier<MediaScreenState> {
       albums: null,
       photos: null,
     );
-    await _fetchMedia();
+    await fetchMedia();
   }
 
-  Future<void> setResourceType({required ResourceType resourceType}) async {
+  Future<void> setAttachmentType({required AttachmentType attachmentType}) async {
     state = state.copyWith(
       albumIndex: -1,
       currentPage: 0,
       lastPage: null,
       albums: null,
       photos: null,
-      resourceType: resourceType,
+      attachmentType: attachmentType,
     );
-    await _fetchMedia();
+    await fetchMedia();
   }
 
   Future<void> setOnTapFunc({required Future<void> Function(File) onTapFunc}) async {
@@ -198,10 +211,10 @@ class MediaScreenController extends StateNotifier<MediaScreenState> {
   }
 
   RequestType get requestType {
-    switch (state.resourceType) {
-      case ResourceType.photo:
+    switch (state.attachmentType) {
+      case AttachmentType.photo:
         return RequestType.image;
-      case ResourceType.none:
+      case AttachmentType.none:
         return RequestType.common;
       default:
         throw const CustomException(message: 'メディアに変換できないタイプです');

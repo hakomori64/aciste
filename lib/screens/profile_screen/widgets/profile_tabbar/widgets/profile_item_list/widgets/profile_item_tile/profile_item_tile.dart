@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:aciste/constants.dart';
 import 'package:aciste/controllers/dynamic_links_controller.dart';
 import 'package:aciste/controllers/item_controller.dart';
@@ -9,7 +7,8 @@ import 'package:aciste/router.dart';
 import 'package:aciste/screens/qrcode_screen/qrcode_screen.dart';
 import 'package:aciste/screens/qrcode_screen/controllers/qrcode_screen_controller.dart';
 import 'package:aciste/utils.dart';
-import 'package:aciste/widgets/resource_overview/resource_overview.dart';
+import 'package:aciste/widgets/attachments_carousel/attachments_carousel.dart';
+import 'package:aciste/widgets/expandable_text/expandable_text.dart';
 import 'package:aciste/widgets/user_icon/user_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -23,10 +22,6 @@ class ProfileItemTile extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final boxSize = min(
-      MediaQuery.of(context).size.height,
-      MediaQuery.of(context).size.width,
-    ) * 3 / 4;
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -54,20 +49,7 @@ class ProfileItemTile extends HookConsumerWidget {
                   ref.read(routerProvider.notifier).push(route: Routes.profile, extra: ProfileRouteParams(userId: item.resource!.createdBy!.id!));
                 },
               ),
-              title: ExpansionTile(
-                title: Center(child: Text(item.name),),
-                children: [
-                  ListTile(
-                    title: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(item.description)
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+              title: Center(child: Text(item.resource!.title),),
               trailing: IconButton(
                 icon: const Icon(Icons.more_vert),
                 onPressed: () async {
@@ -99,7 +81,7 @@ class ProfileItemTile extends HookConsumerWidget {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(
-                                    '${item.name}の削除',
+                                    '${item.resource!.title}の削除',
                                     style: const TextStyle(
                                       fontSize: 20,
                                     )
@@ -153,7 +135,6 @@ class ProfileItemTile extends HookConsumerWidget {
                           final resourceId = item.resource!.id!;
                           final url = await ref.read(dynamicLinksControllerProvider.notifier).getItemImportUrl(
                             resourceId: resourceId,
-                            resourceType: item.resourceType!,
                           );
                           final box = context.findRenderObject() as RenderBox?;
                           await Share.share('I am the ${item.rank <= 0 ? "owner!!" : numWithSuffix(item.rank) + ' discoverer!!'}\n $url', subject: url, sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
@@ -167,7 +148,6 @@ class ProfileItemTile extends HookConsumerWidget {
                           final resourceId = item.resource!.id!;
                           final url = await ref.read(dynamicLinksControllerProvider.notifier).getItemImportUrl(
                             resourceId: resourceId,
-                            resourceType: item.resourceType!,
                           );
                           ref.read(qrCodeScreenControllerProvider.notifier).setUrl(url);
                           ref.read(routerProvider.notifier).showDialog(
@@ -181,16 +161,17 @@ class ProfileItemTile extends HookConsumerWidget {
               ),
             ),
             Container(
-              width: boxSize,
-              height: boxSize,
+              padding: const EdgeInsets.only(left: 80, top: 20),
+              child: ExpandableText(text: item.resource!.body)
+            ),
+            if (item.resource!.attachments.isNotEmpty) Container(
               padding: const EdgeInsets.symmetric(vertical: 20),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: GestureDetector(
-                  onTap: () {
-                    ref.read(routerProvider.notifier).push(route: Routes.itemDetail, extra: ItemDetailRouteParams(item: item));
-                  },
-                  child: ResourceOverView(item: item),
+                child: AttachmentsCarousel(
+                  attachments: item.resource!.attachments.map((attachment) => AsyncValue.data(attachment)).toList(),
+                  height: 200,
+                  width: MediaQuery.of(context).size.width,
                 )
               ),
             )

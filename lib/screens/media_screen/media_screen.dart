@@ -1,3 +1,4 @@
+import 'package:aciste/custom_exception.dart';
 import 'package:aciste/screens/media_screen/controllers/media_screen_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -69,7 +70,30 @@ class MediaScreen extends HookConsumerWidget {
         loading: () => const Center(
           child: CircularProgressIndicator(),
         ),
-        error: (error, stackTrace) => Center(
+        error: (error, stackTrace) => error is CustomException
+        ? Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                '権限の取得に失敗しました',
+                style: TextStyle(
+                  fontSize: 20,
+                )
+              ),
+              TextButton(
+                onPressed: () => ref.read(mediaScreenControllerProvider.notifier).fetchMedia(),
+                child: const Text(
+                  'リトライ',
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                )
+              )
+            ]
+          ),
+        )
+        : Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

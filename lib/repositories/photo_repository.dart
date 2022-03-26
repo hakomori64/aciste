@@ -1,18 +1,16 @@
 import 'package:aciste/converters/timestamp_converter.dart';
 import 'package:aciste/custom_exception.dart';
 import 'package:aciste/models/photo.dart';
-import 'package:aciste/models/user.dart';
 import 'package:aciste/providers.dart';
-import 'package:aciste/repositories/user_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:aciste/extensions/firebase_firestore_extension.dart';
 import 'package:mime/mime.dart';
 import 'package:uuid/uuid.dart';
 
 abstract class BasePhotoRepository {
-  Future<Photo> retrievePhoto({required String userId, required String photoId});
-  Future<Photo> createPhoto({required String userId, required CreatePhotoParams createPhotoParams});
-  Future<Photo> updatePhoto({required String userId, required Photo photo});
+  Future<Photo> retrievePhoto({required String photoId});
+  Future<Photo> createPhoto({required CreatePhotoParams createPhotoParams});
+  Future<Photo> updatePhoto({required Photo photo});
 }
 
 final photoRepositoryProvider = Provider<PhotoRepository>((ref) => PhotoRepository(ref.read));
@@ -22,28 +20,22 @@ class PhotoRepository implements BasePhotoRepository {
 
   const PhotoRepository(this._read);
 
-  Future<Photo> _fillUser({required Photo photo, required String userId}) async {
-    final user = await _read(userRepositoryProvider).getUser(userId: userId);
-    return photo.copyWith(createdBy: user);
-  }
-
   @override
-  Future<Photo> retrievePhoto({required String userId, required String photoId}) async {
+  Future<Photo> retrievePhoto({required String photoId}) async {
     try {
       final doc = await _read(firebaseFirestoreProvider)
         .photosRef()
         .doc(photoId)
         .get();
       
-      final photo = Photo.fromDocumentSnapshot(doc);
-      return _fillUser(photo: photo, userId: doc.data()!['createdById']);
+      return Photo.fromDocumentSnapshot(doc);
     } on FirebaseException catch (e) {
       throw CustomException(message: e.message);
     }
   }
 
   @override
-  Future<Photo> createPhoto({required String userId, required CreatePhotoParams createPhotoParams}) async {
+  Future<Photo> createPhoto({required CreatePhotoParams createPhotoParams}) async {
     final file = createPhotoParams.file;
 
     final mimeType = lookupMimeType(file.path);
@@ -60,7 +52,6 @@ class PhotoRepository implements BasePhotoRepository {
     final snapshot = await imageRef.putFile(file);
     final imageUrl = await snapshot.ref.getDownloadURL();
     final photo = Photo.empty().copyWith(
-      createdBy: User.empty().copyWith(id: userId),
       url: imageUrl,
     );
 
@@ -68,13 +59,11 @@ class PhotoRepository implements BasePhotoRepository {
       .photosRef()
       .add(photo.toDocument());
     
-    return _fillUser(
-      photo: photo.copyWith(id: docRef.id),
-      userId: userId);
+    return photo.copyWith(id: docRef.id);
   }
 
   @override
-  Future<Photo> updatePhoto({required userId, required photo}) async {
+  Future<Photo> updatePhoto({required photo}) async {
     await _read(firebaseFirestoreProvider)
       .photosRef()
       .doc(photo.id!)

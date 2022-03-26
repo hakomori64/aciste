@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:aciste/controllers/app_controller.dart';
 import 'package:aciste/controllers/user_controller.dart';
 import 'package:aciste/custom_exception.dart';
-import 'package:aciste/enums/resource_type.dart';
+import 'package:aciste/enums/attachment_type.dart';
 import 'package:aciste/router.dart';
 import 'package:aciste/screens/profile_edit_screen/controllers/profile_edit_screen_controller.dart';
 import 'package:aciste/screens/profile_screen/controllers/profile_screen_controller.dart';
@@ -51,7 +51,7 @@ class ProfileEditScreen extends HookConsumerWidget {
                       child: GestureDetector(
                         onTap: () async {
                           // select background image
-                          await ref.read(routerProvider.notifier).push(route: Routes.media, extra: MediaRouteParams(resourceType: ResourceType.photo, onTapFunc: (file) async {
+                          await ref.read(routerProvider.notifier).push(route: Routes.media, extra: MediaRouteParams(attachmentType: AttachmentType.photo, onTapFunc: (file) async {
                             ref.read(appControllerProvider.notifier).setloading(value: true);
                             await ref.read(userControllerProvider.notifier).updateBackgroundImage(userId: user.id!, file: file);
                             await ref.read(profileScreenControllerProvider.notifier).setUser(userId: user.id!);
@@ -80,7 +80,7 @@ class ProfileEditScreen extends HookConsumerWidget {
                         child: ClipOval(
                           child: GestureDetector(
                             onTap: () async {
-                              await ref.read(routerProvider.notifier).push(route: Routes.media, extra: MediaRouteParams(resourceType: ResourceType.photo, onTapFunc: (file) async {
+                              await ref.read(routerProvider.notifier).push(route: Routes.media, extra: MediaRouteParams(attachmentType: AttachmentType.photo, onTapFunc: (file) async {
                                 ref.read(appControllerProvider.notifier).setloading(value: true);
                                 await ref.read(userControllerProvider.notifier).updatePhoto(userId: user.id!, file: file);
                                 await ref.read(profileScreenControllerProvider.notifier).setUser(userId: user.id!);

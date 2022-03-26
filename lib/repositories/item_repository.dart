@@ -9,8 +9,8 @@ import 'package:aciste/extensions/firebase_firestore_extension.dart';
 
 abstract class BaseItemRepository {
   Future<List<Item>> retrieveItems({required String userId});
-  Future<String> createItem({required String userId, required Item item});
-  Future<void> updateItem({required String userId, required Item item});
+  Future<Item> createItem({required Item item});
+  Future<Item> updateItem({required Item item});
   Future<void> deleteItem({required String userId, required String itemId});
   Future<bool> checkHasResource({required String userId, required String resourceId});
 }
@@ -27,11 +27,8 @@ class ItemRepository implements BaseItemRepository {
     required String userId
       }) async {
     final item = Item.fromDocumentSnapshot(doc);
-    final resourceType = item.resourceType;
     final resource = await _read(resourceRepositoryProvider).retrieveResource(
-      resourceType: resourceType!,
       resourceId: doc.data()!['resourceId'],
-      userId: userId
     );
     return item.copyWith(resource: resource);
   }
@@ -54,46 +51,28 @@ class ItemRepository implements BaseItemRepository {
   }
 
   @override
-  Future<String> createItem({required String userId, required Item item}) async {
+  Future<Item> createItem({required Item item}) async {
     try {
       final docRef = await _read(firebaseFirestoreProvider)
-        .userItemsRef(userId)
+        .userItemsRef(item.userId)
         .add(item.toDocument());
-      
-      if (item.resource?.createdBy?.id == userId) {
-        await _read(resourceRepositoryProvider).updateResource(
-          userId: userId,
-          resourceType: item.resourceType!,
-          resource: item.resource!.copyWith(
-            name: item.name,
-            description: item.description,
-          )
-        );
-      }
-      return docRef.id;
+
+      return item.copyWith(id: docRef.id);
     } on FirebaseException catch (e) {
       throw CustomException(message: e.message);
     }
   }
 
   @override
-  Future<void> updateItem({required String userId, required Item item}) async {
+  Future<Item> updateItem({required Item item}) async {
     try {
       await _read(firebaseFirestoreProvider)
-        .userItemsRef(userId)
+        .userItemsRef(item.userId)
         .doc(item.id)
         .update(item.toDocument());
       
-      if (item.resource?.createdBy?.id == userId) {
-        await _read(resourceRepositoryProvider).updateResource(
-          userId: userId,
-          resourceType: item.resourceType!,
-          resource: item.resource!.copyWith(
-            name: item.name,
-            description: item.description,
-          )
-        );
-      }
+      return item;
+      
     } on FirebaseException catch (e) {
       throw CustomException(message: e.message);
     }

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:aciste/constants.dart';
 import 'package:aciste/controllers/app_controller.dart';
 import 'package:aciste/controllers/auth_controller.dart';
 import 'package:aciste/controllers/item_controller.dart';
@@ -7,9 +8,10 @@ import 'package:aciste/controllers/resource_controller.dart';
 import 'package:aciste/router.dart';
 import 'package:aciste/screens/item_import_screen/controllers/item_import_screen_controller.dart';
 import 'package:aciste/screens/item_import_screen/widgets/item_import_celebrate_dialog/item_import_celebrate_dialog.dart';
-import 'package:aciste/widgets/resource_overview/resource_overview.dart';
+import 'package:aciste/widgets/attachments_carousel/attachments_carousel.dart';
+import 'package:aciste/widgets/expandable_text/expandable_text.dart';
+import 'package:aciste/widgets/user_icon/user_icon.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'widgets/item_import_already_own_dialog/item_import_already_own_dialog.dart';
@@ -21,8 +23,6 @@ class ItemImportScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final item = ref.watch(itemImportScreenControllerProvider).item;
-    final name = ref.watch(itemImportScreenControllerProvider).name;
-    final description = ref.watch(itemImportScreenControllerProvider).description;
     final authUserStatus = ref.watch(authControllerProvider);
 
     final boxSize = min(
@@ -37,8 +37,7 @@ class ItemImportScreen extends HookConsumerWidget {
         )
       );
     }
-    final nameController = useTextEditingController(text: item.resource?.name ?? '');
-    final descriptionController = useTextEditingController(text: item.resource?.description ?? '');
+
 
     return Scaffold(
       appBar: AppBar(
@@ -66,18 +65,18 @@ class ItemImportScreen extends HookConsumerWidget {
                 final ownResource = await ref.read(itemListControllerProvider.notifier)
                   .checkHasResource(resourceId: item.resource!.id!);
                 if (ownResource) {
+                  await ref.read(routerProvider.notifier).showDialog(
+                    child: const ItemImportAlreadyOwnDialog(),
+                    baseScreenRoute: Routes.main,
+                  );
                   ref.read(appControllerProvider.notifier).setloading(value: false);
-                  ref.read(routerProvider.notifier).go(route: Routes.main);
-                  ref.read(routerProvider.notifier).showDialog(child: const ItemImportAlreadyOwnDialog());
                   return;
                 }
 
                 await ref.read(itemListControllerProvider.notifier)
                   .importItem(
-                    name: name,
-                    description: description,
+                    description: '',
                     resource: item.resource!,
-                    resourceType: item.resourceType!,
                     userId: authUserStatus?.uid,
                     rank: item.resource!.viewCount + 1,
                   );
@@ -86,13 +85,17 @@ class ItemImportScreen extends HookConsumerWidget {
                     resource: item.resource!.copyWith(
                       viewCount: item.resource!.viewCount + 1,
                     ),
-                    resourceType: item.resourceType!
                   );
-                ref.read(appControllerProvider.notifier).setloading(value: false);
-                ref.read(routerProvider.notifier).go(route: Routes.main);
+                
                 if (item.resource!.viewCount + 1 < 4) {
-                  ref.read(routerProvider.notifier).showDialog(child: ItemImportCelebrateDialog(rank: item.resource!.viewCount + 1));
+                  await ref.read(routerProvider.notifier).showDialog(
+                    child: ItemImportCelebrateDialog(rank: item.resource!.viewCount + 1),
+                    baseScreenRoute: Routes.main
+                  );
+                } else {
+                  await ref.read(routerProvider.notifier).go(route: Routes.main);
                 }
+                ref.read(appControllerProvider.notifier).setloading(value: false);
               },
               child: Text(
                 'インポート',
@@ -107,46 +110,33 @@ class ItemImportScreen extends HookConsumerWidget {
       ),
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 8.0,),
-                  TextField(
-                    controller: nameController,
-                    decoration: const InputDecoration(labelText: '名前'),
-                    onChanged: ref.read(itemImportScreenControllerProvider.notifier).setName,
-                  ),
-                  const SizedBox(height: 12.0,),
-                  ConstrainedBox(
-                    constraints: BoxConstraints(
-                      maxHeight: boxSize,
-                    ),
-                    child: TextField(
-                      controller: descriptionController,
-                      maxLines: null,
-                      maxLength: 600,
-                      decoration: const InputDecoration(labelText: '説明'),
-                      onChanged: ref.read(itemImportScreenControllerProvider.notifier).setDescription,
-                    ),
-                  ),
-                ],
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ListTile(
+                leading: UserIcon(
+                  size: 40,
+                  imageUrl: item.resource?.createdBy?.photoUrl ?? defaultUserPhotoUrl,
+                  onTap: () async {
+                    await ref.read(routerProvider.notifier).push(route: Routes.profile, extra: ProfileRouteParams(userId: item.resource!.createdBy!.id!));
+                  }
+                ),
+                title: Center(child: Text(item.resource!.title)),
               ),
             ),
-            const SizedBox(height: 12,),
             Container(
-              width: boxSize,
-              height: boxSize,
-              padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
+              padding: const EdgeInsets.only(left: 80, top: 20),
+              child: ExpandableText(text: item.resource!.body),
+            ),
+            if (item.resource!.attachments.isNotEmpty) Container(
+              padding: const EdgeInsets.symmetric(vertical: 20),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: GestureDetector(
-                  onTap: () {
-                    debugPrint('hello');
-                  },
-                  child: ResourceOverView(item: item)
+                child: AttachmentsCarousel(
+                  attachments: item.resource!.attachments.map((attachment) => AsyncValue.data(attachment)).toList(),
+                  height: boxSize,
+                  width: MediaQuery.of(context).size.width,
                 )
               )
             )

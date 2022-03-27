@@ -64,16 +64,12 @@ class ItemCreateScreen extends HookConsumerWidget {
                     )
                   )
                 ),
-                onPressed: title.isNotEmpty ? () async {
+                onPressed: title.isNotEmpty && attachments.where((attachment) => attachment.asData?.value == null).toList().isEmpty ? () async {
                   FocusManager.instance.primaryFocus?.unfocus();
                   ref.read(routerProvider.notifier).go(route: Routes.main);
-                  for (final attachment in attachments) {
-                    if (attachment.asData?.value == null) {
-                      return;
-                    }
-                  }
                   await ref.read(itemListControllerProvider.notifier)
                     .addItem(
+                        description: '',
                         title: titleController.text,
                         body: bodyController.text,
                         createdBy: authUserState!.uid,

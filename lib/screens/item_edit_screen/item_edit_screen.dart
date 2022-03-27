@@ -39,9 +39,14 @@ class ItemEditScreen extends HookConsumerWidget {
                     ),
                     onPressed: () async {
                       await ref.read(itemListControllerProvider.notifier)
-                        .updateItem(updatedItem: item!.copyWith(
-                          description: description
-                        ));
+                        .updateItem(
+                          itemId: item!.id!,
+                          description: description,
+                          title: item.resource!.title,
+                          body: item.resource!.body,
+                          createdBy: item.resource!.createdBy!.id!,
+                          attachments: item.resource!.attachments,
+                        );
                       ref.read(routerProvider.notifier).closeDialog();
                     },
                     child: const Text(

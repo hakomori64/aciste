@@ -30,6 +30,8 @@ import 'package:aciste/screens/media_screen/controllers/media_screen_controller.
 import 'package:aciste/screens/profile_edit_screen/profile_edit_screen.dart';
 import 'package:aciste/screens/profile_screen/profile_screen.dart';
 import 'package:aciste/screens/profile_screen/controllers/profile_screen_controller.dart';
+import 'package:aciste/screens/resource_edit_screen/controllers/resource_edit_screen_controller.dart';
+import 'package:aciste/screens/resource_edit_screen/resource_edit_screen.dart';
 import 'package:aciste/screens/signup_screen/signup_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -131,6 +133,10 @@ class RouterController extends StateNotifier<GoRouter?> {
         GoRoute(
           path: Routes.itemImport.route,
           builder: (context, state) => screen(route: Routes.itemImport),
+        ),
+        GoRoute(
+          path: Routes.resourceEdit.route,
+          builder: (context, state) => screen(route: Routes.resourceEdit),
         ),
         GoRoute(
           path: Routes.announceCreate.route,
@@ -262,6 +268,10 @@ class RouterController extends StateNotifier<GoRouter?> {
         final params = extra! as ItemEditRouteParams;
         _read(itemEditScreenControllerProvider.notifier).setItem(params.item);
         break;
+      case Routes.resourceEdit:
+        final params = extra! as ResourceEditRouteParams;
+        _read(resourceEditScreenControllerProvider.notifier).setItem(params.item);
+        break;
       case Routes.attachmentDetail:
         final params = extra! as AttachmentDetailRouteParams;
         _read(attachmentDetailScreenControllerProvider.notifier).setAttachment(params.attachment);
@@ -323,6 +333,8 @@ class RouterController extends StateNotifier<GoRouter?> {
         return const ItemCreateScreen();
       case Routes.itemEdit:
         return const ItemEditScreen();
+      case Routes.resourceEdit:
+        return const ResourceEditScreen();
       case Routes.attachmentDetail:
         return const AttachmentDetailScreen();
       case Routes.itemImport:
@@ -347,6 +359,7 @@ enum Routes {
   media,
   itemCreate,
   itemEdit,
+  resourceEdit,
   attachmentDetail,
   itemImport,
   announceCreate,
@@ -384,6 +397,11 @@ class FollowsRouteParams {
 class ItemEditRouteParams {
   final Item item;
   ItemEditRouteParams({required this.item});
+}
+
+class ResourceEditRouteParams {
+  final Item item;
+  ResourceEditRouteParams({required this.item});
 }
 
 class AttachmentDetailRouteParams {

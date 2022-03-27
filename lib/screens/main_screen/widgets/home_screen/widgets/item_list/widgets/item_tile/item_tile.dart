@@ -67,6 +67,22 @@ class ItemTile extends HookConsumerWidget {
                   await ref.read(routerProvider.notifier).showBottomSheet(child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
+                      if (me?.uid != null && item.resource!.createdBy?.id == me?.uid) ListTile(
+                        leading: const FaIcon(FontAwesomeIcons.commentMedical),
+                        title: const Text('アイテムの作成をおしらせ'),
+                        onTap: () async {
+                          ref.read(routerProvider.notifier).closeBottomSheet();
+                          ref.read(routerProvider.notifier).push(route: Routes.announceCreate, extra: AnnounceCreateRouteParams(announceType: AnnounceType.itemCreate));
+                        }
+                      ),
+                      if (me?.uid != null && item.resource!.createdBy?.id == me?.uid) ListTile(
+                        leading: const Icon(Icons.edit),
+                        title: const Text('編集'),
+                        onTap: () async {
+                          ref.read(routerProvider.notifier).closeBottomSheet();
+                          ref.read(routerProvider.notifier).push(route: Routes.resourceEdit, extra: ResourceEditRouteParams(item: item));
+                        },
+                      ),
                       ListTile(
                         leading: const Icon(Icons.description),
                         title: const Text('説明'),
@@ -128,14 +144,6 @@ class ItemTile extends HookConsumerWidget {
                               )
                             )
                           );
-                        }
-                      ),
-                      if (me?.uid != null && item.resource!.createdBy?.id == me?.uid) ListTile(
-                        leading: const FaIcon(FontAwesomeIcons.commentMedical),
-                        title: const Text('アイテムの作成をおしらせ'),
-                        onTap: () async {
-                          ref.read(routerProvider.notifier).closeBottomSheet();
-                          ref.read(routerProvider.notifier).push(route: Routes.announceCreate, extra: AnnounceCreateRouteParams(announceType: AnnounceType.itemCreate));
                         }
                       ),
                       ListTile(

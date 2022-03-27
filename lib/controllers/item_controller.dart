@@ -40,6 +40,7 @@ class ItemListController extends StateNotifier<AsyncValue<List<Item>>> {
   }
 
   Future<void> addItem({
+    required String description,
     required String title,
     required String body,
     required String createdBy,
@@ -50,7 +51,7 @@ class ItemListController extends StateNotifier<AsyncValue<List<Item>>> {
       final tmpId = uuid.v4();
       final tmpItem = Item.empty().copyWith(
         id: tmpId,
-        description: '',
+        description: description,
         resource: Resource.empty().copyWith(
           title: '読み込み中...'
         ),
@@ -119,9 +120,43 @@ class ItemListController extends StateNotifier<AsyncValue<List<Item>>> {
     }
   }
 
-  Future<void> updateItem({required Item updatedItem}) async {
+  Future<void> updateItem({
+    required String itemId,
+    required String description,
+    required String title,
+    required String body,
+    required String createdBy,
+    required List<Attachment> attachments,
+  }) async {
     try {
-      await _read(itemRepositoryProvider).updateItem(item: updatedItem);
+      final oldItem = state.asData!.value.firstWhere((item) => item.id == itemId);
+      final tmpItem = oldItem.copyWith(
+        description: description,
+        resource: oldItem.resource!.copyWith(
+          title: '読み込み中'
+        ),
+        userId: _userId!
+      );
+      state.whenData((items) {
+        state = AsyncValue.data([
+          for (final item in items)
+            if (item.id == tmpItem.id) tmpItem else item
+        ]);
+      });
+      final user = await _read(userRepositoryProvider).getUser(userId: createdBy);
+      final resource = await _read(resourceControllerProvider).updateResource(
+        resource: oldItem.resource!.copyWith(
+          title: title,
+          body: body,
+          createdBy: user,
+          attachments: attachments,
+        )
+      );
+      final updatedItem = await _read(itemRepositoryProvider).updateItem(item: oldItem.copyWith(
+        description: description,
+        resource: resource,
+        userId: _userId!,
+      ));
       state.whenData((items) {
         state = AsyncValue.data([
           for (final item in items)

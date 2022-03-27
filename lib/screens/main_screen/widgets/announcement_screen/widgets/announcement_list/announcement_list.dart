@@ -3,6 +3,7 @@ import 'package:aciste/custom_exception.dart';
 import 'package:aciste/screens/main_screen/widgets/announcement_screen/widgets/announcement_list/widgets/announcement_tile/announcement_tile.dart';
 import 'package:aciste/widgets/something_went_wrong/something_went_wrong.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class AnnouncementList extends HookConsumerWidget {
@@ -11,6 +12,19 @@ class AnnouncementList extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final announcementListState = ref.watch(announcementControllerProvider);
+    final scrollController = useScrollController();
+
+    useEffect(() {
+      scrollController.addListener(() async {
+        if (scrollController.offset == scrollController.position.maxScrollExtent) {
+          //await ref.read(announcementControllerProvider.notifier).retrieveAnnouncementsPage();
+        } else if (scrollController.offset <= 0) {
+          // await ref.read(announcementControllerProvider).retrieveAnnouncementsBeforePage();
+        }
+      });
+
+      return scrollController.dispose;
+    }, [scrollController]);
 
     return announcementListState.when(
       data: (announcements) => announcements.isEmpty ? const Center(

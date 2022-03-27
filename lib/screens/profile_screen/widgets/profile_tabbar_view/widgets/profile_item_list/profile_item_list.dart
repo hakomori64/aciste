@@ -14,7 +14,7 @@ class ProfileItemList extends HookConsumerWidget {
     final itemListState = ref.watch(itemListControllerProvider);
     final user = ref.watch(profileScreenControllerProvider).user;
 
-    return itemListState.when(
+    return itemListState.data.when(
       data: (items) {
         final filtered = items.where((item) => user?.id != null && item.resource?.createdBy?.id == user?.id).toList();
         return filtered.isEmpty ? const Center(

@@ -5,37 +5,102 @@ import 'package:aciste/models/item.dart';
 import 'package:aciste/models/resource.dart';
 import 'package:aciste/repositories/item_repository.dart';
 import 'package:aciste/repositories/user_repository.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:uuid/uuid.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'auth_controller.dart';
 
-final itemListControllerProvider = StateNotifierProvider<ItemListController, AsyncValue<List<Item>>>(
+part 'item_controller.freezed.dart';
+
+@freezed
+class ItemListState with _$ItemListState {
+  const factory ItemListState({
+    @Default(AsyncValue.loading()) AsyncValue<List<Item>> data,
+    DocumentSnapshot? firstDoc,
+    DocumentSnapshot? lastDoc,
+  }) = _ItemListState;
+}
+
+final itemListControllerProvider = StateNotifierProvider<ItemListController, ItemListState>(
   (ref) {
     final user = ref.watch(authControllerProvider);
     return ItemListController(ref.read, user?.uid);
   }
 );
 
-class ItemListController extends StateNotifier<AsyncValue<List<Item>>> {
+class ItemListController extends StateNotifier<ItemListState> {
   final Reader _read;
   final String? _userId;
 
-  ItemListController(this._read, this._userId) : super(const AsyncValue.loading()) {
+  ItemListController(this._read, this._userId) : super(const ItemListState()) {
     if (_userId != null) {
-      retrieveItems();
+      retrieveItemsPage();
     }
   }
 
   Future<void> retrieveItems({bool isRefreshing = false}) async {
-    if (isRefreshing) state = const AsyncValue.loading();
+    if (isRefreshing) {
+      state = state.copyWith(
+        data: const AsyncValue.loading()
+      );
+    }
     try {
       final items = await _read(itemRepositoryProvider).retrieveItems(userId: _userId!);
       if (mounted) {
-        state = AsyncValue.data(items);
+        state = state.copyWith(
+          data: AsyncValue.data(items)
+        );
       }
     } on CustomException catch (e, st) {
-      state = AsyncValue.error(e, stackTrace: st);
+      state = state.copyWith(
+        data: AsyncValue.error(e, stackTrace: st)
+      );
+    }
+  }
+
+  Future<void> retrieveItemsPage() async {
+    try {
+      final result = await _read(itemRepositoryProvider).retrieveItemsPage(userId: _userId!, startAfterDoc: state.lastDoc);
+      final items = result.item1;
+      final firstDoc = result.item2;
+      final lastDoc = result.item3;
+
+      state = state.copyWith(
+        data: AsyncValue.data([
+          ...(state.data.asData?.value ?? []),
+          ...items,
+        ]),
+        firstDoc: state.firstDoc ?? firstDoc,
+        lastDoc: lastDoc ?? state.lastDoc,
+      );
+    } on CustomException catch (e, st) {
+      state = state.copyWith(
+        data: AsyncValue.error(e, stackTrace: st)
+      );
+    }
+  }
+
+  Future<void> retrieveItemsBeforePage() async {
+    try {
+      final result = await _read(itemRepositoryProvider).retrieveItemsBeforePage(userId: _userId!, endBeforeDoc: state.firstDoc);
+      final items = result.item1;
+      final firstDoc = result.item2;
+      final lastDoc = result.item3;
+
+      state = state.copyWith(
+        data: AsyncValue.data([
+          ...items,
+          ...(state.data.asData?.value ?? []),
+        ]),
+        firstDoc: firstDoc ?? state.firstDoc,
+        lastDoc: state.lastDoc ?? lastDoc,
+      );
+    } on CustomException catch (e, st) {
+      state = state.copyWith(
+        data: AsyncValue.error(e, stackTrace: st)
+      );
     }
   }
 
@@ -57,9 +122,11 @@ class ItemListController extends StateNotifier<AsyncValue<List<Item>>> {
         ),
         userId: _userId!,
       );
-      state.whenData((items) {
+      state.data.whenData((items) {
         items.insert(0, tmpItem);
-        state = AsyncValue.data(items);
+        state = state.copyWith(
+          data: AsyncValue.data(items)
+        );
       });
       final user = await _read(userRepositoryProvider).getUser(userId: createdBy);
       final resource = await _read(resourceControllerProvider).createResource(
@@ -81,15 +148,19 @@ class ItemListController extends StateNotifier<AsyncValue<List<Item>>> {
       final created = await _read(itemRepositoryProvider).createItem(
         item: newItem
       );
-      state.whenData((items) {
-        state = AsyncValue.data([
-          for (final item in items)
-            if (item.id == tmpId)
-              created else item
-        ]);
+      state.data.whenData((items) {
+        state = state.copyWith(
+          data: AsyncValue.data([
+            for (final item in items)
+              if (item.id == tmpId)
+                created else item
+          ])
+        );
       });
     } on CustomException catch (e) {
-      state = AsyncValue.error(e);
+      state = state.copyWith(
+        data: AsyncValue.error(e)
+      );
     }
   }
 
@@ -100,7 +171,9 @@ class ItemListController extends StateNotifier<AsyncValue<List<Item>>> {
     required int rank,
   }) async {
     if (userId == null) {
-      state = const AsyncValue.error(CustomException(message: 'ログインが済んでいません'));
+      state = state.copyWith(
+        data: const AsyncValue.error(CustomException(message: 'ログインが済んでいません'))
+      );
       return;
     }
 
@@ -114,9 +187,11 @@ class ItemListController extends StateNotifier<AsyncValue<List<Item>>> {
       final created = await _read(itemRepositoryProvider).createItem(
         item: item
       );
-      state.whenData((items) => state = AsyncValue.data([created, ...items]));
+      state.data.whenData((items) => state = state.copyWith(data: AsyncValue.data([created, ...items])));
     } on CustomException catch (e) {
-      state = AsyncValue.error(e);
+      state = state.copyWith(
+        data: AsyncValue.error(e)
+      );
     }
   }
 
@@ -129,7 +204,7 @@ class ItemListController extends StateNotifier<AsyncValue<List<Item>>> {
     required List<Attachment> attachments,
   }) async {
     try {
-      final oldItem = state.asData!.value.firstWhere((item) => item.id == itemId);
+      final oldItem = state.data.asData!.value.firstWhere((item) => item.id == itemId);
       final tmpItem = oldItem.copyWith(
         description: description,
         resource: oldItem.resource!.copyWith(
@@ -137,11 +212,13 @@ class ItemListController extends StateNotifier<AsyncValue<List<Item>>> {
         ),
         userId: _userId!
       );
-      state.whenData((items) {
-        state = AsyncValue.data([
-          for (final item in items)
-            if (item.id == tmpItem.id) tmpItem else item
-        ]);
+      state.data.whenData((items) {
+        state = state.copyWith(
+          data: AsyncValue.data([
+            for (final item in items)
+              if (item.id == tmpItem.id) tmpItem else item
+          ])
+        );
       });
       final user = await _read(userRepositoryProvider).getUser(userId: createdBy);
       final resource = await _read(resourceControllerProvider).updateResource(
@@ -157,14 +234,18 @@ class ItemListController extends StateNotifier<AsyncValue<List<Item>>> {
         resource: resource,
         userId: _userId!,
       ));
-      state.whenData((items) {
-        state = AsyncValue.data([
-          for (final item in items)
-            if (item.id == updatedItem.id) updatedItem else item
-        ]);
+      state.data.whenData((items) {
+        state = state.copyWith(
+          data: AsyncValue.data([
+            for (final item in items)
+              if (item.id == updatedItem.id) updatedItem else item
+          ])
+        );
       });
     } on CustomException catch (e) {
-      state = AsyncValue.error(e);
+      state = state.copyWith(
+        data: AsyncValue.error(e)
+      );
     }
   }
 
@@ -175,9 +256,11 @@ class ItemListController extends StateNotifier<AsyncValue<List<Item>>> {
         itemId: itemId
       );
 
-      state.whenData((items) => state = AsyncValue.data(items..removeWhere((item) => item.id == itemId)));
+      state.data.whenData((items) => state = state.copyWith(data: AsyncValue.data(items..removeWhere((item) => item.id == itemId))));
     } on CustomException catch (e) {
-      state = AsyncValue.error(e);
+      state = state.copyWith(
+        data: AsyncValue.error(e)
+      );
     }
   }
 

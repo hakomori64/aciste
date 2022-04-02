@@ -1,8 +1,4 @@
-abstract class FreezedClass<T> {
-  const FreezedClass();
-  T get copyWith;
-  Map<String, dynamic> toJson();
-}
+import 'package:aciste/base.dart';
 
 abstract class AttachmentData extends FreezedClass {
   String? get id;

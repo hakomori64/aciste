@@ -17,9 +17,9 @@ class AnnouncementList extends HookConsumerWidget {
     useEffect(() {
       scrollController.addListener(() async {
         if (scrollController.offset == scrollController.position.maxScrollExtent) {
-          await ref.read(announcementListControllerProvider.notifier).retrieveAnnouncementsPage();
+          await ref.read(announcementListControllerProvider.notifier).retrievePage();
         } else if (scrollController.offset <= 0) {
-          await ref.read(announcementListControllerProvider.notifier).retrieveAnnouncementsBeforePage();
+          await ref.read(announcementListControllerProvider.notifier).retrieveBeforePage();
         }
       });
 

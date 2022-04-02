@@ -1,96 +1,47 @@
 import 'dart:async';
 
 import 'package:aciste/controllers/auth_controller.dart';
-import 'package:aciste/custom_exception.dart';
 import 'package:aciste/models/announcement.dart';
 import 'package:aciste/repositories/announcement_repository.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:aciste/utils/paging/mixin.dart';
+import 'package:aciste/utils/paging/pager.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'announcement_controller.freezed.dart';
 
-@freezed
-class AnnouncementListState with _$AnnouncementListState {
-  const factory AnnouncementListState({
-    @Default(AsyncValue.loading()) AsyncValue<List<Announcement>> data,
-    DocumentSnapshot? firstDoc,
-    DocumentSnapshot? lastDoc,
-  }) = _AnnouncementListState;
-}
-
-final announcementListControllerProvider = StateNotifierProvider<AnnouncementController, AnnouncementListState>(
+final announcementListControllerProvider = StateNotifierProvider<AnnouncementController, Pager<Announcement>>(
   (ref) {
     final user = ref.watch(authControllerProvider);
     return AnnouncementController(ref.read, user?.uid);
   }
 );
 
-class AnnouncementController extends StateNotifier<AnnouncementListState> {
+class AnnouncementController extends StateNotifier<Pager<Announcement>> with PagingMixin<Announcement> {
   final Reader _read;
   final String? _userId;
 
-  AnnouncementController(this._read, this._userId) : super(const AnnouncementListState()) {
+  AnnouncementController(this._read, this._userId) : super(const Pager<Announcement>()) {
     if (_userId != null) {
-      retrieveAnnouncementsPage();
+      retrievePage();
     }
   }
 
-  void _managePage() {
-    state.data.whenData((data) => state = state.copyWith(
-      firstDoc: data.isNotEmpty ? data.first.doc : null,
-      lastDoc: data.isNotEmpty ? data.last.doc : null,
-    ));
+  @override
+  Future<List<Announcement>> getPage() async {
+    return _read(announcementRepositoryProvider(AnnouncementRepositoryParams(userId: _userId!))).retrievePage(startAfterDoc: state.lastDoc);
   }
 
-  Future<void> retrieveAnnouncementsPage() async {
-    try {
-      final result = await _read(announcementRepositoryProvider).retrieveAnnouncementsPage(userId: _userId!, startAfterDoc: state.lastDoc);
-      final announcements = result.item1;
-
-      state = state.copyWith(
-        data: AsyncValue.data([
-          ...(state.data.asData?.value ?? []),
-          ...announcements
-        ]),
-      );
-
-      _managePage();
-    } on CustomException catch (e, st) {
-      state = state.copyWith(
-        data: AsyncValue.error(e, stackTrace: st)
-      );
-    }
-  }
-
-  Future<void> retrieveAnnouncementsBeforePage() async {
-    try {
-      final result = await _read(announcementRepositoryProvider).retrieveAnnouncementsBeforePage(userId: _userId!, endBeforeDoc: state.firstDoc);
-      final announcements = result.item1;
-
-      state = state.copyWith(
-        data: AsyncValue.data([
-          ...announcements,
-          ...(state.data.asData?.value ?? []),
-        ]),
-      );
-
-      _managePage();
-    } on CustomException catch (e, st) {
-      state = state.copyWith(
-        data: AsyncValue.error(e, stackTrace: st)
-      );
-    }
+  @override
+  Future<List<Announcement>> getBeforePage() async {
+    return _read(announcementRepositoryProvider(AnnouncementRepositoryParams(userId: _userId!))).retrieveBeforePage(endBeforeDoc: state.firstDoc);
   }
 
   Future<void> notifyToFollowers({required String message, required AnnounceType announceType}) async {
     if (_userId == null) return;
 
-    await _read(announcementRepositoryProvider).notifyToFollowers(
-      userId: _userId!,
+    await _read(announcementRepositoryProvider(AnnouncementRepositoryParams(userId: _userId!))).notifyToFollowers(
       message: message,
       announceType: announceType,
     );
-    await retrieveAnnouncementsBeforePage();
+    await retrieveBeforePage();
   }
 }

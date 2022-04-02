@@ -1,5 +1,6 @@
 import 'package:aciste/converters/timestamp_converter.dart';
 import 'package:aciste/models/user.dart';
+import 'package:aciste/utils/paging/pager.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'announcement.freezed.dart';
@@ -16,7 +17,7 @@ extension AnnouceTypeExtension on AnnounceType {
 
 
 @freezed
-abstract class Announcement implements _$Announcement {
+abstract class Announcement with _$Announcement implements PagingItem {
   const Announcement._();
 
   const factory Announcement({

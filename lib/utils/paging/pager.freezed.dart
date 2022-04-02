@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
-part of 'item_controller.dart';
+part of 'pager.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,14 +15,14 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-class _$ItemListStateTearOff {
-  const _$ItemListStateTearOff();
+class _$PagerTearOff {
+  const _$PagerTearOff();
 
-  _ItemListState call(
-      {AsyncValue<List<Item>> data = const AsyncValue.loading(),
+  _Pager<T> call<T extends PagingItem>(
+      {AsyncValue<List<T>> data = const AsyncValue.loading(),
       DocumentSnapshot<Object?>? firstDoc,
       DocumentSnapshot<Object?>? lastDoc}) {
-    return _ItemListState(
+    return _Pager<T>(
       data: data,
       firstDoc: firstDoc,
       lastDoc: lastDoc,
@@ -31,38 +31,37 @@ class _$ItemListStateTearOff {
 }
 
 /// @nodoc
-const $ItemListState = _$ItemListStateTearOff();
+const $Pager = _$PagerTearOff();
 
 /// @nodoc
-mixin _$ItemListState {
-  AsyncValue<List<Item>> get data => throw _privateConstructorUsedError;
+mixin _$Pager<T extends PagingItem> {
+  AsyncValue<List<T>> get data => throw _privateConstructorUsedError;
   DocumentSnapshot<Object?>? get firstDoc => throw _privateConstructorUsedError;
   DocumentSnapshot<Object?>? get lastDoc => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $ItemListStateCopyWith<ItemListState> get copyWith =>
+  $PagerCopyWith<T, Pager<T>> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $ItemListStateCopyWith<$Res> {
-  factory $ItemListStateCopyWith(
-          ItemListState value, $Res Function(ItemListState) then) =
-      _$ItemListStateCopyWithImpl<$Res>;
+abstract class $PagerCopyWith<T extends PagingItem, $Res> {
+  factory $PagerCopyWith(Pager<T> value, $Res Function(Pager<T>) then) =
+      _$PagerCopyWithImpl<T, $Res>;
   $Res call(
-      {AsyncValue<List<Item>> data,
+      {AsyncValue<List<T>> data,
       DocumentSnapshot<Object?>? firstDoc,
       DocumentSnapshot<Object?>? lastDoc});
 }
 
 /// @nodoc
-class _$ItemListStateCopyWithImpl<$Res>
-    implements $ItemListStateCopyWith<$Res> {
-  _$ItemListStateCopyWithImpl(this._value, this._then);
+class _$PagerCopyWithImpl<T extends PagingItem, $Res>
+    implements $PagerCopyWith<T, $Res> {
+  _$PagerCopyWithImpl(this._value, this._then);
 
-  final ItemListState _value;
+  final Pager<T> _value;
   // ignore: unused_field
-  final $Res Function(ItemListState) _then;
+  final $Res Function(Pager<T>) _then;
 
   @override
   $Res call({
@@ -74,7 +73,7 @@ class _$ItemListStateCopyWithImpl<$Res>
       data: data == freezed
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as AsyncValue<List<Item>>,
+              as AsyncValue<List<T>>,
       firstDoc: firstDoc == freezed
           ? _value.firstDoc
           : firstDoc // ignore: cast_nullable_to_non_nullable
@@ -88,28 +87,25 @@ class _$ItemListStateCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$ItemListStateCopyWith<$Res>
-    implements $ItemListStateCopyWith<$Res> {
-  factory _$ItemListStateCopyWith(
-          _ItemListState value, $Res Function(_ItemListState) then) =
-      __$ItemListStateCopyWithImpl<$Res>;
+abstract class _$PagerCopyWith<T extends PagingItem, $Res>
+    implements $PagerCopyWith<T, $Res> {
+  factory _$PagerCopyWith(_Pager<T> value, $Res Function(_Pager<T>) then) =
+      __$PagerCopyWithImpl<T, $Res>;
   @override
   $Res call(
-      {AsyncValue<List<Item>> data,
+      {AsyncValue<List<T>> data,
       DocumentSnapshot<Object?>? firstDoc,
       DocumentSnapshot<Object?>? lastDoc});
 }
 
 /// @nodoc
-class __$ItemListStateCopyWithImpl<$Res>
-    extends _$ItemListStateCopyWithImpl<$Res>
-    implements _$ItemListStateCopyWith<$Res> {
-  __$ItemListStateCopyWithImpl(
-      _ItemListState _value, $Res Function(_ItemListState) _then)
-      : super(_value, (v) => _then(v as _ItemListState));
+class __$PagerCopyWithImpl<T extends PagingItem, $Res>
+    extends _$PagerCopyWithImpl<T, $Res> implements _$PagerCopyWith<T, $Res> {
+  __$PagerCopyWithImpl(_Pager<T> _value, $Res Function(_Pager<T>) _then)
+      : super(_value, (v) => _then(v as _Pager<T>));
 
   @override
-  _ItemListState get _value => super._value as _ItemListState;
+  _Pager<T> get _value => super._value as _Pager<T>;
 
   @override
   $Res call({
@@ -117,11 +113,11 @@ class __$ItemListStateCopyWithImpl<$Res>
     Object? firstDoc = freezed,
     Object? lastDoc = freezed,
   }) {
-    return _then(_ItemListState(
+    return _then(_Pager<T>(
       data: data == freezed
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as AsyncValue<List<Item>>,
+              as AsyncValue<List<T>>,
       firstDoc: firstDoc == freezed
           ? _value.firstDoc
           : firstDoc // ignore: cast_nullable_to_non_nullable
@@ -136,13 +132,13 @@ class __$ItemListStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_ItemListState implements _ItemListState {
-  const _$_ItemListState(
+class _$_Pager<T extends PagingItem> implements _Pager<T> {
+  const _$_Pager(
       {this.data = const AsyncValue.loading(), this.firstDoc, this.lastDoc});
 
   @JsonKey()
   @override
-  final AsyncValue<List<Item>> data;
+  final AsyncValue<List<T>> data;
   @override
   final DocumentSnapshot<Object?>? firstDoc;
   @override
@@ -150,14 +146,14 @@ class _$_ItemListState implements _ItemListState {
 
   @override
   String toString() {
-    return 'ItemListState(data: $data, firstDoc: $firstDoc, lastDoc: $lastDoc)';
+    return 'Pager<$T>(data: $data, firstDoc: $firstDoc, lastDoc: $lastDoc)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _ItemListState &&
+            other is _Pager<T> &&
             const DeepCollectionEquality().equals(other.data, data) &&
             const DeepCollectionEquality().equals(other.firstDoc, firstDoc) &&
             const DeepCollectionEquality().equals(other.lastDoc, lastDoc));
@@ -172,24 +168,24 @@ class _$_ItemListState implements _ItemListState {
 
   @JsonKey(ignore: true)
   @override
-  _$ItemListStateCopyWith<_ItemListState> get copyWith =>
-      __$ItemListStateCopyWithImpl<_ItemListState>(this, _$identity);
+  _$PagerCopyWith<T, _Pager<T>> get copyWith =>
+      __$PagerCopyWithImpl<T, _Pager<T>>(this, _$identity);
 }
 
-abstract class _ItemListState implements ItemListState {
-  const factory _ItemListState(
-      {AsyncValue<List<Item>> data,
+abstract class _Pager<T extends PagingItem> implements Pager<T> {
+  const factory _Pager(
+      {AsyncValue<List<T>> data,
       DocumentSnapshot<Object?>? firstDoc,
-      DocumentSnapshot<Object?>? lastDoc}) = _$_ItemListState;
+      DocumentSnapshot<Object?>? lastDoc}) = _$_Pager<T>;
 
   @override
-  AsyncValue<List<Item>> get data;
+  AsyncValue<List<T>> get data;
   @override
   DocumentSnapshot<Object?>? get firstDoc;
   @override
   DocumentSnapshot<Object?>? get lastDoc;
   @override
   @JsonKey(ignore: true)
-  _$ItemListStateCopyWith<_ItemListState> get copyWith =>
+  _$PagerCopyWith<T, _Pager<T>> get copyWith =>
       throw _privateConstructorUsedError;
 }

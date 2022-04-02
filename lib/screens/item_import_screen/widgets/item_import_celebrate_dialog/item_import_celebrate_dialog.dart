@@ -1,6 +1,6 @@
 import 'package:aciste/router.dart';
 import 'package:aciste/screens/item_import_screen/widgets/item_import_celebrate_dialog/controllers/item_import_celebrate_dialog_controller.dart';
-import 'package:aciste/utils.dart';
+import 'package:aciste/utils/miscellaneous.dart';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -14,7 +14,7 @@ class ItemImportCelebrateDialog extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
-    final controller = ref.watch(itemImportCelebrateDialogControllerProvider).controller; 
+    final controller = ref.watch(itemImportCelebrateDialogControllerProvider).controller;
     useEffect(() {
       if (controller != null) {
         controller.play();

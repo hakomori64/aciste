@@ -57,16 +57,16 @@ class _ProfileScreen extends HookConsumerWidget {
         switch (tab) {
           case Tabs.items:
             if (scrollController.offset == scrollController.position.maxScrollExtent) {
-              await ref.read(profileItemListControllerProvider.notifier).retrieveItemsPage();
+              await ref.read(profileItemListControllerProvider.notifier).retrievePage();
             } else if (scrollController.offset <= 0) {
-              await ref.read(profileItemListControllerProvider.notifier).retrieveItemsBeforePage();
+              await ref.read(profileItemListControllerProvider.notifier).retrieveBeforePage();
             }
             return;
           case Tabs.announcements:
             if (scrollController.offset == scrollController.position.maxScrollExtent) {
-              await ref.read(profileAnnounceListControllerProvider.notifier).retrieveAnnouncementsPage();
+              await ref.read(profileAnnounceListControllerProvider.notifier).retrievePage();
             } else if (scrollController.offset <= 0) {
-              await ref.read(profileAnnounceListControllerProvider.notifier).retrieveAnnouncementsBeforePage();
+              await ref.read(profileAnnounceListControllerProvider.notifier).retrieveBeforePage();
             }
             return;
         }

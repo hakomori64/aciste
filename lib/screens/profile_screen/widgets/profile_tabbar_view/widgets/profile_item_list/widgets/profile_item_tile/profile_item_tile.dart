@@ -6,7 +6,7 @@ import 'package:aciste/models/item.dart';
 import 'package:aciste/router.dart';
 import 'package:aciste/screens/qrcode_screen/qrcode_screen.dart';
 import 'package:aciste/screens/qrcode_screen/controllers/qrcode_screen_controller.dart';
-import 'package:aciste/utils.dart';
+import 'package:aciste/utils/miscellaneous.dart';
 import 'package:aciste/widgets/attachments_carousel/attachments_carousel.dart';
 import 'package:aciste/widgets/expandable_text/expandable_text.dart';
 import 'package:aciste/widgets/user_icon/user_icon.dart';

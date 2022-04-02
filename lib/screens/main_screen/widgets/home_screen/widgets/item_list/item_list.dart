@@ -18,9 +18,9 @@ class ItemList extends HookConsumerWidget {
     useEffect(() {
       scrollController.addListener(() async {
         if (scrollController.offset == scrollController.position.maxScrollExtent) {
-          await ref.read(itemListControllerProvider.notifier).retrieveItemsPage();
+          await ref.read(itemListControllerProvider.notifier).retrievePage();
         } else if (scrollController.offset <= 0) {
-          await ref.read(itemListControllerProvider.notifier).retrieveItemsBeforePage();
+          await ref.read(itemListControllerProvider.notifier).retrieveBeforePage();
         }
       });
 

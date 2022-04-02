@@ -1,5 +1,6 @@
 import 'package:aciste/converters/timestamp_converter.dart';
 import 'package:aciste/models/resource.dart';
+import 'package:aciste/utils/paging/pager.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 
@@ -7,7 +8,7 @@ part 'item.freezed.dart';
 part 'item.g.dart';
 
 @freezed
-class Item with _$Item {
+abstract class Item with _$Item implements PagingItem {
   const Item._();
 
   const factory Item({

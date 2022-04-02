@@ -5,86 +5,38 @@ import 'package:aciste/models/item.dart';
 import 'package:aciste/models/resource.dart';
 import 'package:aciste/repositories/item_repository.dart';
 import 'package:aciste/repositories/user_repository.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:aciste/utils/paging/mixin.dart';
+import 'package:aciste/utils/paging/pager.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:uuid/uuid.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'auth_controller.dart';
 
-part 'item_controller.freezed.dart';
-
-@freezed
-class ItemListState with _$ItemListState {
-  const factory ItemListState({
-    @Default(AsyncValue.loading()) AsyncValue<List<Item>> data,
-    DocumentSnapshot? firstDoc,
-    DocumentSnapshot? lastDoc,
-  }) = _ItemListState;
-}
-
-final itemListControllerProvider = StateNotifierProvider<ItemListController, ItemListState>(
+final itemListControllerProvider = StateNotifierProvider<ItemListController, Pager<Item>>(
   (ref) {
     final user = ref.watch(authControllerProvider);
     return ItemListController(ref.read, user?.uid);
   }
 );
 
-class ItemListController extends StateNotifier<ItemListState> {
+class ItemListController extends StateNotifier<Pager<Item>> with PagingMixin<Item> {
   final Reader _read;
   final String? _userId;
 
-  ItemListController(this._read, this._userId) : super(const ItemListState()) {
+  ItemListController(this._read, this._userId) : super(const Pager<Item>()) {
     if (_userId != null) {
-      retrieveItemsPage();
+      retrievePage();
     }
   }
 
-  void _managePage() {
-    state.data.whenData((data) => state = state.copyWith(
-      firstDoc: data.isNotEmpty ? data.first.doc : null,
-      lastDoc: data.isNotEmpty ? data.last.doc : null,
-    ));
+  @override
+  Future<List<Item>> getPage() async {
+    return _read(itemRepositoryProvider(ItemRepositoryParams(userId: _userId!))).retrievePage(startAfterDoc: state.lastDoc);
   }
 
-  Future<void> retrieveItemsPage() async {
-    try {
-      final result = await _read(itemRepositoryProvider).retrieveItemsPage(userId: _userId!, startAfterDoc: state.lastDoc);
-      final items = result.item1;
-
-      state = state.copyWith(
-        data: AsyncValue.data([
-          ...(state.data.asData?.value ?? []),
-          ...items,
-        ]),
-      );
-
-      _managePage();
-    } on CustomException catch (e, st) {
-      state = state.copyWith(
-        data: AsyncValue.error(e, stackTrace: st)
-      );
-    }
-  }
-
-  Future<void> retrieveItemsBeforePage() async {
-    try {
-      final result = await _read(itemRepositoryProvider).retrieveItemsBeforePage(userId: _userId!, endBeforeDoc: state.firstDoc);
-      final items = result.item1;
-
-      state = state.copyWith(
-        data: AsyncValue.data([
-          ...items,
-          ...(state.data.asData?.value ?? []),
-        ]),
-      );
-
-      _managePage();
-    } on CustomException catch (e, st) {
-      state = state.copyWith(
-        data: AsyncValue.error(e, stackTrace: st)
-      );
-    }
+  @override
+  Future<List<Item>> getBeforePage() async {
+    return _read(itemRepositoryProvider(ItemRepositoryParams(userId: _userId!))).retrieveBeforePage(endBeforeDoc: state.firstDoc);
   }
 
   Future<void> addItem({
@@ -126,8 +78,7 @@ class ItemListController extends StateNotifier<ItemListState> {
       final newItem = Item.empty().copyWith(
           resource: resource,
         );
-      final created = await _read(itemRepositoryProvider).createItem(
-        userId: _userId!,
+      final created = await _read(itemRepositoryProvider(ItemRepositoryParams(userId: _userId!))).createItem(
         item: newItem
       );
       state.data.whenData((items) {
@@ -135,12 +86,12 @@ class ItemListController extends StateNotifier<ItemListState> {
           data: AsyncValue.data([
             for (final item in items)
               if (item.id == tmpId)
-                created.item2 else item
+                created else item
           ]),
         );
       });
 
-      _managePage();
+      managePage();
     } on CustomException catch (e) {
       state = state.copyWith(
         data: AsyncValue.error(e)
@@ -167,15 +118,14 @@ class ItemListController extends StateNotifier<ItemListState> {
         resource: resource,
         rank: rank
       );
-      final created = await _read(itemRepositoryProvider).createItem(
-        userId: _userId!,
+      final created = await _read(itemRepositoryProvider(ItemRepositoryParams(userId: _userId!))).createItem(
         item: item
       );
       state.data.whenData((items) => state = state.copyWith(
-        data: AsyncValue.data([created.item2, ...items]),
+        data: AsyncValue.data([created, ...items]),
       ));
 
-      _managePage();
+      managePage();
     } on CustomException catch (e) {
       state = state.copyWith(
         data: AsyncValue.error(e)
@@ -216,7 +166,7 @@ class ItemListController extends StateNotifier<ItemListState> {
           attachments: attachments,
         )
       );
-      final updatedItem = await _read(itemRepositoryProvider).updateItem(userId: _userId!, item: oldItem.copyWith(
+      final updatedItem = await _read(itemRepositoryProvider(ItemRepositoryParams(userId: _userId!))).updateItem(item: oldItem.copyWith(
         description: description,
         resource: resource,
       ));
@@ -229,7 +179,7 @@ class ItemListController extends StateNotifier<ItemListState> {
         );
       });
 
-      _managePage();
+      managePage();
     } on CustomException catch (e) {
       state = state.copyWith(
         data: AsyncValue.error(e)
@@ -239,14 +189,13 @@ class ItemListController extends StateNotifier<ItemListState> {
 
   Future<void> deleteItem({required String itemId}) async {
     try {
-      await _read(itemRepositoryProvider).deleteItem(
-        userId: _userId!,
+      await _read(itemRepositoryProvider(ItemRepositoryParams(userId: _userId!))).deleteItem(
         itemId: itemId
       );
 
       state.data.whenData((items) => state = state.copyWith(data: AsyncValue.data(items..removeWhere((item) => item.id == itemId))));
 
-      _managePage();
+      managePage();
     } on CustomException catch (e) {
       state = state.copyWith(
         data: AsyncValue.error(e)
@@ -255,6 +204,6 @@ class ItemListController extends StateNotifier<ItemListState> {
   }
 
   Future<bool> checkHasResource({required String resourceId}) async {
-    return _read(itemRepositoryProvider).checkHasResource(userId: _userId!, resourceId: resourceId);
+    return _read(itemRepositoryProvider(ItemRepositoryParams(userId: _userId!))).checkHasResource(resourceId: resourceId);
   }
 }

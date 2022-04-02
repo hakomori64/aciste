@@ -5,6 +5,7 @@ analyzer:
     - "**/*.g.dart"
   errors:
     avoid_print: warning
+    invalid_annotation_target: ignore
 linter:
   rules:
     - avoid_print

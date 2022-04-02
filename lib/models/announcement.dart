@@ -25,6 +25,7 @@ abstract class Announcement implements _$Announcement {
     User? user,
     AnnounceType? announceType,
     @TimestampDateTimeConverter() DateTime? createdAt,
+    @JsonKey(ignore: true) DocumentSnapshot? doc,
   }) = _Announcement;
 
   factory Announcement.empty() => Announcement(
@@ -36,7 +37,7 @@ abstract class Announcement implements _$Announcement {
 
   factory Announcement.fromDocumentSnapshot(DocumentSnapshot<Map<String, dynamic>> doc) {
     final data = doc.data()!;
-    return Announcement.fromJson(data).copyWith(id: doc.id);
+    return Announcement.fromJson(data).copyWith(id: doc.id, doc: doc);
   }
 
   Map<String, dynamic> toDocument() {

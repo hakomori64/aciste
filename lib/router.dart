@@ -169,7 +169,6 @@ class RouterController extends StateNotifier<GoRouter?> {
             );
             final item = Item.empty().copyWith(
               resource: resource,
-              userId: _user!.uid,
             );
             await refresh();
             await push(route: Routes.itemImport, extra: ItemImportRouteParams(item: item, resource: resource));
@@ -282,6 +281,7 @@ class RouterController extends StateNotifier<GoRouter?> {
         break;
       case Routes.announceCreate:
         final params = extra! as AnnounceCreateRouteParams;
+        _read(announceCreateScreenControllerProvider.notifier).setMessage(params.message);
         _read(announceCreateScreenControllerProvider.notifier).setAnnounceType(params.announceType);
         break;
       default:
@@ -416,6 +416,7 @@ class ItemImportRouteParams {
 }
 
 class AnnounceCreateRouteParams {
+  final String message;
   final AnnounceType announceType;
-  AnnounceCreateRouteParams({required this.announceType});
+  AnnounceCreateRouteParams({required this.message, required this.announceType});
 }

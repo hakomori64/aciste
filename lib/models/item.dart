@@ -14,15 +14,14 @@ class Item with _$Item {
     String? id,
     required String description,
     Resource? resource,
-    required String userId,
     @TimestampDateTimeConverter() DateTime? createdAt,
     @TimestampDateTimeConverter() DateTime? updatedAt,
     @Default(0) int rank,
+    @JsonKey(ignore: true) DocumentSnapshot? doc,
   }) = _Item;
 
   factory Item.empty() => Item(
     description: "",
-    userId: "",
     createdAt: DateTime.now(),
     updatedAt: DateTime.now(),
   );
@@ -31,7 +30,7 @@ class Item with _$Item {
 
   factory Item.fromDocumentSnapshot(DocumentSnapshot<Map<String, dynamic>> doc) {
     final data = doc.data()!;
-    return Item.fromJson(data).copyWith(id: doc.id);
+    return Item.fromJson(data).copyWith(id: doc.id, doc: doc);
   }
 
   Map<String, dynamic> toDocument() {
@@ -39,6 +38,7 @@ class Item with _$Item {
       ..remove('id')
       ..remove('resource');
     data['resourceId'] = resource?.id ?? '';
+    data['resourceCreatedById'] = resource?.createdBy?.id ?? '';
     return data;
   }
 }

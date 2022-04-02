@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
-part of 'item_controller.dart';
+part of 'profile_announce_list_controller.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,14 +15,14 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-class _$ItemListStateTearOff {
-  const _$ItemListStateTearOff();
+class _$ProfileAnnounceListStateTearOff {
+  const _$ProfileAnnounceListStateTearOff();
 
-  _ItemListState call(
-      {AsyncValue<List<Item>> data = const AsyncValue.loading(),
+  _ProfileAnnounceListState call(
+      {AsyncValue<List<Announcement>> data = const AsyncValue.loading(),
       DocumentSnapshot<Object?>? firstDoc,
       DocumentSnapshot<Object?>? lastDoc}) {
-    return _ItemListState(
+    return _ProfileAnnounceListState(
       data: data,
       firstDoc: firstDoc,
       lastDoc: lastDoc,
@@ -31,38 +31,38 @@ class _$ItemListStateTearOff {
 }
 
 /// @nodoc
-const $ItemListState = _$ItemListStateTearOff();
+const $ProfileAnnounceListState = _$ProfileAnnounceListStateTearOff();
 
 /// @nodoc
-mixin _$ItemListState {
-  AsyncValue<List<Item>> get data => throw _privateConstructorUsedError;
+mixin _$ProfileAnnounceListState {
+  AsyncValue<List<Announcement>> get data => throw _privateConstructorUsedError;
   DocumentSnapshot<Object?>? get firstDoc => throw _privateConstructorUsedError;
   DocumentSnapshot<Object?>? get lastDoc => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $ItemListStateCopyWith<ItemListState> get copyWith =>
+  $ProfileAnnounceListStateCopyWith<ProfileAnnounceListState> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $ItemListStateCopyWith<$Res> {
-  factory $ItemListStateCopyWith(
-          ItemListState value, $Res Function(ItemListState) then) =
-      _$ItemListStateCopyWithImpl<$Res>;
+abstract class $ProfileAnnounceListStateCopyWith<$Res> {
+  factory $ProfileAnnounceListStateCopyWith(ProfileAnnounceListState value,
+          $Res Function(ProfileAnnounceListState) then) =
+      _$ProfileAnnounceListStateCopyWithImpl<$Res>;
   $Res call(
-      {AsyncValue<List<Item>> data,
+      {AsyncValue<List<Announcement>> data,
       DocumentSnapshot<Object?>? firstDoc,
       DocumentSnapshot<Object?>? lastDoc});
 }
 
 /// @nodoc
-class _$ItemListStateCopyWithImpl<$Res>
-    implements $ItemListStateCopyWith<$Res> {
-  _$ItemListStateCopyWithImpl(this._value, this._then);
+class _$ProfileAnnounceListStateCopyWithImpl<$Res>
+    implements $ProfileAnnounceListStateCopyWith<$Res> {
+  _$ProfileAnnounceListStateCopyWithImpl(this._value, this._then);
 
-  final ItemListState _value;
+  final ProfileAnnounceListState _value;
   // ignore: unused_field
-  final $Res Function(ItemListState) _then;
+  final $Res Function(ProfileAnnounceListState) _then;
 
   @override
   $Res call({
@@ -74,7 +74,7 @@ class _$ItemListStateCopyWithImpl<$Res>
       data: data == freezed
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as AsyncValue<List<Item>>,
+              as AsyncValue<List<Announcement>>,
       firstDoc: firstDoc == freezed
           ? _value.firstDoc
           : firstDoc // ignore: cast_nullable_to_non_nullable
@@ -88,28 +88,29 @@ class _$ItemListStateCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$ItemListStateCopyWith<$Res>
-    implements $ItemListStateCopyWith<$Res> {
-  factory _$ItemListStateCopyWith(
-          _ItemListState value, $Res Function(_ItemListState) then) =
-      __$ItemListStateCopyWithImpl<$Res>;
+abstract class _$ProfileAnnounceListStateCopyWith<$Res>
+    implements $ProfileAnnounceListStateCopyWith<$Res> {
+  factory _$ProfileAnnounceListStateCopyWith(_ProfileAnnounceListState value,
+          $Res Function(_ProfileAnnounceListState) then) =
+      __$ProfileAnnounceListStateCopyWithImpl<$Res>;
   @override
   $Res call(
-      {AsyncValue<List<Item>> data,
+      {AsyncValue<List<Announcement>> data,
       DocumentSnapshot<Object?>? firstDoc,
       DocumentSnapshot<Object?>? lastDoc});
 }
 
 /// @nodoc
-class __$ItemListStateCopyWithImpl<$Res>
-    extends _$ItemListStateCopyWithImpl<$Res>
-    implements _$ItemListStateCopyWith<$Res> {
-  __$ItemListStateCopyWithImpl(
-      _ItemListState _value, $Res Function(_ItemListState) _then)
-      : super(_value, (v) => _then(v as _ItemListState));
+class __$ProfileAnnounceListStateCopyWithImpl<$Res>
+    extends _$ProfileAnnounceListStateCopyWithImpl<$Res>
+    implements _$ProfileAnnounceListStateCopyWith<$Res> {
+  __$ProfileAnnounceListStateCopyWithImpl(_ProfileAnnounceListState _value,
+      $Res Function(_ProfileAnnounceListState) _then)
+      : super(_value, (v) => _then(v as _ProfileAnnounceListState));
 
   @override
-  _ItemListState get _value => super._value as _ItemListState;
+  _ProfileAnnounceListState get _value =>
+      super._value as _ProfileAnnounceListState;
 
   @override
   $Res call({
@@ -117,11 +118,11 @@ class __$ItemListStateCopyWithImpl<$Res>
     Object? firstDoc = freezed,
     Object? lastDoc = freezed,
   }) {
-    return _then(_ItemListState(
+    return _then(_ProfileAnnounceListState(
       data: data == freezed
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as AsyncValue<List<Item>>,
+              as AsyncValue<List<Announcement>>,
       firstDoc: firstDoc == freezed
           ? _value.firstDoc
           : firstDoc // ignore: cast_nullable_to_non_nullable
@@ -136,13 +137,13 @@ class __$ItemListStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_ItemListState implements _ItemListState {
-  const _$_ItemListState(
+class _$_ProfileAnnounceListState implements _ProfileAnnounceListState {
+  const _$_ProfileAnnounceListState(
       {this.data = const AsyncValue.loading(), this.firstDoc, this.lastDoc});
 
   @JsonKey()
   @override
-  final AsyncValue<List<Item>> data;
+  final AsyncValue<List<Announcement>> data;
   @override
   final DocumentSnapshot<Object?>? firstDoc;
   @override
@@ -150,14 +151,14 @@ class _$_ItemListState implements _ItemListState {
 
   @override
   String toString() {
-    return 'ItemListState(data: $data, firstDoc: $firstDoc, lastDoc: $lastDoc)';
+    return 'ProfileAnnounceListState(data: $data, firstDoc: $firstDoc, lastDoc: $lastDoc)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _ItemListState &&
+            other is _ProfileAnnounceListState &&
             const DeepCollectionEquality().equals(other.data, data) &&
             const DeepCollectionEquality().equals(other.firstDoc, firstDoc) &&
             const DeepCollectionEquality().equals(other.lastDoc, lastDoc));
@@ -172,24 +173,25 @@ class _$_ItemListState implements _ItemListState {
 
   @JsonKey(ignore: true)
   @override
-  _$ItemListStateCopyWith<_ItemListState> get copyWith =>
-      __$ItemListStateCopyWithImpl<_ItemListState>(this, _$identity);
+  _$ProfileAnnounceListStateCopyWith<_ProfileAnnounceListState> get copyWith =>
+      __$ProfileAnnounceListStateCopyWithImpl<_ProfileAnnounceListState>(
+          this, _$identity);
 }
 
-abstract class _ItemListState implements ItemListState {
-  const factory _ItemListState(
-      {AsyncValue<List<Item>> data,
+abstract class _ProfileAnnounceListState implements ProfileAnnounceListState {
+  const factory _ProfileAnnounceListState(
+      {AsyncValue<List<Announcement>> data,
       DocumentSnapshot<Object?>? firstDoc,
-      DocumentSnapshot<Object?>? lastDoc}) = _$_ItemListState;
+      DocumentSnapshot<Object?>? lastDoc}) = _$_ProfileAnnounceListState;
 
   @override
-  AsyncValue<List<Item>> get data;
+  AsyncValue<List<Announcement>> get data;
   @override
   DocumentSnapshot<Object?>? get firstDoc;
   @override
   DocumentSnapshot<Object?>? get lastDoc;
   @override
   @JsonKey(ignore: true)
-  _$ItemListStateCopyWith<_ItemListState> get copyWith =>
+  _$ProfileAnnounceListStateCopyWith<_ProfileAnnounceListState> get copyWith =>
       throw _privateConstructorUsedError;
 }

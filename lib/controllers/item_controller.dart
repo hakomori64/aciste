@@ -40,41 +40,26 @@ class ItemListController extends StateNotifier<ItemListState> {
     }
   }
 
-  Future<void> retrieveItems({bool isRefreshing = false}) async {
-    if (isRefreshing) {
-      state = state.copyWith(
-        data: const AsyncValue.loading()
-      );
-    }
-    try {
-      final items = await _read(itemRepositoryProvider).retrieveItems(userId: _userId!);
-      if (mounted) {
-        state = state.copyWith(
-          data: AsyncValue.data(items)
-        );
-      }
-    } on CustomException catch (e, st) {
-      state = state.copyWith(
-        data: AsyncValue.error(e, stackTrace: st)
-      );
-    }
+  void _managePage() {
+    state.data.whenData((data) => state = state.copyWith(
+      firstDoc: data.isNotEmpty ? data.first.doc : null,
+      lastDoc: data.isNotEmpty ? data.last.doc : null,
+    ));
   }
 
   Future<void> retrieveItemsPage() async {
     try {
       final result = await _read(itemRepositoryProvider).retrieveItemsPage(userId: _userId!, startAfterDoc: state.lastDoc);
       final items = result.item1;
-      final firstDoc = result.item2;
-      final lastDoc = result.item3;
 
       state = state.copyWith(
         data: AsyncValue.data([
           ...(state.data.asData?.value ?? []),
           ...items,
         ]),
-        firstDoc: state.firstDoc ?? firstDoc,
-        lastDoc: lastDoc ?? state.lastDoc,
       );
+
+      _managePage();
     } on CustomException catch (e, st) {
       state = state.copyWith(
         data: AsyncValue.error(e, stackTrace: st)
@@ -86,17 +71,15 @@ class ItemListController extends StateNotifier<ItemListState> {
     try {
       final result = await _read(itemRepositoryProvider).retrieveItemsBeforePage(userId: _userId!, endBeforeDoc: state.firstDoc);
       final items = result.item1;
-      final firstDoc = result.item2;
-      final lastDoc = result.item3;
 
       state = state.copyWith(
         data: AsyncValue.data([
           ...items,
           ...(state.data.asData?.value ?? []),
         ]),
-        firstDoc: firstDoc ?? state.firstDoc,
-        lastDoc: state.lastDoc ?? lastDoc,
       );
+
+      _managePage();
     } on CustomException catch (e, st) {
       state = state.copyWith(
         data: AsyncValue.error(e, stackTrace: st)
@@ -120,7 +103,6 @@ class ItemListController extends StateNotifier<ItemListState> {
         resource: Resource.empty().copyWith(
           title: '読み込み中...'
         ),
-        userId: _userId!,
       );
       state.data.whenData((items) {
         items.insert(0, tmpItem);
@@ -143,9 +125,9 @@ class ItemListController extends StateNotifier<ItemListState> {
       }
       final newItem = Item.empty().copyWith(
           resource: resource,
-          userId: _userId!,
         );
       final created = await _read(itemRepositoryProvider).createItem(
+        userId: _userId!,
         item: newItem
       );
       state.data.whenData((items) {
@@ -153,10 +135,12 @@ class ItemListController extends StateNotifier<ItemListState> {
           data: AsyncValue.data([
             for (final item in items)
               if (item.id == tmpId)
-                created else item
-          ])
+                created.item2 else item
+          ]),
         );
       });
+
+      _managePage();
     } on CustomException catch (e) {
       state = state.copyWith(
         data: AsyncValue.error(e)
@@ -181,13 +165,17 @@ class ItemListController extends StateNotifier<ItemListState> {
       final item = Item.empty().copyWith(
         description: description,
         resource: resource,
-        userId: userId,
         rank: rank
       );
       final created = await _read(itemRepositoryProvider).createItem(
+        userId: _userId!,
         item: item
       );
-      state.data.whenData((items) => state = state.copyWith(data: AsyncValue.data([created, ...items])));
+      state.data.whenData((items) => state = state.copyWith(
+        data: AsyncValue.data([created.item2, ...items]),
+      ));
+
+      _managePage();
     } on CustomException catch (e) {
       state = state.copyWith(
         data: AsyncValue.error(e)
@@ -210,7 +198,6 @@ class ItemListController extends StateNotifier<ItemListState> {
         resource: oldItem.resource!.copyWith(
           title: '読み込み中'
         ),
-        userId: _userId!
       );
       state.data.whenData((items) {
         state = state.copyWith(
@@ -229,10 +216,9 @@ class ItemListController extends StateNotifier<ItemListState> {
           attachments: attachments,
         )
       );
-      final updatedItem = await _read(itemRepositoryProvider).updateItem(item: oldItem.copyWith(
+      final updatedItem = await _read(itemRepositoryProvider).updateItem(userId: _userId!, item: oldItem.copyWith(
         description: description,
         resource: resource,
-        userId: _userId!,
       ));
       state.data.whenData((items) {
         state = state.copyWith(
@@ -242,6 +228,8 @@ class ItemListController extends StateNotifier<ItemListState> {
           ])
         );
       });
+
+      _managePage();
     } on CustomException catch (e) {
       state = state.copyWith(
         data: AsyncValue.error(e)
@@ -257,6 +245,8 @@ class ItemListController extends StateNotifier<ItemListState> {
       );
 
       state.data.whenData((items) => state = state.copyWith(data: AsyncValue.data(items..removeWhere((item) => item.id == itemId))));
+
+      _managePage();
     } on CustomException catch (e) {
       state = state.copyWith(
         data: AsyncValue.error(e)

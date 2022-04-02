@@ -11,25 +11,26 @@ class AnnouncementList extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final announcementListState = ref.watch(announcementControllerProvider);
+    final announcementListState = ref.watch(announcementListControllerProvider);
     final scrollController = useScrollController();
 
     useEffect(() {
       scrollController.addListener(() async {
         if (scrollController.offset == scrollController.position.maxScrollExtent) {
-          //await ref.read(announcementControllerProvider.notifier).retrieveAnnouncementsPage();
+          await ref.read(announcementListControllerProvider.notifier).retrieveAnnouncementsPage();
         } else if (scrollController.offset <= 0) {
-          // await ref.read(announcementControllerProvider).retrieveAnnouncementsBeforePage();
+          await ref.read(announcementListControllerProvider.notifier).retrieveAnnouncementsBeforePage();
         }
       });
 
-      return scrollController.dispose;
+      return;
     }, [scrollController]);
 
-    return announcementListState.when(
+    return announcementListState.data.when(
       data: (announcements) => announcements.isEmpty ? const Center(
         child: Text('おしらせはありません。\nユーザーをフォローしましょう！'),
       ): ListView.builder(
+        controller: scrollController,
         padding: const EdgeInsets.all(0),
         itemCount: announcements.length,
         itemBuilder: (context, index) {

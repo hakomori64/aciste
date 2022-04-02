@@ -12,7 +12,6 @@ _$_Item _$$_ItemFromJson(Map<String, dynamic> json) => _$_Item(
       resource: json['resource'] == null
           ? null
           : Resource.fromJson(json['resource'] as Map<String, dynamic>),
-      userId: json['userId'] as String,
       createdAt: const TimestampDateTimeConverter()
           .fromJson(json['createdAt'] as Timestamp?),
       updatedAt: const TimestampDateTimeConverter()
@@ -24,7 +23,6 @@ Map<String, dynamic> _$$_ItemToJson(_$_Item instance) => <String, dynamic>{
       'id': instance.id,
       'description': instance.description,
       'resource': instance.resource,
-      'userId': instance.userId,
       'createdAt':
           const TimestampDateTimeConverter().toJson(instance.createdAt),
       'updatedAt':

@@ -37,7 +37,7 @@ class ProfileItemTile extends HookConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 item.rank <= 0
-                  ? const Text('') 
+                  ? const Text('')
                   : Text('${numWithSuffix(item.rank)} discoverer')
               ],
             ),
@@ -124,7 +124,7 @@ class ProfileItemTile extends HookConsumerWidget {
                         title: const Text('アイテムの作成をおしらせ'),
                         onTap: () async {
                           ref.read(routerProvider.notifier).closeBottomSheet();
-                          ref.read(routerProvider.notifier).push(route: Routes.announceCreate, extra: AnnounceCreateRouteParams(announceType: AnnounceType.itemCreate));
+                          ref.read(routerProvider.notifier).push(route: Routes.announceCreate, extra: AnnounceCreateRouteParams(message: '', announceType: AnnounceType.itemCreate));
                         }
                       ),
                       ListTile(

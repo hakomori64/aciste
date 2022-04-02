@@ -50,7 +50,7 @@ class AnnounceCreateScreen extends HookConsumerWidget {
                 ),
                 onPressed: ref.watch(announceCreateScreenControllerProvider).message.isNotEmpty ? () async {
                   ref.read(routerProvider.notifier).go(route: Routes.main);
-                  await ref.read(announcementControllerProvider.notifier).notifyToFollowers(
+                  await ref.read(announcementListControllerProvider.notifier).notifyToFollowers(
                     message: messageController.text,
                     announceType: announceType,
                   );

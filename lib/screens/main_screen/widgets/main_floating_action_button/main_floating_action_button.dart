@@ -67,7 +67,7 @@ class MainFloatingActionButton extends HookConsumerWidget {
               margin: const EdgeInsets.only(bottom: 16.0),
               child: RawMaterialButton(
                 onPressed: () async {
-                  await ref.read(routerProvider.notifier).push(route: Routes.announceCreate, extra: AnnounceCreateRouteParams(announceType: AnnounceType.other));
+                  await ref.read(routerProvider.notifier).push(route: Routes.announceCreate, extra: AnnounceCreateRouteParams(message: '', announceType: AnnounceType.other));
                 },
                 elevation: 2.0,
                 fillColor: Theme.of(context).primaryColor,

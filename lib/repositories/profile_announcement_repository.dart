@@ -10,12 +10,12 @@ import 'package:aciste/extensions/firebase_firestore_extension.dart';
 import 'package:tuple/tuple.dart';
 
 abstract class BaseAnnouncementRepository {
+  Future<Stream<List<Announcement>>> streamAnnouncement({required String userId});
   Future<Tuple3<List<Announcement>, DocumentSnapshot?, DocumentSnapshot?>> retrieveAnnouncementsPage({required String userId, int pageSize, DocumentSnapshot? startAfterDoc });
   Future<Tuple3<List<Announcement>, DocumentSnapshot?, DocumentSnapshot?>> retrieveAnnouncementsBeforePage({required String userId, int pageSize, DocumentSnapshot? endBeforeDoc });
-  Future<void> notifyToFollowers({required String userId, required String message, required AnnounceType announceType});
 }
 
-final announcementRepositoryProvider = Provider<AnnouncementRepository>((ref) => AnnouncementRepository(ref.read));
+final profileAnnouncementRepositoryProvider = Provider<AnnouncementRepository>((ref) => AnnouncementRepository(ref.read));
 
 class AnnouncementRepository implements BaseAnnouncementRepository {
   final Reader _read;
@@ -34,13 +34,30 @@ class AnnouncementRepository implements BaseAnnouncementRepository {
   }
 
   @override
+  Future<Stream<List<Announcement>>> streamAnnouncement({required String userId}) async {
+    try {
+      return _read(firebaseFirestoreProvider)
+        .announcementsRef()
+        .where('userId', isEqualTo: userId)
+        .orderBy('createdAt', descending: true)
+        .snapshots()
+        .asyncMap((snapshot) async {
+          return Future.wait<Announcement>(snapshot.docs.map((doc) => _getAnnouncement(
+            doc: doc,
+          )));
+        });
+    } on FirebaseException catch (e) {
+      throw CustomException(message: e.message);
+    }
+  }
+
+  @override
   Future<Tuple3<List<Announcement>, DocumentSnapshot?, DocumentSnapshot?>> retrieveAnnouncementsPage({required String userId, int pageSize = defaultPageSize, DocumentSnapshot? startAfterDoc }) async {
     try {
-      final user = await _read(userRepositoryProvider).getUser(userId: userId);
       if (startAfterDoc != null) {
         final snapshot = await _read(firebaseFirestoreProvider)
           .announcementsRef()
-          .where('userId', whereIn: [user!.id!, ...user.following])
+          .where('userId', isEqualTo: userId)
           .orderBy('createdAt', descending: true)
           .startAfterDocument(startAfterDoc)
           .limit(pageSize)
@@ -56,7 +73,7 @@ class AnnouncementRepository implements BaseAnnouncementRepository {
       } else {
         final snapshot = await _read(firebaseFirestoreProvider)
           .announcementsRef()
-          .where('userId', whereIn: [user!.id!, ...user.following])
+          .where('userId', isEqualTo: userId)
           .orderBy('createdAt', descending: true)
           .limit(pageSize)
           .get();
@@ -77,11 +94,10 @@ class AnnouncementRepository implements BaseAnnouncementRepository {
   @override
   Future<Tuple3<List<Announcement>, DocumentSnapshot?, DocumentSnapshot?>> retrieveAnnouncementsBeforePage({required String userId, int pageSize = defaultPageSize, DocumentSnapshot? endBeforeDoc }) async {
     try {
-      final user = await _read(userRepositoryProvider).getUser(userId: userId);
       if (endBeforeDoc != null) {
         final snapshot = await _read(firebaseFirestoreProvider)
           .announcementsRef()
-          .where('userId', whereIn: [user!.id!, ...user.following])
+          .where('userId', isEqualTo: userId)
           .orderBy('createdAt', descending: true)
           .endBeforeDocument(endBeforeDoc)
           .limit(pageSize)
@@ -97,7 +113,7 @@ class AnnouncementRepository implements BaseAnnouncementRepository {
       } else {
         final snapshot = await _read(firebaseFirestoreProvider)
           .announcementsRef()
-          .where('userId', whereIn: [user!.id!, ...user.following])
+          .where('userId', isEqualTo: userId)
           .orderBy('createdAt', descending: true)
           .limit(pageSize)
           .get();
@@ -112,22 +128,6 @@ class AnnouncementRepository implements BaseAnnouncementRepository {
       }
     } on FirebaseException catch (e) {
       throw CustomException(message: e.message);
-    }
-  }
-
-  @override
-  Future<void> notifyToFollowers({required userId, required message, required announceType}) async {
-    final result = await _read(firebaseFunctionsProvider)
-      .httpsCallable('notifyToFollowers')
-      .call({
-        'userId': userId,
-        'message': message,
-        'announcementEvent': announceType.name,
-      });
-    if (result.data['status']) {
-      return;
-    } else {
-      throw const CustomException(message: '通知に失敗しました');
     }
   }
 }

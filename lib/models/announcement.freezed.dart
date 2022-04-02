@@ -27,13 +27,15 @@ class _$AnnouncementTearOff {
       required String message,
       User? user,
       AnnounceType? announceType,
-      @TimestampDateTimeConverter() DateTime? createdAt}) {
+      @TimestampDateTimeConverter() DateTime? createdAt,
+      @JsonKey(ignore: true) DocumentSnapshot<Object?>? doc}) {
     return _Announcement(
       id: id,
       message: message,
       user: user,
       announceType: announceType,
       createdAt: createdAt,
+      doc: doc,
     );
   }
 
@@ -53,6 +55,8 @@ mixin _$Announcement {
   AnnounceType? get announceType => throw _privateConstructorUsedError;
   @TimestampDateTimeConverter()
   DateTime? get createdAt => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  DocumentSnapshot<Object?>? get doc => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -70,7 +74,8 @@ abstract class $AnnouncementCopyWith<$Res> {
       String message,
       User? user,
       AnnounceType? announceType,
-      @TimestampDateTimeConverter() DateTime? createdAt});
+      @TimestampDateTimeConverter() DateTime? createdAt,
+      @JsonKey(ignore: true) DocumentSnapshot<Object?>? doc});
 
   $UserCopyWith<$Res>? get user;
 }
@@ -90,6 +95,7 @@ class _$AnnouncementCopyWithImpl<$Res> implements $AnnouncementCopyWith<$Res> {
     Object? user = freezed,
     Object? announceType = freezed,
     Object? createdAt = freezed,
+    Object? doc = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -112,6 +118,10 @@ class _$AnnouncementCopyWithImpl<$Res> implements $AnnouncementCopyWith<$Res> {
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      doc: doc == freezed
+          ? _value.doc
+          : doc // ignore: cast_nullable_to_non_nullable
+              as DocumentSnapshot<Object?>?,
     ));
   }
 
@@ -139,7 +149,8 @@ abstract class _$AnnouncementCopyWith<$Res>
       String message,
       User? user,
       AnnounceType? announceType,
-      @TimestampDateTimeConverter() DateTime? createdAt});
+      @TimestampDateTimeConverter() DateTime? createdAt,
+      @JsonKey(ignore: true) DocumentSnapshot<Object?>? doc});
 
   @override
   $UserCopyWith<$Res>? get user;
@@ -162,6 +173,7 @@ class __$AnnouncementCopyWithImpl<$Res> extends _$AnnouncementCopyWithImpl<$Res>
     Object? user = freezed,
     Object? announceType = freezed,
     Object? createdAt = freezed,
+    Object? doc = freezed,
   }) {
     return _then(_Announcement(
       id: id == freezed
@@ -184,6 +196,10 @@ class __$AnnouncementCopyWithImpl<$Res> extends _$AnnouncementCopyWithImpl<$Res>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      doc: doc == freezed
+          ? _value.doc
+          : doc // ignore: cast_nullable_to_non_nullable
+              as DocumentSnapshot<Object?>?,
     ));
   }
 }
@@ -196,7 +212,8 @@ class _$_Announcement extends _Announcement {
       required this.message,
       this.user,
       this.announceType,
-      @TimestampDateTimeConverter() this.createdAt})
+      @TimestampDateTimeConverter() this.createdAt,
+      @JsonKey(ignore: true) this.doc})
       : super._();
 
   factory _$_Announcement.fromJson(Map<String, dynamic> json) =>
@@ -213,10 +230,13 @@ class _$_Announcement extends _Announcement {
   @override
   @TimestampDateTimeConverter()
   final DateTime? createdAt;
+  @override
+  @JsonKey(ignore: true)
+  final DocumentSnapshot<Object?>? doc;
 
   @override
   String toString() {
-    return 'Announcement(id: $id, message: $message, user: $user, announceType: $announceType, createdAt: $createdAt)';
+    return 'Announcement(id: $id, message: $message, user: $user, announceType: $announceType, createdAt: $createdAt, doc: $doc)';
   }
 
   @override
@@ -229,7 +249,8 @@ class _$_Announcement extends _Announcement {
             const DeepCollectionEquality().equals(other.user, user) &&
             const DeepCollectionEquality()
                 .equals(other.announceType, announceType) &&
-            const DeepCollectionEquality().equals(other.createdAt, createdAt));
+            const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
+            const DeepCollectionEquality().equals(other.doc, doc));
   }
 
   @override
@@ -239,7 +260,8 @@ class _$_Announcement extends _Announcement {
       const DeepCollectionEquality().hash(message),
       const DeepCollectionEquality().hash(user),
       const DeepCollectionEquality().hash(announceType),
-      const DeepCollectionEquality().hash(createdAt));
+      const DeepCollectionEquality().hash(createdAt),
+      const DeepCollectionEquality().hash(doc));
 
   @JsonKey(ignore: true)
   @override
@@ -258,7 +280,8 @@ abstract class _Announcement extends Announcement {
       required String message,
       User? user,
       AnnounceType? announceType,
-      @TimestampDateTimeConverter() DateTime? createdAt}) = _$_Announcement;
+      @TimestampDateTimeConverter() DateTime? createdAt,
+      @JsonKey(ignore: true) DocumentSnapshot<Object?>? doc}) = _$_Announcement;
   const _Announcement._() : super._();
 
   factory _Announcement.fromJson(Map<String, dynamic> json) =
@@ -275,6 +298,9 @@ abstract class _Announcement extends Announcement {
   @override
   @TimestampDateTimeConverter()
   DateTime? get createdAt;
+  @override
+  @JsonKey(ignore: true)
+  DocumentSnapshot<Object?>? get doc;
   @override
   @JsonKey(ignore: true)
   _$AnnouncementCopyWith<_Announcement> get copyWith =>

@@ -1,3 +1,4 @@
+import 'package:aciste/constants.dart';
 import 'package:aciste/custom_exception.dart';
 import 'package:aciste/models/item.dart';
 import 'package:aciste/repositories/resource_repository.dart';
@@ -9,11 +10,10 @@ import 'package:aciste/extensions/firebase_firestore_extension.dart';
 import 'package:tuple/tuple.dart';
 
 abstract class BaseItemRepository {
-  Future<List<Item>> retrieveItems({required String userId});
   Future<Tuple3<List<Item>, DocumentSnapshot?, DocumentSnapshot?>> retrieveItemsPage({required String userId, int pageSize, DocumentSnapshot? startAfterDoc });
   Future<Tuple3<List<Item>, DocumentSnapshot?, DocumentSnapshot?>> retrieveItemsBeforePage({required String userId, int pageSize, DocumentSnapshot? endBeforeDoc });
-  Future<Item> createItem({required Item item});
-  Future<Item> updateItem({required Item item});
+  Future<Tuple2<DocumentSnapshot, Item>> createItem({required String userId, required Item item});
+  Future<Item> updateItem({required String userId, required Item item});
   Future<void> deleteItem({required String userId, required String itemId});
   Future<bool> checkHasResource({required String userId, required String resourceId});
 }
@@ -27,7 +27,6 @@ class ItemRepository implements BaseItemRepository {
 
   Future<Item> _getItem({
     required DocumentSnapshot<Map<String, dynamic>> doc,
-    required String userId
       }) async {
     final item = Item.fromDocumentSnapshot(doc);
     final resource = await _read(resourceRepositoryProvider).retrieveResource(
@@ -37,24 +36,7 @@ class ItemRepository implements BaseItemRepository {
   }
 
   @override
-  Future<List<Item>> retrieveItems({required String userId}) async {
-    try {
-      final snapshot = await _read(firebaseFirestoreProvider)
-        .userItemsRef(userId)
-        .orderBy('createdAt', descending: true)
-        .get();
-      
-      return Future.wait(snapshot.docs.map((doc) => _getItem(
-        userId: userId,
-        doc: doc
-      )).toList());
-    } on FirebaseException catch (e) {
-      throw CustomException(message: e.message);
-    }
-  }
-
-  @override
-  Future<Tuple3<List<Item>, DocumentSnapshot?, DocumentSnapshot?>> retrieveItemsPage({required String userId, int pageSize = 100, DocumentSnapshot? startAfterDoc }) async {
+  Future<Tuple3<List<Item>, DocumentSnapshot?, DocumentSnapshot?>> retrieveItemsPage({required String userId, int pageSize = defaultPageSize, DocumentSnapshot? startAfterDoc }) async {
     try {
       if (startAfterDoc != null) {
         final snapshot = await _read(firebaseFirestoreProvider)
@@ -63,9 +45,8 @@ class ItemRepository implements BaseItemRepository {
           .startAfterDocument(startAfterDoc)
           .limit(pageSize)
           .get();
-        
+
         final items = await Future.wait(snapshot.docs.map((doc) => _getItem(
-          userId: userId,
           doc: doc
         )).toList());
 
@@ -80,9 +61,8 @@ class ItemRepository implements BaseItemRepository {
           .orderBy('createdAt', descending: true)
           .limit(pageSize)
           .get();
-        
+
         final items = await Future.wait(snapshot.docs.map((doc) => _getItem(
-          userId: userId,
           doc: doc
         )).toList());
 
@@ -98,7 +78,7 @@ class ItemRepository implements BaseItemRepository {
   }
 
   @override
-  Future<Tuple3<List<Item>, DocumentSnapshot?, DocumentSnapshot?>> retrieveItemsBeforePage({required String userId, int pageSize = 100, DocumentSnapshot? endBeforeDoc }) async {
+  Future<Tuple3<List<Item>, DocumentSnapshot?, DocumentSnapshot?>> retrieveItemsBeforePage({required String userId, int pageSize = defaultPageSize, DocumentSnapshot? endBeforeDoc }) async {
     try {
       if (endBeforeDoc != null) {
         final snapshot = await _read(firebaseFirestoreProvider)
@@ -107,9 +87,8 @@ class ItemRepository implements BaseItemRepository {
           .endBeforeDocument(endBeforeDoc)
           .limit(pageSize)
           .get();
-        
+
         final items = await Future.wait(snapshot.docs.map((doc) => _getItem(
-          userId: userId,
           doc: doc
         )).toList());
 
@@ -124,9 +103,8 @@ class ItemRepository implements BaseItemRepository {
           .orderBy('createdAt', descending: true)
           .limit(pageSize)
           .get();
-        
+
         final items = await Future.wait(snapshot.docs.map((doc) => _getItem(
-          userId: userId,
           doc: doc
         )).toList());
 
@@ -142,28 +120,30 @@ class ItemRepository implements BaseItemRepository {
   }
 
   @override
-  Future<Item> createItem({required Item item}) async {
+  Future<Tuple2<DocumentSnapshot, Item>> createItem({required String userId, required Item item}) async {
     try {
       final docRef = await _read(firebaseFirestoreProvider)
-        .userItemsRef(item.userId)
+        .userItemsRef(userId)
         .add(item.toDocument());
 
-      return item.copyWith(id: docRef.id);
+      final doc = await docRef.get();
+
+      return Tuple2(doc, item.copyWith(id: docRef.id, doc: doc));
     } on FirebaseException catch (e) {
       throw CustomException(message: e.message);
     }
   }
 
   @override
-  Future<Item> updateItem({required Item item}) async {
+  Future<Item> updateItem({required String userId, required Item item}) async {
     try {
       await _read(firebaseFirestoreProvider)
-        .userItemsRef(item.userId)
+        .userItemsRef(userId)
         .doc(item.id)
         .update(item.toDocument());
-      
+
       return item;
-      
+
     } on FirebaseException catch (e) {
       throw CustomException(message: e.message);
     }
@@ -189,9 +169,9 @@ class ItemRepository implements BaseItemRepository {
         .where('resourceId', isEqualTo: resourceId)
         .limit(1)
         .get();
-      
+
       return snapshot.docs.isNotEmpty;
-      
+
     } on FirebaseException catch (e) {
       throw CustomException(message: e.message);
     }

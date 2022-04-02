@@ -26,18 +26,18 @@ class _$ItemTearOff {
       {String? id,
       required String description,
       Resource? resource,
-      required String userId,
       @TimestampDateTimeConverter() DateTime? createdAt,
       @TimestampDateTimeConverter() DateTime? updatedAt,
-      int rank = 0}) {
+      int rank = 0,
+      @JsonKey(ignore: true) DocumentSnapshot<Object?>? doc}) {
     return _Item(
       id: id,
       description: description,
       resource: resource,
-      userId: userId,
       createdAt: createdAt,
       updatedAt: updatedAt,
       rank: rank,
+      doc: doc,
     );
   }
 
@@ -54,12 +54,13 @@ mixin _$Item {
   String? get id => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
   Resource? get resource => throw _privateConstructorUsedError;
-  String get userId => throw _privateConstructorUsedError;
   @TimestampDateTimeConverter()
   DateTime? get createdAt => throw _privateConstructorUsedError;
   @TimestampDateTimeConverter()
   DateTime? get updatedAt => throw _privateConstructorUsedError;
   int get rank => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  DocumentSnapshot<Object?>? get doc => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -74,10 +75,10 @@ abstract class $ItemCopyWith<$Res> {
       {String? id,
       String description,
       Resource? resource,
-      String userId,
       @TimestampDateTimeConverter() DateTime? createdAt,
       @TimestampDateTimeConverter() DateTime? updatedAt,
-      int rank});
+      int rank,
+      @JsonKey(ignore: true) DocumentSnapshot<Object?>? doc});
 
   $ResourceCopyWith<$Res>? get resource;
 }
@@ -95,10 +96,10 @@ class _$ItemCopyWithImpl<$Res> implements $ItemCopyWith<$Res> {
     Object? id = freezed,
     Object? description = freezed,
     Object? resource = freezed,
-    Object? userId = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
     Object? rank = freezed,
+    Object? doc = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -113,10 +114,6 @@ class _$ItemCopyWithImpl<$Res> implements $ItemCopyWith<$Res> {
           ? _value.resource
           : resource // ignore: cast_nullable_to_non_nullable
               as Resource?,
-      userId: userId == freezed
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as String,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -129,6 +126,10 @@ class _$ItemCopyWithImpl<$Res> implements $ItemCopyWith<$Res> {
           ? _value.rank
           : rank // ignore: cast_nullable_to_non_nullable
               as int,
+      doc: doc == freezed
+          ? _value.doc
+          : doc // ignore: cast_nullable_to_non_nullable
+              as DocumentSnapshot<Object?>?,
     ));
   }
 
@@ -153,10 +154,10 @@ abstract class _$ItemCopyWith<$Res> implements $ItemCopyWith<$Res> {
       {String? id,
       String description,
       Resource? resource,
-      String userId,
       @TimestampDateTimeConverter() DateTime? createdAt,
       @TimestampDateTimeConverter() DateTime? updatedAt,
-      int rank});
+      int rank,
+      @JsonKey(ignore: true) DocumentSnapshot<Object?>? doc});
 
   @override
   $ResourceCopyWith<$Res>? get resource;
@@ -176,10 +177,10 @@ class __$ItemCopyWithImpl<$Res> extends _$ItemCopyWithImpl<$Res>
     Object? id = freezed,
     Object? description = freezed,
     Object? resource = freezed,
-    Object? userId = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
     Object? rank = freezed,
+    Object? doc = freezed,
   }) {
     return _then(_Item(
       id: id == freezed
@@ -194,10 +195,6 @@ class __$ItemCopyWithImpl<$Res> extends _$ItemCopyWithImpl<$Res>
           ? _value.resource
           : resource // ignore: cast_nullable_to_non_nullable
               as Resource?,
-      userId: userId == freezed
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as String,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -210,6 +207,10 @@ class __$ItemCopyWithImpl<$Res> extends _$ItemCopyWithImpl<$Res>
           ? _value.rank
           : rank // ignore: cast_nullable_to_non_nullable
               as int,
+      doc: doc == freezed
+          ? _value.doc
+          : doc // ignore: cast_nullable_to_non_nullable
+              as DocumentSnapshot<Object?>?,
     ));
   }
 }
@@ -221,10 +222,10 @@ class _$_Item extends _Item {
       {this.id,
       required this.description,
       this.resource,
-      required this.userId,
       @TimestampDateTimeConverter() this.createdAt,
       @TimestampDateTimeConverter() this.updatedAt,
-      this.rank = 0})
+      this.rank = 0,
+      @JsonKey(ignore: true) this.doc})
       : super._();
 
   factory _$_Item.fromJson(Map<String, dynamic> json) => _$$_ItemFromJson(json);
@@ -236,8 +237,6 @@ class _$_Item extends _Item {
   @override
   final Resource? resource;
   @override
-  final String userId;
-  @override
   @TimestampDateTimeConverter()
   final DateTime? createdAt;
   @override
@@ -246,10 +245,13 @@ class _$_Item extends _Item {
   @JsonKey()
   @override
   final int rank;
+  @override
+  @JsonKey(ignore: true)
+  final DocumentSnapshot<Object?>? doc;
 
   @override
   String toString() {
-    return 'Item(id: $id, description: $description, resource: $resource, userId: $userId, createdAt: $createdAt, updatedAt: $updatedAt, rank: $rank)';
+    return 'Item(id: $id, description: $description, resource: $resource, createdAt: $createdAt, updatedAt: $updatedAt, rank: $rank, doc: $doc)';
   }
 
   @override
@@ -261,10 +263,10 @@ class _$_Item extends _Item {
             const DeepCollectionEquality()
                 .equals(other.description, description) &&
             const DeepCollectionEquality().equals(other.resource, resource) &&
-            const DeepCollectionEquality().equals(other.userId, userId) &&
             const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
             const DeepCollectionEquality().equals(other.updatedAt, updatedAt) &&
-            const DeepCollectionEquality().equals(other.rank, rank));
+            const DeepCollectionEquality().equals(other.rank, rank) &&
+            const DeepCollectionEquality().equals(other.doc, doc));
   }
 
   @override
@@ -273,10 +275,10 @@ class _$_Item extends _Item {
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(description),
       const DeepCollectionEquality().hash(resource),
-      const DeepCollectionEquality().hash(userId),
       const DeepCollectionEquality().hash(createdAt),
       const DeepCollectionEquality().hash(updatedAt),
-      const DeepCollectionEquality().hash(rank));
+      const DeepCollectionEquality().hash(rank),
+      const DeepCollectionEquality().hash(doc));
 
   @JsonKey(ignore: true)
   @override
@@ -294,10 +296,10 @@ abstract class _Item extends Item {
       {String? id,
       required String description,
       Resource? resource,
-      required String userId,
       @TimestampDateTimeConverter() DateTime? createdAt,
       @TimestampDateTimeConverter() DateTime? updatedAt,
-      int rank}) = _$_Item;
+      int rank,
+      @JsonKey(ignore: true) DocumentSnapshot<Object?>? doc}) = _$_Item;
   const _Item._() : super._();
 
   factory _Item.fromJson(Map<String, dynamic> json) = _$_Item.fromJson;
@@ -309,8 +311,6 @@ abstract class _Item extends Item {
   @override
   Resource? get resource;
   @override
-  String get userId;
-  @override
   @TimestampDateTimeConverter()
   DateTime? get createdAt;
   @override
@@ -318,6 +318,9 @@ abstract class _Item extends Item {
   DateTime? get updatedAt;
   @override
   int get rank;
+  @override
+  @JsonKey(ignore: true)
+  DocumentSnapshot<Object?>? get doc;
   @override
   @JsonKey(ignore: true)
   _$ItemCopyWith<_Item> get copyWith => throw _privateConstructorUsedError;

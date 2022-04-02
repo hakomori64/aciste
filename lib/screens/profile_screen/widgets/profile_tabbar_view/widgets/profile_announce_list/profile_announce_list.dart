@@ -13,17 +13,23 @@ class ProfileAnnounceList extends HookConsumerWidget {
 
     final announcementListState = ref.watch(profileAnnounceListControllerProvider);
 
-    return announcementListState.when(
-      data: (announcements) => announcements.isEmpty ? const Center(
-        child: Text('おしらせはありません'),
-      ): ListView(
-        children: announcements.map((announcement) {
-          return ProfileAnnounceTile(announcement: announcement);
-        }).toList(),
+    return announcementListState.data.when(
+      data: (announcements) => announcements.isEmpty ? const SliverToBoxAdapter(
+        child: Center(
+          child: Text('おしらせはありません'),
+        ),
+      ): SliverList(
+        delegate: SliverChildListDelegate(
+          announcements.map((announcement) {
+            return ProfileAnnounceTile(announcement: announcement);
+          }).toList(),
+        ),
       ),
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, _) => SomethingWentWrong(
-        message: error is CustomException ? error.message! : 'Something went wrong',
+      loading: () => const SliverToBoxAdapter(child: Center(child: CircularProgressIndicator())),
+      error: (error, _) => SliverToBoxAdapter(
+        child: SomethingWentWrong(
+          message: error is CustomException ? error.message! : 'Something went wrong',
+        ),
       )
     );
   }

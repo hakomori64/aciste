@@ -7,12 +7,29 @@ class ProfileTabBarView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const TabBarView(
-      physics: NeverScrollableScrollPhysics(),
+    return TabBarView(
       children: [
-        ProfileItemList(),
-        ProfileAnnounceList(),
-      ],
+        const ProfileItemList(),
+        const ProfileAnnounceList(),
+      ].map((widget) {
+        return SafeArea(
+          top: false,
+          bottom: false,
+          child: Builder(
+            builder: (context) {
+              return CustomScrollView(
+                key: PageStorageKey<String>(widget.toString()),
+                slivers: [
+                  SliverOverlapInjector(
+                    handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context)
+                  ),
+                  widget,
+                ],
+              );
+            }
+          )
+        );
+      }).toList(),
     );
   }
 }

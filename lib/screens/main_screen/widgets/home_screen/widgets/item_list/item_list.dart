@@ -23,7 +23,8 @@ class ItemList extends HookConsumerWidget {
           await ref.read(itemListControllerProvider.notifier).retrieveItemsBeforePage();
         }
       });
-      return scrollController.dispose;
+
+      return;
     }, [scrollController]);
 
     return itemListState.data.when(

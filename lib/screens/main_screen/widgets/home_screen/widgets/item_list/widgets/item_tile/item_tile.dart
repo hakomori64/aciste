@@ -42,7 +42,7 @@ class ItemTile extends HookConsumerWidget {
               children: [
                 Tooltip(
                   message: item.rank <= 0
-                    ? '' 
+                    ? ''
                     : '${numWithSuffix(item.rank)} discoverer',
                   child: FaIcon(
                     FontAwesomeIcons.trophy,
@@ -72,7 +72,7 @@ class ItemTile extends HookConsumerWidget {
                         title: const Text('アイテムの作成をおしらせ'),
                         onTap: () async {
                           ref.read(routerProvider.notifier).closeBottomSheet();
-                          ref.read(routerProvider.notifier).push(route: Routes.announceCreate, extra: AnnounceCreateRouteParams(announceType: AnnounceType.itemCreate));
+                          ref.read(routerProvider.notifier).push(route: Routes.announceCreate, extra: AnnounceCreateRouteParams(message: '', announceType: AnnounceType.itemCreate));
                         }
                       ),
                       if (me?.uid != null && item.resource!.createdBy?.id == me?.uid) ListTile(

@@ -1,5 +1,5 @@
 import 'package:aciste/custom_exception.dart';
-import 'package:aciste/screens/profile_screen/widgets/profile_tabbar_view/widgets/profile_item_list/controllers/profile_item_list_controller.dart';
+import 'package:aciste/controllers/profile_item_list_controller.dart';
 import './widgets/profile_item_tile/profile_item_tile.dart';
 import 'package:aciste/widgets/something_went_wrong/something_went_wrong.dart';
 import 'package:flutter/material.dart';

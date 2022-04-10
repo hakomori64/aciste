@@ -51,7 +51,7 @@ export const notifyToFollowers = functions.https.onCall(
           };
         }
 
-        await db.collection("announcements")
+        await db.collection("users").doc(userId).collection("announcements")
             .add({
               message: message,
               userId: userId,

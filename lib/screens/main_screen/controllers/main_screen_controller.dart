@@ -5,15 +5,16 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 part 'main_screen_controller.freezed.dart';
 
 enum BottomItem {
-  home,
+  cmap,
+  item,
   announcement,
 }
 
 @freezed
 class MainScreenState with _$MainScreenState {
   const factory MainScreenState({
-    @Default(BottomItem.home) BottomItem page,
-    @Default(false) bool isSelecting 
+    @Default(BottomItem.cmap) BottomItem page,
+    @Default(false) bool isSelecting
   }) = _MainScreenState;
 }
 

@@ -9,6 +9,7 @@ import 'package:aciste/providers.dart';
 import 'package:aciste/extensions/firebase_firestore_extension.dart';
 
 abstract class BaseItemRepository {
+  Future<Item> retrieveItem({required String itemId});
   Future<Item> createItem({required Item item});
   Future<Item> updateItem({required Item item});
   Future<void> deleteItem({required String itemId});
@@ -44,6 +45,23 @@ class ItemRepository extends PagingRepository<Item> implements BaseItemRepositor
     };
 
     await super.initState();
+  }
+
+  @override
+  Future<Item> retrieveItem({required String itemId}) async {
+    if (converter == null) {
+      await initState();
+    }
+
+    try {
+      final doc = await _read(firebaseFirestoreProvider)
+        .userItemsRef(_userId)
+        .doc(itemId).get();
+
+      return converter!(doc: doc);
+    } on FirebaseException catch (e) {
+      throw CustomException(message: e.message);
+    }
   }
 
   @override

@@ -4,7 +4,8 @@ import 'package:aciste/controllers/user_controller.dart';
 import 'package:aciste/custom_exception.dart';
 import 'package:aciste/router.dart';
 import 'package:aciste/screens/main_screen/controllers/main_screen_controller.dart';
-import 'package:aciste/screens/main_screen/widgets/home_screen/home_screen.dart';
+import 'package:aciste/screens/main_screen/widgets/cmap_screen/cmap_screen.dart';
+import 'package:aciste/screens/main_screen/widgets/item_screen/item_screen.dart';
 import 'package:aciste/screens/main_screen/widgets/announcement_screen/announcement_screen.dart';
 import 'package:aciste/screens/main_screen/widgets/main_floating_action_button/main_floating_action_button.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -97,7 +98,8 @@ class MainScreen extends HookConsumerWidget {
                     controller: pageController,
                     onPageChanged: ref.read(mainScreenControllerProvider.notifier).onPageChange,
                     children: const [
-                      HomeScreen(),
+                      CMapScreen(),
+                      ItemScreen(),
                       AnnouncementScreen(),
                     ],
                   ),
@@ -109,7 +111,11 @@ class MainScreen extends HookConsumerWidget {
                     items: const [
                       BottomNavigationBarItem(
                         icon: ImageIcon(AssetImage('assets/images/logo.png')),
-                        label: 'アイテム'
+                        label: 'キャッシュ'
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.inventory),
+                        label: 'インベントリ'
                       ),
                       BottomNavigationBarItem(
                         icon: FaIcon(FontAwesomeIcons.comment),

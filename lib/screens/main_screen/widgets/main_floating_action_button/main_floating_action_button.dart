@@ -1,3 +1,4 @@
+import 'package:aciste/enums/cmap_type.dart';
 import 'package:aciste/models/announcement.dart';
 import 'package:aciste/router.dart';
 import 'package:aciste/screens/main_screen/controllers/main_screen_controller.dart';
@@ -12,7 +13,31 @@ class MainFloatingActionButton extends HookConsumerWidget {
   Widget build(context, ref) {
     final mainScreenControllerState = ref.watch(mainScreenControllerProvider);
     switch (mainScreenControllerState.page) {
-      case BottomItem.home:
+      case BottomItem.cmap:
+        return Column(
+          verticalDirection: VerticalDirection.up,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              margin: const EdgeInsets.only(bottom: 16.0),
+              child: RawMaterialButton(
+                onPressed: () async {
+                  await ref.read(routerProvider.notifier).push(route: Routes.cMapCreate, extra: const CMapCreateRouteParams(message: '', password: '', link: '', cMapType: CMapType.password));
+                },
+                elevation: 2.0,
+                fillColor: Theme.of(context).primaryColor,
+                child: Container(
+                  width: 50,
+                  height: 50,
+                  padding: const EdgeInsets.all(5.0),
+                  child: const Center(child: Icon(Icons.add_box, size: 32.0, color: Colors.white)),
+                ),
+                shape: const CircleBorder(),
+              )
+            )
+          ],
+        );
+      case BottomItem.item:
         return mainScreenControllerState.isSelecting ? Column(
           verticalDirection: VerticalDirection.up,
           mainAxisSize: MainAxisSize.min,

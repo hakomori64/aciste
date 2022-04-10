@@ -24,8 +24,7 @@ class AnnouncementRepository extends PagingRepository<Announcement> implements B
   @override
   Future<void> initState() async {
     baseQuery = _read(firebaseFirestoreProvider)
-      .announcementsRef()
-      .where('userId', isEqualTo: _userId)
+      .userAnnouncementsRef(_userId)
       .orderBy('createdAt', descending: true);
 
     converter = ({

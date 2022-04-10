@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:aciste/controllers/auth_controller.dart';
 import 'package:aciste/controllers/dynamic_links_controller.dart';
 import 'package:aciste/enums/attachment_type.dart';
+import 'package:aciste/enums/cmap_type.dart';
 import 'package:aciste/models/announcement.dart';
 import 'package:aciste/models/attachment.dart';
 import 'package:aciste/models/resource.dart';
@@ -10,6 +11,7 @@ import 'package:aciste/repositories/resource_repository.dart';
 import 'package:aciste/screens/announce_create_screen/announce_create_screen.dart';
 import 'package:aciste/screens/announce_create_screen/controllers/announce_create_screen_controller.dart';
 import 'package:aciste/screens/attachment_detail_screen/controllers/attachment_detail_screen_controller.dart';
+import 'package:aciste/screens/cmap_create_screen/controllers/cmap_create_screen_controller.dart';
 import 'package:aciste/screens/dialog_screen/dialog_screen.dart';
 import 'package:aciste/screens/dialog_screen/controllers/dialog_screen_controller.dart';
 import 'package:aciste/screens/email_check_screen/email_check_screen.dart';
@@ -41,6 +43,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'models/item.dart';
 import 'screens/attachment_detail_screen/attachment_detail_screen.dart';
+import 'screens/cmap_create_screen/cmap_create_screen.dart';
 
 
 final routerProvider = StateNotifierProvider<RouterController, GoRouter?>((ref) => RouterController(
@@ -125,6 +128,10 @@ class RouterController extends StateNotifier<GoRouter?> {
         GoRoute(
           path: Routes.itemCreate.route,
           builder: (context, state) => screen(route: Routes.itemCreate),
+        ),
+        GoRoute(
+          path: Routes.cMapCreate.route,
+          builder: (context, state) => screen(route: Routes.cMapCreate),
         ),
         GoRoute(
           path: Routes.attachmentDetail.route,
@@ -263,6 +270,16 @@ class RouterController extends StateNotifier<GoRouter?> {
       case Routes.itemCreate:
         _read(itemCreateScreenControllerProvider.notifier).setAttachments([]);
         break;
+      case Routes.cMapCreate:
+        final params = extra! as CMapCreateRouteParams;
+        _read(cMapCreateScreenControllerProvider.notifier).setPage(0);
+        _read(cMapCreateScreenControllerProvider.notifier).setMessage(params.message);
+        _read(cMapCreateScreenControllerProvider.notifier).setPassword(params.password);
+        _read(cMapCreateScreenControllerProvider.notifier).setLink(params.link);
+        _read(cMapCreateScreenControllerProvider.notifier).setType(params.cMapType);
+        _read(cMapCreateScreenControllerProvider.notifier).setItem(params.item);
+        _read(cMapCreateScreenControllerProvider.notifier).setAttachments([]);
+        break;
       case Routes.itemEdit:
         final params = extra! as ItemEditRouteParams;
         _read(itemEditScreenControllerProvider.notifier).setItem(params.item);
@@ -333,6 +350,8 @@ class RouterController extends StateNotifier<GoRouter?> {
         return const ItemCreateScreen();
       case Routes.itemEdit:
         return const ItemEditScreen();
+      case Routes.cMapCreate:
+        return const CMapCreateScreen();
       case Routes.resourceEdit:
         return const ResourceEditScreen();
       case Routes.attachmentDetail:
@@ -359,6 +378,7 @@ enum Routes {
   media,
   itemCreate,
   itemEdit,
+  cMapCreate,
   resourceEdit,
   attachmentDetail,
   itemImport,
@@ -397,6 +417,16 @@ class FollowsRouteParams {
 class ItemEditRouteParams {
   final Item item;
   ItemEditRouteParams({required this.item});
+}
+
+class CMapCreateRouteParams {
+  final String message;
+  final String password;
+  final String link;
+  final CMapType cMapType;
+  final Item? item;
+
+  const CMapCreateRouteParams({ required this.message, required this.password, required this.link, required this.cMapType, this.item });
 }
 
 class ResourceEditRouteParams {

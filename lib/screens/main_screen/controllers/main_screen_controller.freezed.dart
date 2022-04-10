@@ -19,7 +19,7 @@ class _$MainScreenStateTearOff {
   const _$MainScreenStateTearOff();
 
   _MainScreenState call(
-      {BottomItem page = BottomItem.home, bool isSelecting = false}) {
+      {BottomItem page = BottomItem.cmap, bool isSelecting = false}) {
     return _MainScreenState(
       page: page,
       isSelecting: isSelecting,
@@ -118,7 +118,7 @@ class __$MainScreenStateCopyWithImpl<$Res>
 
 class _$_MainScreenState implements _MainScreenState {
   const _$_MainScreenState(
-      {this.page = BottomItem.home, this.isSelecting = false});
+      {this.page = BottomItem.cmap, this.isSelecting = false});
 
   @JsonKey()
   @override

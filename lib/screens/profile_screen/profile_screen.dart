@@ -9,7 +9,7 @@ import 'package:aciste/screens/qrcode_screen/controllers/qrcode_screen_controlle
 import 'package:aciste/widgets/user_icon/user_icon.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:aciste/screens/profile_screen/widgets/profile_tabbar_view/widgets/profile_item_list/controllers/profile_item_list_controller.dart';
+import 'package:aciste/controllers/profile_item_list_controller.dart';
 import 'package:aciste/screens/profile_screen/widgets/profile_tabbar_view/widgets/profile_announce_list/controllers/profile_announce_list_controller.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';

@@ -5,11 +5,11 @@ part '{{ controller_name_without_extension }}.freezed.dart';
 
 @freezed
 class {{ state_name }} with _${{ state_name }} {
-    const factory {{ state_name }}() = _{{ state_name }};
+  const factory {{ state_name }}() = _{{ state_name }};
 }
 
 final {{ controller_provider_name }} = StateNotifierProvider<{{ controller_name }}, {{ state_name }}>((ref) => {{ controller_name }}());
 
 class {{ controller_name }} extends StateNotifier<{{ state_name }}> {
-    {{ controller_name }}() : super(const {{ state_name }}());
+  {{ controller_name }}() : super(const {{ state_name }}());
 }

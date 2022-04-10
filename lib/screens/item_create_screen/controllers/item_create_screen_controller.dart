@@ -48,9 +48,9 @@ class ItemCreateScreenController extends StateNotifier<ItemCreateScreenState> {
     );
     final attachment = await _read(attachmentRepositoryProvider)
       .craftAttachment(attachmentType: attachmentType, createAttachmentDataParams: data);
-    
+
     final uid = const Uuid().v4();
-    
+
     state = state.copyWith(
       attachments: [...oldAttachments, AsyncValue.data(attachment.copyWith(id: uid))]
     );
@@ -63,7 +63,7 @@ class ItemCreateScreenController extends StateNotifier<ItemCreateScreenState> {
   }) async {
     final newAttachment = await _read(attachmentRepositoryProvider)
       .craftAttachment(attachmentType: attachmentType, createAttachmentDataParams: data);
-    
+
     final uid = const Uuid().v4();
 
     state = state.copyWith(

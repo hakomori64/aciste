@@ -1,6 +1,6 @@
 import 'package:aciste/converters/timestamp_converter.dart';
 import 'package:aciste/models/cmap.dart';
-import 'package:aciste/repositories/item_repository.dart';
+import 'package:aciste/repositories/cache_repository.dart';
 import 'package:aciste/repositories/user_repository.dart';
 import 'package:aciste/utils/paging/repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -38,10 +38,10 @@ class CMapRepository extends PagingRepository<CMap> implements BaseCMapRepositor
     }) async {
       final cmap = CMap.fromDocumentSnapshot(doc);
       final user = await _read(userRepositoryProvider).getUser(userId: doc.data()!['userId']);
-      final item = await _read(itemRepositoryProvider(ItemRepositoryParams(userId: _userId))).retrieveItem(itemId: doc.data()!['itemId']);
+      final cache = await _read(cacheRepositoryProvider(CacheRepositoryParams(userId: _userId))).retrieveCache(cacheId: doc.data()!['cacheId']);
 
       return cmap.copyWith(
-        item: item,
+        cache: cache,
         user: user
       );
     };

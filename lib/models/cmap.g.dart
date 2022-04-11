@@ -12,9 +12,9 @@ _$_CMap _$$_CMapFromJson(Map<String, dynamic> json) => _$_CMap(
       password: json['password'] as String,
       link: json['link'] as String,
       type: json['type'] ?? CMapType.password,
-      item: json['item'] == null
+      cache: json['cache'] == null
           ? null
-          : Item.fromJson(json['item'] as Map<String, dynamic>),
+          : Cache.fromJson(json['cache'] as Map<String, dynamic>),
       user: json['user'] == null
           ? null
           : User.fromJson(json['user'] as Map<String, dynamic>),
@@ -34,7 +34,7 @@ Map<String, dynamic> _$$_CMapToJson(_$_CMap instance) => <String, dynamic>{
       'password': instance.password,
       'link': instance.link,
       'type': instance.type,
-      'item': instance.item,
+      'cache': instance.cache,
       'user': instance.user,
       'createdAt':
           const TimestampDateTimeConverter().toJson(instance.createdAt),

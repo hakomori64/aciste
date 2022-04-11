@@ -17,7 +17,7 @@ class ProfileTabBar extends HookConsumerWidget {
           labelColor: Theme.of(context).primaryColor,
           tabs: Tabs.values.map((tab) {
             switch (tab) {
-              case Tabs.items:
+              case Tabs.caches:
                 return const Tab(
                   child: ImageIcon(AssetImage('assets/images/logo.png'))
                 );

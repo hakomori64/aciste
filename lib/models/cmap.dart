@@ -1,7 +1,7 @@
 import 'package:aciste/converters/timestamp_converter.dart';
 import 'package:aciste/enums/cmap_type.dart';
 import 'package:aciste/models/attachment.dart';
-import 'package:aciste/models/item.dart';
+import 'package:aciste/models/cache.dart';
 import 'package:aciste/models/user.dart';
 import 'package:aciste/utils/paging/pager.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -19,7 +19,7 @@ abstract class CMap with _$CMap implements PagingItem {
     required String password,
     required String link,
     @Default(CMapType.password) type,
-    Item? item,
+    Cache? cache,
     User? user,
     @TimestampDateTimeConverter() DateTime? createdAt,
     @TimestampDateTimeConverter() DateTime? updatedAt,
@@ -45,11 +45,11 @@ abstract class CMap with _$CMap implements PagingItem {
   Map<String, dynamic> toDocument() {
     final data = toJson()
       ..remove('id')
-      ..remove('item')
+      ..remove('cache')
       ..remove('user')
       ..remove('attachments');
 
-    data['itemId'] = item?.id ?? '';
+    data['cacheId'] = cache?.id ?? '';
     data['userId'] = user?.id ?? '';
 
     return data;

@@ -7,11 +7,11 @@ class AnnouncementTileTopIcon extends HookConsumerWidget {
   const AnnouncementTileTopIcon({Key? key, required this.announcement}) : super(key: key);
 
   final Announcement announcement;
-  
+
   @override
   Widget build(context, ref) {
     switch (announcement.announceType!) {
-      case AnnounceType.itemCreate:
+      case AnnounceType.cacheCreate:
         return ImageIcon(
           const AssetImage('assets/images/logo.png'),
           color: Theme.of(context).primaryColor,

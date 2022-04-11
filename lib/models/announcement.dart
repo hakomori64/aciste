@@ -7,7 +7,7 @@ part 'announcement.freezed.dart';
 part 'announcement.g.dart';
 
 enum AnnounceType {
-  itemCreate,
+  cacheCreate,
   other,
 }
 

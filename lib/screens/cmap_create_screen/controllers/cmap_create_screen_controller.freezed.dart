@@ -24,7 +24,7 @@ class _$CMapCreateScreenStateTearOff {
       String password = '',
       String link = '',
       dynamic type = CMapType.password,
-      Item? item,
+      Cache? cache,
       List<AsyncValue<Attachment>> attachments = const []}) {
     return _CMapCreateScreenState(
       page: page,
@@ -32,7 +32,7 @@ class _$CMapCreateScreenStateTearOff {
       password: password,
       link: link,
       type: type,
-      item: item,
+      cache: cache,
       attachments: attachments,
     );
   }
@@ -48,7 +48,7 @@ mixin _$CMapCreateScreenState {
   String get password => throw _privateConstructorUsedError;
   String get link => throw _privateConstructorUsedError;
   dynamic get type => throw _privateConstructorUsedError;
-  Item? get item => throw _privateConstructorUsedError;
+  Cache? get cache => throw _privateConstructorUsedError;
   List<AsyncValue<Attachment>> get attachments =>
       throw _privateConstructorUsedError;
 
@@ -68,10 +68,10 @@ abstract class $CMapCreateScreenStateCopyWith<$Res> {
       String password,
       String link,
       dynamic type,
-      Item? item,
+      Cache? cache,
       List<AsyncValue<Attachment>> attachments});
 
-  $ItemCopyWith<$Res>? get item;
+  $CacheCopyWith<$Res>? get cache;
 }
 
 /// @nodoc
@@ -90,7 +90,7 @@ class _$CMapCreateScreenStateCopyWithImpl<$Res>
     Object? password = freezed,
     Object? link = freezed,
     Object? type = freezed,
-    Object? item = freezed,
+    Object? cache = freezed,
     Object? attachments = freezed,
   }) {
     return _then(_value.copyWith(
@@ -114,10 +114,10 @@ class _$CMapCreateScreenStateCopyWithImpl<$Res>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as dynamic,
-      item: item == freezed
-          ? _value.item
-          : item // ignore: cast_nullable_to_non_nullable
-              as Item?,
+      cache: cache == freezed
+          ? _value.cache
+          : cache // ignore: cast_nullable_to_non_nullable
+              as Cache?,
       attachments: attachments == freezed
           ? _value.attachments
           : attachments // ignore: cast_nullable_to_non_nullable
@@ -126,13 +126,13 @@ class _$CMapCreateScreenStateCopyWithImpl<$Res>
   }
 
   @override
-  $ItemCopyWith<$Res>? get item {
-    if (_value.item == null) {
+  $CacheCopyWith<$Res>? get cache {
+    if (_value.cache == null) {
       return null;
     }
 
-    return $ItemCopyWith<$Res>(_value.item!, (value) {
-      return _then(_value.copyWith(item: value));
+    return $CacheCopyWith<$Res>(_value.cache!, (value) {
+      return _then(_value.copyWith(cache: value));
     });
   }
 }
@@ -150,11 +150,11 @@ abstract class _$CMapCreateScreenStateCopyWith<$Res>
       String password,
       String link,
       dynamic type,
-      Item? item,
+      Cache? cache,
       List<AsyncValue<Attachment>> attachments});
 
   @override
-  $ItemCopyWith<$Res>? get item;
+  $CacheCopyWith<$Res>? get cache;
 }
 
 /// @nodoc
@@ -175,7 +175,7 @@ class __$CMapCreateScreenStateCopyWithImpl<$Res>
     Object? password = freezed,
     Object? link = freezed,
     Object? type = freezed,
-    Object? item = freezed,
+    Object? cache = freezed,
     Object? attachments = freezed,
   }) {
     return _then(_CMapCreateScreenState(
@@ -196,10 +196,10 @@ class __$CMapCreateScreenStateCopyWithImpl<$Res>
           : link // ignore: cast_nullable_to_non_nullable
               as String,
       type: type == freezed ? _value.type : type,
-      item: item == freezed
-          ? _value.item
-          : item // ignore: cast_nullable_to_non_nullable
-              as Item?,
+      cache: cache == freezed
+          ? _value.cache
+          : cache // ignore: cast_nullable_to_non_nullable
+              as Cache?,
       attachments: attachments == freezed
           ? _value.attachments
           : attachments // ignore: cast_nullable_to_non_nullable
@@ -217,7 +217,7 @@ class _$_CMapCreateScreenState implements _CMapCreateScreenState {
       this.password = '',
       this.link = '',
       this.type = CMapType.password,
-      this.item,
+      this.cache,
       this.attachments = const []});
 
   @JsonKey()
@@ -236,14 +236,14 @@ class _$_CMapCreateScreenState implements _CMapCreateScreenState {
   @override
   final dynamic type;
   @override
-  final Item? item;
+  final Cache? cache;
   @JsonKey()
   @override
   final List<AsyncValue<Attachment>> attachments;
 
   @override
   String toString() {
-    return 'CMapCreateScreenState(page: $page, message: $message, password: $password, link: $link, type: $type, item: $item, attachments: $attachments)';
+    return 'CMapCreateScreenState(page: $page, message: $message, password: $password, link: $link, type: $type, cache: $cache, attachments: $attachments)';
   }
 
   @override
@@ -256,7 +256,7 @@ class _$_CMapCreateScreenState implements _CMapCreateScreenState {
             const DeepCollectionEquality().equals(other.password, password) &&
             const DeepCollectionEquality().equals(other.link, link) &&
             const DeepCollectionEquality().equals(other.type, type) &&
-            const DeepCollectionEquality().equals(other.item, item) &&
+            const DeepCollectionEquality().equals(other.cache, cache) &&
             const DeepCollectionEquality()
                 .equals(other.attachments, attachments));
   }
@@ -269,7 +269,7 @@ class _$_CMapCreateScreenState implements _CMapCreateScreenState {
       const DeepCollectionEquality().hash(password),
       const DeepCollectionEquality().hash(link),
       const DeepCollectionEquality().hash(type),
-      const DeepCollectionEquality().hash(item),
+      const DeepCollectionEquality().hash(cache),
       const DeepCollectionEquality().hash(attachments));
 
   @JsonKey(ignore: true)
@@ -286,7 +286,7 @@ abstract class _CMapCreateScreenState implements CMapCreateScreenState {
       String password,
       String link,
       dynamic type,
-      Item? item,
+      Cache? cache,
       List<AsyncValue<Attachment>> attachments}) = _$_CMapCreateScreenState;
 
   @override
@@ -300,7 +300,7 @@ abstract class _CMapCreateScreenState implements CMapCreateScreenState {
   @override
   dynamic get type;
   @override
-  Item? get item;
+  Cache? get cache;
   @override
   List<AsyncValue<Attachment>> get attachments;
   @override

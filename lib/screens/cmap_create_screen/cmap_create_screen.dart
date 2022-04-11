@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'widgets/cmap_confirm/cmap_confirm.dart';
 import 'widgets/cmap_detail/cmap_detail.dart';
-import 'widgets/cmap_item/cmap_item.dart';
+import 'widgets/cmap_cache/cmap_cache.dart';
 import 'widgets/next_button/next_button.dart';
 
 class CMapCreateScreen extends HookConsumerWidget {
@@ -52,7 +52,7 @@ class CMapCreateScreen extends HookConsumerWidget {
         physics: const NeverScrollableScrollPhysics(),
         children: const [
           CMapDetail(),
-          CMapItem(),
+          CMapCache(),
           CMapConfirm(),
         ],
       )

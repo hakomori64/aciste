@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './widgets/profile_item_list/profile_item_list.dart';
+import './widgets/profile_cache_list/profile_cache_list.dart';
 import './widgets/profile_announce_list/profile_announce_list.dart';
 
 class ProfileTabBarView extends StatelessWidget {
@@ -9,7 +9,7 @@ class ProfileTabBarView extends StatelessWidget {
   Widget build(BuildContext context) {
     return TabBarView(
       children: [
-        const ProfileItemList(),
+        const ProfileCacheList(),
         const ProfileAnnounceList(),
       ].map((widget) {
         return SafeArea(

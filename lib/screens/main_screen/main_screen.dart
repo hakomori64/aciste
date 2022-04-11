@@ -5,7 +5,7 @@ import 'package:aciste/custom_exception.dart';
 import 'package:aciste/router.dart';
 import 'package:aciste/screens/main_screen/controllers/main_screen_controller.dart';
 import 'package:aciste/screens/main_screen/widgets/cmap_screen/cmap_screen.dart';
-import 'package:aciste/screens/main_screen/widgets/item_screen/item_screen.dart';
+import 'package:aciste/screens/main_screen/widgets/cache_screen/cache_screen.dart';
 import 'package:aciste/screens/main_screen/widgets/announcement_screen/announcement_screen.dart';
 import 'package:aciste/screens/main_screen/widgets/main_floating_action_button/main_floating_action_button.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -99,7 +99,7 @@ class MainScreen extends HookConsumerWidget {
                     onPageChanged: ref.read(mainScreenControllerProvider.notifier).onPageChange,
                     children: const [
                       CMapScreen(),
-                      ItemScreen(),
+                      CacheScreen(),
                       AnnouncementScreen(),
                     ],
                   ),

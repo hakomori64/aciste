@@ -1,4 +1,4 @@
-import 'package:aciste/controllers/item_controller.dart';
+import 'package:aciste/controllers/cache_controller.dart';
 import 'package:aciste/controllers/user_controller.dart';
 import 'package:aciste/enums/attachment_type.dart';
 import 'package:aciste/models/photo.dart';
@@ -14,9 +14,9 @@ class ResourceEditScreen extends HookConsumerWidget {
 
     @override
     Widget build(context, ref) {
-      final item = ref.watch(resourceEditScreenControllerProvider).item;
-      final titleController = useTextEditingController(text: item.resource!.title);
-      final bodyController = useTextEditingController(text: item.resource!.body);
+      final cache = ref.watch(resourceEditScreenControllerProvider).cache;
+      final titleController = useTextEditingController(text: cache.resource!.title);
+      final bodyController = useTextEditingController(text: cache.resource!.body);
       final userControllerState = ref.watch(userControllerProvider);
       final user = userControllerState.asData?.value;
       final attachments = ref.watch(resourceEditScreenControllerProvider).attachments;
@@ -65,12 +65,12 @@ class ResourceEditScreen extends HookConsumerWidget {
                   onPressed: title.isNotEmpty && attachments.where((attachment) => attachment.asData?.value == null).toList().isEmpty ? () async {
                     FocusManager.instance.primaryFocus?.unfocus();
                     ref.read(routerProvider.notifier).go(route: Routes.main);
-                    await ref.read(itemListControllerProvider.notifier).updateItem(
-                      itemId: item.id!,
-                      description: item.description,
+                    await ref.read(cacheListControllerProvider.notifier).updateCache(
+                      cacheId: cache.id!,
+                      description: cache.description,
                       title: title,
                       body: body,
-                      createdBy: item.resource!.createdBy!.id!,
+                      createdBy: cache.resource!.createdBy!.id!,
                       attachments: attachments.map((attachment) => attachment.asData!.value).toList(),
                     );
                   } : null,

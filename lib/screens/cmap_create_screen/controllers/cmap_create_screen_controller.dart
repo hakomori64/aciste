@@ -2,7 +2,7 @@ import 'package:aciste/enums/attachment_type.dart';
 import 'package:aciste/enums/cmap_type.dart';
 import 'package:aciste/models/attachment.dart';
 import 'package:aciste/models/attachment_data.dart';
-import 'package:aciste/models/item.dart';
+import 'package:aciste/models/cache.dart';
 import 'package:aciste/repositories/attachment_repository.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -18,7 +18,7 @@ class CMapCreateScreenState with _$CMapCreateScreenState {
     @Default('') String password,
     @Default('') String link,
     @Default(CMapType.password) type,
-    Item? item,
+    Cache? cache,
     @Default([]) List<AsyncValue<Attachment>> attachments,
   }) = _CMapCreateScreenState;
 }
@@ -50,9 +50,9 @@ class CMapCreateScreenController extends StateNotifier<CMapCreateScreenState> {
     state = state.copyWith(type: mapType);
   }
 
-  void setItem(Item? item) {
+  void setCache(Cache? cache) {
     state = state.copyWith(
-      item: item
+      cache: cache
     );
   }
 

@@ -11,7 +11,7 @@ class AnnounceBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     switch (announcement.announceType!) {
-      case AnnounceType.itemCreate:
+      case AnnounceType.cacheCreate:
         return Bubble(
           borderColor: Theme.of(context).primaryColor,
           borderWidth: 3,
@@ -59,7 +59,7 @@ class AnnounceBubble extends StatelessWidget {
                   throw 'Could not launch $link';
                 }
               },
-      
+
             ),
           ),
         );

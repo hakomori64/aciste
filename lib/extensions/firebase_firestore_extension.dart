@@ -34,7 +34,7 @@ extension FirebaseFirestoreX on FirebaseFirestore {
   DocumentReference<Map<String, dynamic>> userRef(String userId) =>
     collection('users').doc(userId);
 
-  CollectionReference<Map<String, dynamic>> userItemsRef(String userId) =>
-    collection('users').doc(userId).collection('items');
+  CollectionReference<Map<String, dynamic>> userCachesRef(String userId) =>
+    collection('users').doc(userId).collection('caches');
 
 }

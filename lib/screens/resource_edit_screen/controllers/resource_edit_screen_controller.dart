@@ -1,7 +1,7 @@
 import 'package:aciste/enums/attachment_type.dart';
 import 'package:aciste/models/attachment.dart';
 import 'package:aciste/models/attachment_data.dart';
-import 'package:aciste/models/item.dart';
+import 'package:aciste/models/cache.dart';
 import 'package:aciste/repositories/attachment_repository.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -12,7 +12,7 @@ part 'resource_edit_screen_controller.freezed.dart';
 @freezed
 class ResourceEditScreenState with _$ResourceEditScreenState {
   const factory ResourceEditScreenState({
-    required Item item,
+    required Cache cache,
     required String title,
     required String body,
     @Default([]) List<AsyncValue<Attachment>> attachments,
@@ -25,17 +25,17 @@ class ResourceEditScreenController extends StateNotifier<ResourceEditScreenState
   final Reader _read;
 
   ResourceEditScreenController(this._read) : super(ResourceEditScreenState(
-    item: Item.empty(),
+    cache: Cache.empty(),
     title: '',
     body: '',
   ));
 
-  void setItem(Item item) {
+  void setCache(Cache cache) {
     state = state.copyWith(
-      item: item,
-      title: item.resource!.title,
-      body: item.resource!.body,
-      attachments: (item.resource?.attachments ?? []).map((attachment) => AsyncValue.data(attachment)).toList()
+      cache: cache,
+      title: cache.resource!.title,
+      body: cache.resource!.body,
+      attachments: (cache.resource?.attachments ?? []).map((attachment) => AsyncValue.data(attachment)).toList()
     );
   }
 
@@ -63,9 +63,9 @@ class ResourceEditScreenController extends StateNotifier<ResourceEditScreenState
     );
     final attachment = await _read(attachmentRepositoryProvider)
       .craftAttachment(attachmentType: attachmentType, createAttachmentDataParams: data);
-    
+
     final uid = const Uuid().v4();
-    
+
     state = state.copyWith(
       attachments: [...oldAttachments, AsyncValue.data(attachment.copyWith(id: uid))]
     );
@@ -78,7 +78,7 @@ class ResourceEditScreenController extends StateNotifier<ResourceEditScreenState
   }) async {
     final newAttachment = await _read(attachmentRepositoryProvider)
       .craftAttachment(attachmentType: attachmentType, createAttachmentDataParams: data);
-    
+
     final uid = const Uuid().v4();
 
     state = state.copyWith(

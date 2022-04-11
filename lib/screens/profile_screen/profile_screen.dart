@@ -9,7 +9,7 @@ import 'package:aciste/screens/qrcode_screen/controllers/qrcode_screen_controlle
 import 'package:aciste/widgets/user_icon/user_icon.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:aciste/controllers/profile_item_list_controller.dart';
+import 'package:aciste/controllers/profile_cache_list_controller.dart';
 import 'package:aciste/screens/profile_screen/widgets/profile_tabbar_view/widgets/profile_announce_list/controllers/profile_announce_list_controller.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -22,7 +22,7 @@ enum PopupItems {
 }
 
 enum Tabs {
-  items,
+  caches,
   announcements,
 }
 
@@ -55,11 +55,11 @@ class _ProfileScreen extends HookConsumerWidget {
         if (tabIndex == null) return;
         final tab = Tabs.values[tabIndex];
         switch (tab) {
-          case Tabs.items:
+          case Tabs.caches:
             if (scrollController.offset == scrollController.position.maxScrollExtent) {
-              await ref.read(profileItemListControllerProvider.notifier).retrievePage();
+              await ref.read(profileCacheListControllerProvider.notifier).retrievePage();
             } else if (scrollController.offset <= 0) {
-              await ref.read(profileItemListControllerProvider.notifier).retrieveBeforePage();
+              await ref.read(profileCacheListControllerProvider.notifier).retrieveBeforePage();
             }
             return;
           case Tabs.announcements:

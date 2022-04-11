@@ -37,7 +37,7 @@ class MainFloatingActionButton extends HookConsumerWidget {
             )
           ],
         );
-      case BottomItem.item:
+      case BottomItem.cache:
         return mainScreenControllerState.isSelecting ? Column(
           verticalDirection: VerticalDirection.up,
           mainAxisSize: MainAxisSize.min,
@@ -68,7 +68,7 @@ class MainFloatingActionButton extends HookConsumerWidget {
               margin: const EdgeInsets.only(bottom: 16.0),
               child: RawMaterialButton(
                 onPressed: () async {
-                  await ref.read(routerProvider.notifier).push(route: Routes.itemCreate);
+                  await ref.read(routerProvider.notifier).push(route: Routes.cacheCreate);
                 },
                 elevation: 2.0,
                 fillColor: Theme.of(context).primaryColor,

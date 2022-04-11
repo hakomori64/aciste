@@ -19,12 +19,12 @@ class _$ResourceEditScreenStateTearOff {
   const _$ResourceEditScreenStateTearOff();
 
   _ResourceEditScreenState call(
-      {required Item item,
+      {required Cache cache,
       required String title,
       required String body,
       List<AsyncValue<Attachment>> attachments = const []}) {
     return _ResourceEditScreenState(
-      item: item,
+      cache: cache,
       title: title,
       body: body,
       attachments: attachments,
@@ -37,7 +37,7 @@ const $ResourceEditScreenState = _$ResourceEditScreenStateTearOff();
 
 /// @nodoc
 mixin _$ResourceEditScreenState {
-  Item get item => throw _privateConstructorUsedError;
+  Cache get cache => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get body => throw _privateConstructorUsedError;
   List<AsyncValue<Attachment>> get attachments =>
@@ -54,12 +54,12 @@ abstract class $ResourceEditScreenStateCopyWith<$Res> {
           $Res Function(ResourceEditScreenState) then) =
       _$ResourceEditScreenStateCopyWithImpl<$Res>;
   $Res call(
-      {Item item,
+      {Cache cache,
       String title,
       String body,
       List<AsyncValue<Attachment>> attachments});
 
-  $ItemCopyWith<$Res> get item;
+  $CacheCopyWith<$Res> get cache;
 }
 
 /// @nodoc
@@ -73,16 +73,16 @@ class _$ResourceEditScreenStateCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? item = freezed,
+    Object? cache = freezed,
     Object? title = freezed,
     Object? body = freezed,
     Object? attachments = freezed,
   }) {
     return _then(_value.copyWith(
-      item: item == freezed
-          ? _value.item
-          : item // ignore: cast_nullable_to_non_nullable
-              as Item,
+      cache: cache == freezed
+          ? _value.cache
+          : cache // ignore: cast_nullable_to_non_nullable
+              as Cache,
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -99,9 +99,9 @@ class _$ResourceEditScreenStateCopyWithImpl<$Res>
   }
 
   @override
-  $ItemCopyWith<$Res> get item {
-    return $ItemCopyWith<$Res>(_value.item, (value) {
-      return _then(_value.copyWith(item: value));
+  $CacheCopyWith<$Res> get cache {
+    return $CacheCopyWith<$Res>(_value.cache, (value) {
+      return _then(_value.copyWith(cache: value));
     });
   }
 }
@@ -114,13 +114,13 @@ abstract class _$ResourceEditScreenStateCopyWith<$Res>
       __$ResourceEditScreenStateCopyWithImpl<$Res>;
   @override
   $Res call(
-      {Item item,
+      {Cache cache,
       String title,
       String body,
       List<AsyncValue<Attachment>> attachments});
 
   @override
-  $ItemCopyWith<$Res> get item;
+  $CacheCopyWith<$Res> get cache;
 }
 
 /// @nodoc
@@ -137,16 +137,16 @@ class __$ResourceEditScreenStateCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? item = freezed,
+    Object? cache = freezed,
     Object? title = freezed,
     Object? body = freezed,
     Object? attachments = freezed,
   }) {
     return _then(_ResourceEditScreenState(
-      item: item == freezed
-          ? _value.item
-          : item // ignore: cast_nullable_to_non_nullable
-              as Item,
+      cache: cache == freezed
+          ? _value.cache
+          : cache // ignore: cast_nullable_to_non_nullable
+              as Cache,
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -167,13 +167,13 @@ class __$ResourceEditScreenStateCopyWithImpl<$Res>
 
 class _$_ResourceEditScreenState implements _ResourceEditScreenState {
   const _$_ResourceEditScreenState(
-      {required this.item,
+      {required this.cache,
       required this.title,
       required this.body,
       this.attachments = const []});
 
   @override
-  final Item item;
+  final Cache cache;
   @override
   final String title;
   @override
@@ -184,7 +184,7 @@ class _$_ResourceEditScreenState implements _ResourceEditScreenState {
 
   @override
   String toString() {
-    return 'ResourceEditScreenState(item: $item, title: $title, body: $body, attachments: $attachments)';
+    return 'ResourceEditScreenState(cache: $cache, title: $title, body: $body, attachments: $attachments)';
   }
 
   @override
@@ -192,7 +192,7 @@ class _$_ResourceEditScreenState implements _ResourceEditScreenState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _ResourceEditScreenState &&
-            const DeepCollectionEquality().equals(other.item, item) &&
+            const DeepCollectionEquality().equals(other.cache, cache) &&
             const DeepCollectionEquality().equals(other.title, title) &&
             const DeepCollectionEquality().equals(other.body, body) &&
             const DeepCollectionEquality()
@@ -202,7 +202,7 @@ class _$_ResourceEditScreenState implements _ResourceEditScreenState {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(item),
+      const DeepCollectionEquality().hash(cache),
       const DeepCollectionEquality().hash(title),
       const DeepCollectionEquality().hash(body),
       const DeepCollectionEquality().hash(attachments));
@@ -216,13 +216,13 @@ class _$_ResourceEditScreenState implements _ResourceEditScreenState {
 
 abstract class _ResourceEditScreenState implements ResourceEditScreenState {
   const factory _ResourceEditScreenState(
-      {required Item item,
+      {required Cache cache,
       required String title,
       required String body,
       List<AsyncValue<Attachment>> attachments}) = _$_ResourceEditScreenState;
 
   @override
-  Item get item;
+  Cache get cache;
   @override
   String get title;
   @override

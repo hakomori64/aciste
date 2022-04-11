@@ -58,8 +58,8 @@ class DynamicLinksController extends StateNotifier<DynamicLinkState> {
     });
   }
 
-  Future<String> getItemImportUrl({required String resourceId}) async {
-    final url = await _read(dynamicLinksRepositoryProvider).createItemImportDynamicLink(
+  Future<String> getCacheImportUrl({required String resourceId}) async {
+    final url = await _read(dynamicLinksRepositoryProvider).createCacheImportDynamicLink(
       resourceId: resourceId,
     );
     return url.toString();

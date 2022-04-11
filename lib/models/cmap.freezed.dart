@@ -28,7 +28,7 @@ class _$CMapTearOff {
       required String password,
       required String link,
       dynamic type = CMapType.password,
-      Item? item,
+      Cache? cache,
       User? user,
       @TimestampDateTimeConverter() DateTime? createdAt,
       @TimestampDateTimeConverter() DateTime? updatedAt,
@@ -40,7 +40,7 @@ class _$CMapTearOff {
       password: password,
       link: link,
       type: type,
-      item: item,
+      cache: cache,
       user: user,
       createdAt: createdAt,
       updatedAt: updatedAt,
@@ -64,7 +64,7 @@ mixin _$CMap {
   String get password => throw _privateConstructorUsedError;
   String get link => throw _privateConstructorUsedError;
   dynamic get type => throw _privateConstructorUsedError;
-  Item? get item => throw _privateConstructorUsedError;
+  Cache? get cache => throw _privateConstructorUsedError;
   User? get user => throw _privateConstructorUsedError;
   @TimestampDateTimeConverter()
   DateTime? get createdAt => throw _privateConstructorUsedError;
@@ -89,14 +89,14 @@ abstract class $CMapCopyWith<$Res> {
       String password,
       String link,
       dynamic type,
-      Item? item,
+      Cache? cache,
       User? user,
       @TimestampDateTimeConverter() DateTime? createdAt,
       @TimestampDateTimeConverter() DateTime? updatedAt,
       List<Attachment> attachments,
       @JsonKey(ignore: true) DocumentSnapshot<Object?>? doc});
 
-  $ItemCopyWith<$Res>? get item;
+  $CacheCopyWith<$Res>? get cache;
   $UserCopyWith<$Res>? get user;
 }
 
@@ -115,7 +115,7 @@ class _$CMapCopyWithImpl<$Res> implements $CMapCopyWith<$Res> {
     Object? password = freezed,
     Object? link = freezed,
     Object? type = freezed,
-    Object? item = freezed,
+    Object? cache = freezed,
     Object? user = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
@@ -143,10 +143,10 @@ class _$CMapCopyWithImpl<$Res> implements $CMapCopyWith<$Res> {
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as dynamic,
-      item: item == freezed
-          ? _value.item
-          : item // ignore: cast_nullable_to_non_nullable
-              as Item?,
+      cache: cache == freezed
+          ? _value.cache
+          : cache // ignore: cast_nullable_to_non_nullable
+              as Cache?,
       user: user == freezed
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
@@ -171,13 +171,13 @@ class _$CMapCopyWithImpl<$Res> implements $CMapCopyWith<$Res> {
   }
 
   @override
-  $ItemCopyWith<$Res>? get item {
-    if (_value.item == null) {
+  $CacheCopyWith<$Res>? get cache {
+    if (_value.cache == null) {
       return null;
     }
 
-    return $ItemCopyWith<$Res>(_value.item!, (value) {
-      return _then(_value.copyWith(item: value));
+    return $CacheCopyWith<$Res>(_value.cache!, (value) {
+      return _then(_value.copyWith(cache: value));
     });
   }
 
@@ -204,7 +204,7 @@ abstract class _$CMapCopyWith<$Res> implements $CMapCopyWith<$Res> {
       String password,
       String link,
       dynamic type,
-      Item? item,
+      Cache? cache,
       User? user,
       @TimestampDateTimeConverter() DateTime? createdAt,
       @TimestampDateTimeConverter() DateTime? updatedAt,
@@ -212,7 +212,7 @@ abstract class _$CMapCopyWith<$Res> implements $CMapCopyWith<$Res> {
       @JsonKey(ignore: true) DocumentSnapshot<Object?>? doc});
 
   @override
-  $ItemCopyWith<$Res>? get item;
+  $CacheCopyWith<$Res>? get cache;
   @override
   $UserCopyWith<$Res>? get user;
 }
@@ -233,7 +233,7 @@ class __$CMapCopyWithImpl<$Res> extends _$CMapCopyWithImpl<$Res>
     Object? password = freezed,
     Object? link = freezed,
     Object? type = freezed,
-    Object? item = freezed,
+    Object? cache = freezed,
     Object? user = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
@@ -258,10 +258,10 @@ class __$CMapCopyWithImpl<$Res> extends _$CMapCopyWithImpl<$Res>
           : link // ignore: cast_nullable_to_non_nullable
               as String,
       type: type == freezed ? _value.type : type,
-      item: item == freezed
-          ? _value.item
-          : item // ignore: cast_nullable_to_non_nullable
-              as Item?,
+      cache: cache == freezed
+          ? _value.cache
+          : cache // ignore: cast_nullable_to_non_nullable
+              as Cache?,
       user: user == freezed
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
@@ -295,7 +295,7 @@ class _$_CMap extends _CMap {
       required this.password,
       required this.link,
       this.type = CMapType.password,
-      this.item,
+      this.cache,
       this.user,
       @TimestampDateTimeConverter() this.createdAt,
       @TimestampDateTimeConverter() this.updatedAt,
@@ -317,7 +317,7 @@ class _$_CMap extends _CMap {
   @override
   final dynamic type;
   @override
-  final Item? item;
+  final Cache? cache;
   @override
   final User? user;
   @override
@@ -335,7 +335,7 @@ class _$_CMap extends _CMap {
 
   @override
   String toString() {
-    return 'CMap(id: $id, message: $message, password: $password, link: $link, type: $type, item: $item, user: $user, createdAt: $createdAt, updatedAt: $updatedAt, attachments: $attachments, doc: $doc)';
+    return 'CMap(id: $id, message: $message, password: $password, link: $link, type: $type, cache: $cache, user: $user, createdAt: $createdAt, updatedAt: $updatedAt, attachments: $attachments, doc: $doc)';
   }
 
   @override
@@ -348,7 +348,7 @@ class _$_CMap extends _CMap {
             const DeepCollectionEquality().equals(other.password, password) &&
             const DeepCollectionEquality().equals(other.link, link) &&
             const DeepCollectionEquality().equals(other.type, type) &&
-            const DeepCollectionEquality().equals(other.item, item) &&
+            const DeepCollectionEquality().equals(other.cache, cache) &&
             const DeepCollectionEquality().equals(other.user, user) &&
             const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
             const DeepCollectionEquality().equals(other.updatedAt, updatedAt) &&
@@ -365,7 +365,7 @@ class _$_CMap extends _CMap {
       const DeepCollectionEquality().hash(password),
       const DeepCollectionEquality().hash(link),
       const DeepCollectionEquality().hash(type),
-      const DeepCollectionEquality().hash(item),
+      const DeepCollectionEquality().hash(cache),
       const DeepCollectionEquality().hash(user),
       const DeepCollectionEquality().hash(createdAt),
       const DeepCollectionEquality().hash(updatedAt),
@@ -390,7 +390,7 @@ abstract class _CMap extends CMap {
       required String password,
       required String link,
       dynamic type,
-      Item? item,
+      Cache? cache,
       User? user,
       @TimestampDateTimeConverter() DateTime? createdAt,
       @TimestampDateTimeConverter() DateTime? updatedAt,
@@ -411,7 +411,7 @@ abstract class _CMap extends CMap {
   @override
   dynamic get type;
   @override
-  Item? get item;
+  Cache? get cache;
   @override
   User? get user;
   @override

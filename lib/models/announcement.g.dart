@@ -30,6 +30,6 @@ Map<String, dynamic> _$$_AnnouncementToJson(_$_Announcement instance) =>
     };
 
 const _$AnnounceTypeEnumMap = {
-  AnnounceType.itemCreate: 'itemCreate',
+  AnnounceType.cacheCreate: 'cacheCreate',
   AnnounceType.other: 'other',
 };

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'widgets/cache_tile/cache_tile.dart';
+import 'widgets/cmap_tile/cmap_tile.dart';
 
 class CMapList extends HookConsumerWidget {
   const CMapList({Key? key}) : super(key: key);

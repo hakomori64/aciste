@@ -6,7 +6,7 @@ part 'main_screen_controller.freezed.dart';
 
 enum BottomItem {
   cmap,
-  item,
+  cache,
   announcement,
 }
 

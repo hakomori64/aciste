@@ -85,8 +85,8 @@ class AnnounceCreateScreen extends HookConsumerWidget {
                       labelText: 'おしらせ内容',
                       hintText: (() {
                         switch (announceType) {
-                          case AnnounceType.itemCreate:
-                            return 'アイテムがどこにあるかヒントを書きましょう！';
+                          case AnnounceType.cacheCreate:
+                            return 'キャッシュがどこにあるかヒントを書きましょう！';
                           case AnnounceType.other:
                             return 'てきとうな呟きを書きましょう';
                         }

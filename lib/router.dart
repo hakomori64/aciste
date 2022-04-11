@@ -11,6 +11,7 @@ import 'package:aciste/repositories/resource_repository.dart';
 import 'package:aciste/screens/announce_create_screen/announce_create_screen.dart';
 import 'package:aciste/screens/announce_create_screen/controllers/announce_create_screen_controller.dart';
 import 'package:aciste/screens/attachment_detail_screen/controllers/attachment_detail_screen_controller.dart';
+import 'package:aciste/screens/cache_edit_screen/controllers/cache_edit_screen_controller.dart';
 import 'package:aciste/screens/cmap_create_screen/controllers/cmap_create_screen_controller.dart';
 import 'package:aciste/screens/dialog_screen/dialog_screen.dart';
 import 'package:aciste/screens/dialog_screen/controllers/dialog_screen_controller.dart';
@@ -18,12 +19,11 @@ import 'package:aciste/screens/email_check_screen/email_check_screen.dart';
 import 'package:aciste/screens/email_check_screen/controllers/email_check_screen_controller.dart';
 import 'package:aciste/screens/follows_screen/follows_screen.dart';
 import 'package:aciste/screens/follows_screen/controllers/follows_screen_controller.dart';
-import 'package:aciste/screens/item_create_screen/controllers/item_create_screen_controller.dart';
-import 'package:aciste/screens/item_create_screen/item_create_screen.dart';
-import 'package:aciste/screens/item_edit_screen/item_edit_screen.dart';
-import 'package:aciste/screens/item_edit_screen/controllers/item_edit_screen_controller.dart';
-import 'package:aciste/screens/item_import_screen/item_import_screen.dart';
-import 'package:aciste/screens/item_import_screen/controllers/item_import_screen_controller.dart';
+import 'package:aciste/screens/cache_create_screen/controllers/cache_create_screen_controller.dart';
+import 'package:aciste/screens/cache_create_screen/cache_create_screen.dart';
+import 'package:aciste/screens/cache_edit_screen/cache_edit_screen.dart';
+import 'package:aciste/screens/cache_import_screen/cache_import_screen.dart';
+import 'package:aciste/screens/cache_import_screen/controllers/cache_import_screen_controller.dart';
 import 'package:aciste/screens/login_screen/login_screen.dart';
 import 'package:aciste/screens/logo_screen/logo_screen.dart';
 import 'package:aciste/screens/main_screen/main_screen.dart';
@@ -41,7 +41,7 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'models/item.dart';
+import 'models/cache.dart';
 import 'screens/attachment_detail_screen/attachment_detail_screen.dart';
 import 'screens/cmap_create_screen/cmap_create_screen.dart';
 
@@ -126,8 +126,8 @@ class RouterController extends StateNotifier<GoRouter?> {
           builder: (context, state) => screen(route: Routes.profileEdit),
         ),
         GoRoute(
-          path: Routes.itemCreate.route,
-          builder: (context, state) => screen(route: Routes.itemCreate),
+          path: Routes.cacheCreate.route,
+          builder: (context, state) => screen(route: Routes.cacheCreate),
         ),
         GoRoute(
           path: Routes.cMapCreate.route,
@@ -138,8 +138,8 @@ class RouterController extends StateNotifier<GoRouter?> {
           builder: (context, state) => screen(route: Routes.attachmentDetail),
         ),
         GoRoute(
-          path: Routes.itemImport.route,
-          builder: (context, state) => screen(route: Routes.itemImport),
+          path: Routes.cacheImport.route,
+          builder: (context, state) => screen(route: Routes.cacheImport),
         ),
         GoRoute(
           path: Routes.resourceEdit.route,
@@ -174,11 +174,11 @@ class RouterController extends StateNotifier<GoRouter?> {
             final resource = await _read(resourceRepositoryProvider).retrieveResource(
               resourceId: resourceId,
             );
-            final item = Item.empty().copyWith(
+            final cache = Cache.empty().copyWith(
               resource: resource,
             );
             await refresh();
-            await push(route: Routes.itemImport, extra: ItemImportRouteParams(item: item, resource: resource));
+            await push(route: Routes.cacheImport, extra: CacheImportRouteParams(cache: cache, resource: resource));
             break;
           case '/profile':
             final userId = parameterMap!['userId'] as String;
@@ -267,8 +267,8 @@ class RouterController extends StateNotifier<GoRouter?> {
         break;
       case Routes.profileEdit:
         break;
-      case Routes.itemCreate:
-        _read(itemCreateScreenControllerProvider.notifier).setAttachments([]);
+      case Routes.cacheCreate:
+        _read(cacheCreateScreenControllerProvider.notifier).setAttachments([]);
         break;
       case Routes.cMapCreate:
         final params = extra! as CMapCreateRouteParams;
@@ -277,24 +277,24 @@ class RouterController extends StateNotifier<GoRouter?> {
         _read(cMapCreateScreenControllerProvider.notifier).setPassword(params.password);
         _read(cMapCreateScreenControllerProvider.notifier).setLink(params.link);
         _read(cMapCreateScreenControllerProvider.notifier).setType(params.cMapType);
-        _read(cMapCreateScreenControllerProvider.notifier).setItem(params.item);
+        _read(cMapCreateScreenControllerProvider.notifier).setCache(params.cache);
         _read(cMapCreateScreenControllerProvider.notifier).setAttachments([]);
         break;
-      case Routes.itemEdit:
-        final params = extra! as ItemEditRouteParams;
-        _read(itemEditScreenControllerProvider.notifier).setItem(params.item);
+      case Routes.cacheEdit:
+        final params = extra! as CacheEditRouteParams;
+        _read(cacheEditScreenControllerProvider.notifier).setCache(params.cache);
         break;
       case Routes.resourceEdit:
         final params = extra! as ResourceEditRouteParams;
-        _read(resourceEditScreenControllerProvider.notifier).setItem(params.item);
+        _read(resourceEditScreenControllerProvider.notifier).setCache(params.cache);
         break;
       case Routes.attachmentDetail:
         final params = extra! as AttachmentDetailRouteParams;
         _read(attachmentDetailScreenControllerProvider.notifier).setAttachment(params.attachment);
         break;
-      case Routes.itemImport:
-        final params = extra! as ItemImportRouteParams;
-        _read(itemImportScreenControllerProvider.notifier).setItem(params.item);
+      case Routes.cacheImport:
+        final params = extra! as CacheImportRouteParams;
+        _read(cacheImportScreenControllerProvider.notifier).setCache(params.cache);
         break;
       case Routes.announceCreate:
         final params = extra! as AnnounceCreateRouteParams;
@@ -346,18 +346,18 @@ class RouterController extends StateNotifier<GoRouter?> {
         return const FollowsScreen();
       case Routes.profileEdit:
         return const ProfileEditScreen();
-      case Routes.itemCreate:
-        return const ItemCreateScreen();
-      case Routes.itemEdit:
-        return const ItemEditScreen();
+      case Routes.cacheCreate:
+        return const CacheCreateScreen();
+      case Routes.cacheEdit:
+        return const CacheEditScreen();
       case Routes.cMapCreate:
         return const CMapCreateScreen();
       case Routes.resourceEdit:
         return const ResourceEditScreen();
       case Routes.attachmentDetail:
         return const AttachmentDetailScreen();
-      case Routes.itemImport:
-        return const ItemImportScreen();
+      case Routes.cacheImport:
+        return const CacheImportScreen();
       case Routes.announceCreate:
         return const AnnounceCreateScreen();
       case Routes.dialog:
@@ -376,12 +376,12 @@ enum Routes {
   follows,
   profileEdit,
   media,
-  itemCreate,
-  itemEdit,
+  cacheCreate,
+  cacheEdit,
   cMapCreate,
   resourceEdit,
   attachmentDetail,
-  itemImport,
+  cacheImport,
   announceCreate,
   dialog,
 }
@@ -414,9 +414,9 @@ class FollowsRouteParams {
   const FollowsRouteParams({required this.follows});
 }
 
-class ItemEditRouteParams {
-  final Item item;
-  ItemEditRouteParams({required this.item});
+class CacheEditRouteParams {
+  final Cache cache;
+  CacheEditRouteParams({required this.cache});
 }
 
 class CMapCreateRouteParams {
@@ -424,14 +424,14 @@ class CMapCreateRouteParams {
   final String password;
   final String link;
   final CMapType cMapType;
-  final Item? item;
+  final Cache? cache;
 
-  const CMapCreateRouteParams({ required this.message, required this.password, required this.link, required this.cMapType, this.item });
+  const CMapCreateRouteParams({ required this.message, required this.password, required this.link, required this.cMapType, this.cache });
 }
 
 class ResourceEditRouteParams {
-  final Item item;
-  ResourceEditRouteParams({required this.item});
+  final Cache cache;
+  ResourceEditRouteParams({required this.cache});
 }
 
 class AttachmentDetailRouteParams {
@@ -439,10 +439,10 @@ class AttachmentDetailRouteParams {
   AttachmentDetailRouteParams({required this.attachment});
 }
 
-class ItemImportRouteParams {
-  final Item item;
+class CacheImportRouteParams {
+  final Cache cache;
   final Resource resource;
-  ItemImportRouteParams({required this.item, required this.resource});
+  CacheImportRouteParams({required this.cache, required this.resource});
 }
 
 class AnnounceCreateRouteParams {

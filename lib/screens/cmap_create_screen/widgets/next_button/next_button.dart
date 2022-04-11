@@ -14,7 +14,7 @@ class NextButton extends HookConsumerWidget {
     final message = cMapCreateScreenState.message;
     final password = cMapCreateScreenState.password;
     final cMapType = cMapCreateScreenState.type;
-    final item =cMapCreateScreenState.item;
+    final cache =cMapCreateScreenState.cache;
 
     var condition = true;
     var text = '';
@@ -27,7 +27,7 @@ class NextButton extends HookConsumerWidget {
         text = '次へ';
         break;
       case 1:
-        condition = (item != null);
+        condition = (cache != null);
         text = '確認画面へ';
         break;
       case 2:

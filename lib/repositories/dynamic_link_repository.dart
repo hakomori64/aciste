@@ -4,7 +4,7 @@ import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 abstract class BaseDynamicLinkRepository {
-  Future<Uri> createItemImportDynamicLink({required String resourceId});
+  Future<Uri> createCacheImportDynamicLink({required String resourceId});
   Future<Uri> createProfileDynamicLink({required String userId});
 }
 
@@ -16,7 +16,7 @@ class DynamicLinksRepository implements BaseDynamicLinkRepository {
   const DynamicLinksRepository(this._read);
 
   @override
-  Future<Uri> createItemImportDynamicLink({required String resourceId}) async {
+  Future<Uri> createCacheImportDynamicLink({required String resourceId}) async {
 
     final parameters = DynamicLinkParameters(
       uriPrefix: getDynamicLinkUriPrefix(),
